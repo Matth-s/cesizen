@@ -68,20 +68,26 @@ export const loginController = async (
     reply.setCookie('accessToken', accessToken, {
       httpOnly: true,
       secure: false,
-      sameSite: 'strict',
+      sameSite: 'lax',
       path: '/',
+      maxAge: 60 * 60 * 60,
     });
 
     reply.setCookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: false,
-      sameSite: 'strict',
+      sameSite: 'lax',
       path: '/refresh',
+      maxAge: 60 * 60 * 60,
     });
 
     return reply.code(200).send({
       message: 'Connexion réussi',
-      csrfToken,
+      user: {
+        csrfToken,
+        username: existingUser.username,
+        role: existingUser.role,
+      },
     });
   } catch (err) {
     console.log(err, 'error');

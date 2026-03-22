@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
-import { loginApi } from '../api/login-api';
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, type loginType } from '../schemas/login-schema';
+import { useMutation } from "@tanstack/react-query";
+import { loginApi } from "../api/login-api";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type loginType } from "../schemas/login-schema";
 import {
   Card,
   CardContent,
@@ -10,23 +10,34 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
-import SubmitButton from '@/components/SubmitButton';
-import FormErrorMessage from '@/components/FormError';
-import AuthFormFooter from './AuthFormFooter';
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import SubmitButton from "@/components/SubmitButton";
+import FormErrorMessage from "@/components/FormError";
+import AuthFormFooter from "./AuthFormFooter";
+import { useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
+
+import FormSuccess from "@/components/FormSuccess";
+import { setUser } from "@/store/slices/user-slice";
+import { NavLink } from "react-router";
 
 const LoginForm = () => {
+  const dispatch = useAppDispatch();
+
+  const [successMessage, setSuccessMessage] = useState<string | undefined>(
+    undefined,
+  );
   const form = useForm<loginType>({
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
 
     resolver: zodResolver(loginSchema),
@@ -36,7 +47,6 @@ const LoginForm = () => {
     handleSubmit,
     setError,
     formState: {
-      isSubmitting,
       errors: { root },
     },
   } = form;
@@ -44,18 +54,29 @@ const LoginForm = () => {
   const loginMutation = useMutation({
     mutationFn: loginApi,
 
+    onSuccess(data) {
+      const { message, user } = data;
+
+      setSuccessMessage(message);
+
+      if (!user) return;
+
+      dispatch(setUser(user));
+    },
+
     onError(err) {
-      let errorMessage = 'Une erreur est survenue';
+      let errorMessage = "Une erreur est survenue";
       if (err instanceof Error) {
         errorMessage = err.message;
       }
-      setError('root', {
+      setError("root", {
         message: errorMessage,
       });
     },
   });
 
   const handleFormSubmit = (credentials: loginType) => {
+    setSuccessMessage(undefined);
     loginMutation.mutate(credentials);
   };
 
@@ -63,16 +84,11 @@ const LoginForm = () => {
     <Card className="w-4/5">
       <CardHeader>
         <CardTitle>Connexion</CardTitle>
-        <CardDescription>
-          Connectez-vous pour continuer
-        </CardDescription>
+        <CardDescription>Connectez-vous pour continuer</CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form
-          onSubmit={handleSubmit(handleFormSubmit)}
-          className="flex flex-col gap-y-2"
-        >
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="form">
           <FieldGroup>
             <Controller
               name="email"
@@ -101,13 +117,21 @@ const LoginForm = () => {
                 </Field>
               )}
             />
+
+            <NavLink
+              to={"/authentification/mot-de-passe-oublie"}
+              className="text-end text-base font-medium text-teal-600 underline hover:text-teal-700"
+            >
+              Mot de passe oublié ?
+            </NavLink>
           </FieldGroup>
 
+          <FormSuccess message={successMessage} />
           <FormErrorMessage message={root?.message} />
 
           <SubmitButton
-            className="w-full h-10 text-base font-semibold bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white rounded-xl shadow-lg"
-            isDisabled={isSubmitting}
+            className="submit-button"
+            isDisabled={loginMutation.isPending}
             textButton="Connexion"
           />
         </form>

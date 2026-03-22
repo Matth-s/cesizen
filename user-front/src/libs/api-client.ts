@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_PUBLIC_API_ROUTE,
+  withCredentials: true,
 });
 
-// 👇 Interceptor d'erreur
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -12,7 +12,7 @@ api.interceptors.response.use(
       error.response?.data?.error ||
       error.response?.data?.message ||
       error.message ||
-      'Une erreur est survenue';
+      "Une erreur est survenue";
 
     return Promise.reject(new Error(message));
   },

@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 
 type SubmitButtonProps = {
   isDisabled: boolean;
@@ -16,10 +16,7 @@ const SubmitButton = ({
     <Button
       type="submit"
       disabled={isDisabled}
-      className={cn(
-        isDisabled ? 'opacity-50' : 'opacity-100',
-        className,
-      )}
+      className={cn(isDisabled && "cursor-not-allowed opacity-50", className)}
     >
       {textButton}
     </Button>

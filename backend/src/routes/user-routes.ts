@@ -6,8 +6,17 @@ import {
 import { updatePasswordSchema } from '../schemas/user-schema';
 import { updateUserPasswordController } from '../controllers/user-controller/index';
 import { Role } from '../generated/prisma/enums';
+import { getCUrrentUserController } from '../controllers/user-controller/index';
 
 export const userRoutes: FastifyPluginAsync = async (fastify) => {
+  fastify.get(
+    '/current',
+    {
+      preHandler: [fastify.authenticate],
+    },
+    getCUrrentUserController,
+  );
+
   fastify.put(
     '/update-password',
     {

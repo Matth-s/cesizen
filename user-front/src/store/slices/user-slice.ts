@@ -1,11 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import type { userType } from "@/features/auth/schemas/current-user-schema";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface IUserState {
-  user: {
-    username: string;
-    role: string;
-    csrfToken: string;
-  } | null;
+  user: userType | null;
 }
 
 const initialState: IUserState = {
@@ -13,14 +10,14 @@ const initialState: IUserState = {
 };
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
-    login: () => {
-      console.log('login slice');
+    setUser: (state, action: PayloadAction<userType>) => {
+      state.user = action.payload;
     },
   },
 });
 
-export const { login } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

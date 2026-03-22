@@ -1,12 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { registerSchema, type registerType } from "../schemas/register-schema";
+import {
+  resetPasswordSchema,
+  type resetPasswordType,
+} from "../schemas/reset-password-schema";
+import { useMutation } from "@tanstack/react-query";
+import { resetPasswordApi } from "../api/reset-password-api";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -17,25 +21,24 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import FormErrorMessage from "@/components/FormError";
 import SubmitButton from "@/components/SubmitButton";
-import AuthFormFooter from "./AuthFormFooter";
-import { useMutation } from "@tanstack/react-query";
-import { registerApi } from "../api/register-api";
 import FormSuccess from "@/components/FormSuccess";
+import FormErrorMessage from "@/components/FormError";
 
-const RegisterForm = () => {
+type ResetPasswordFormProps = {
+  token: string;
+};
+
+const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined,
   );
-  const form = useForm<registerType>({
+  const form = useForm<resetPasswordType>({
     defaultValues: {
-      username: "",
-      email: "",
       password: "",
       confirmPassword: "",
     },
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(resetPasswordSchema),
   });
 
   const {
@@ -46,76 +49,46 @@ const RegisterForm = () => {
     },
   } = form;
 
-  const registerMutation = useMutation({
-    mutationFn: registerApi,
+  const resetPasswordMutation = useMutation({
+    mutationFn: resetPasswordApi,
 
-    onSuccess: (data) => {
-      setSuccessMessage(data.message);
-      console.log("p");
+    onSuccess() {
+      setSuccessMessage("Le mot de passe a été modifié");
     },
 
-    onError: (err) => {
+    onError(err) {
       let errorMessage = "Une erreur est survenue";
+
       if (err instanceof Error) {
         errorMessage = err.message;
       }
+
       setError("root", {
         message: errorMessage,
       });
     },
   });
 
-  const handleFormSubmit = (data: registerType) => {
-    setSuccessMessage(undefined);
-    registerMutation.mutate(data);
+  const handleFormSubmit = (formData: resetPasswordType) => {
+    resetPasswordMutation.mutate({ formData, token });
   };
 
   return (
-    <Card className="w-4/5">
+    <Card>
       <CardHeader>
-        <CardTitle>Créer un compte</CardTitle>
-        <CardDescription>
-          Rejoignez CESIZen et prenez soin de vous
-        </CardDescription>
+        <CardTitle>Modifier votre mot de passe</CardTitle>
+        <CardDescription>Réinitialisation du mot de passe</CardDescription>
       </CardHeader>
 
       <CardContent>
         <form onSubmit={handleSubmit(handleFormSubmit)} className="form">
           <FieldGroup>
             <Controller
-              name="username"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Nom d'utilisateur</FieldLabel>
-                  <Input {...field} />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            <Controller
-              name="email"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Email</FieldLabel>
-                  <Input {...field} />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            <Controller
               name="password"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Password</FieldLabel>
+                  <FieldLabel>Mot de passe</FieldLabel>
                   <Input {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -140,26 +113,17 @@ const RegisterForm = () => {
           </FieldGroup>
 
           <FormSuccess message={successMessage} />
-
           <FormErrorMessage message={root?.message} />
 
           <SubmitButton
             className="submit-button"
-            isDisabled={registerMutation.isPending}
-            textButton="Connexion"
+            isDisabled={resetPasswordMutation.isPending}
+            textButton="Modifier le mot de passe"
           />
         </form>
       </CardContent>
-
-      <CardFooter>
-        <AuthFormFooter
-          answer="Vous avez déjà un compte ?"
-          pathTo="connexion"
-          linkName="Se connecter"
-        />
-      </CardFooter>
     </Card>
   );
 };
 
-export default RegisterForm;
+export default ResetPasswordForm;
