@@ -26,10 +26,11 @@ import { useAppDispatch } from "@/store/hooks";
 
 import FormSuccess from "@/components/FormSuccess";
 import { setUser } from "@/store/slices/user-slice";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined,
@@ -62,6 +63,7 @@ const LoginForm = () => {
       if (!user) return;
 
       dispatch(setUser(user));
+      navigate("/");
     },
 
     onError(err) {
@@ -109,7 +111,7 @@ const LoginForm = () => {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Password</FieldLabel>
+                  <FieldLabel>Mot de passe</FieldLabel>
                   <Input {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

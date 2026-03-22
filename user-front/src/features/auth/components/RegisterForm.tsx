@@ -115,7 +115,7 @@ const RegisterForm = () => {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Password</FieldLabel>
+                  <FieldLabel>Mot de passe</FieldLabel>
                   <Input {...field} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

@@ -1,9 +1,9 @@
-import HeaderAuth from '@/features/auth/components/HeaderAuth';
-import { Outlet } from 'react-router';
+import HeaderAuth from "@/features/auth/components/HeaderAuth";
+import { Outlet } from "react-router";
 
 const AuthLayout = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <div className="flex min-h-screen flex-col items-center justify-center">
       <HeaderAuth />
       <Outlet />
     </div>
