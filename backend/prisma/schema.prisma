@@ -28,6 +28,19 @@ model User {
   twoFactorExpire  DateTime?
 }
 
+model Quiz {
+  id     String   @id @default(cuid())
+  answer Answer[]
+}
+
+model Answer {
+  id     String @id @default(uuid())
+  name   String
+  value  Int
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id])
+}
+
 enum Role {
   ADMIN
   USER

@@ -1,7 +1,6 @@
 import { FastifyPluginAsync, FastifyReply } from 'fastify';
+import { getQuizController } from '../controllers/quiz/get-quiz-controller';
 
 export const quizRoutes: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/', (_, reply: FastifyReply) =>
-    reply.send('quiz route get'),
-  );
+  fastify.get('/', () => getQuizController);
 };

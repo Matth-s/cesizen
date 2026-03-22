@@ -85,14 +85,9 @@ export const loginController = async (
       message: 'Connexion réussi',
       csrfToken,
     });
-  } catch (err) {
-    let message = 'Une erreur est survenue sur le serveur';
-
-    if (err instanceof Error) {
-      message = err.message;
-    }
+  } catch {
     return reply.code(500).send({
-      message,
+      message: 'Une erreur est survenue',
     });
   }
 };
