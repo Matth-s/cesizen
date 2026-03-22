@@ -24,12 +24,12 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
     '/login',
     {
       schema: LoginSchema,
-      config: {
-        rateLimit: {
-          max: 5,
-          timeWindow: '10 minutes',
-        },
-      },
+      // config: {
+      //   rateLimit: {
+      //     max: 50,
+      //     timeWindow: '10 minutes',
+      //   },
+      // },
     },
     loginController,
   );

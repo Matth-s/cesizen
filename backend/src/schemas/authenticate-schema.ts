@@ -23,8 +23,7 @@ export const LoginSchema = {
   body: Type.Object({
     email: Type.String({ format: 'email' }),
     password: Type.String({
-      minLength: 8,
-      pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).+$',
+      minLength: 1,
     }),
   }),
 };
@@ -47,7 +46,7 @@ export const registerSchema = {
     confirmPassword: Type.String(),
     username: Type.String({
       minLength: 3,
-      maxLength: 12,
+      maxLength: 20,
     }),
   }),
 };

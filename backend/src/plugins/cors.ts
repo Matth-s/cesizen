@@ -3,7 +3,7 @@ import cors from '@fastify/cors';
 
 export default fp(async (fastify) => {
   await fastify.register(cors, {
-    origin: ['https://website.com'],
+    origin: ['http://localhost:5173'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'X-CSRF-Token'],

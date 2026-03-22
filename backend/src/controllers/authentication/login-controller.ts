@@ -8,8 +8,6 @@ export const loginController = async (
   request: FastifyRequestTypeBox<typeof LoginSchema>,
   reply: FastifyReply,
 ) => {
-  console.log(Object.keys(reply));
-
   try {
     const { email, password } = request.body;
 
@@ -21,7 +19,7 @@ export const loginController = async (
     if (!existingUser) {
       await comparePassword('e', 'f');
       return reply.code(403).send({
-        message: 'Email ou mot de passe invalide',
+        error: 'Email ou mot de passe invalide',
       });
     }
 
@@ -85,7 +83,8 @@ export const loginController = async (
       message: 'Connexion réussi',
       csrfToken,
     });
-  } catch {
+  } catch (err) {
+    console.log(err, 'error');
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });
