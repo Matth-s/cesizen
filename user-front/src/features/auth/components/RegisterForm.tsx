@@ -24,8 +24,10 @@ import FormErrorMessage from "@/components/FormError";
 import SubmitButton from "@/components/SubmitButton";
 import AuthFormFooter from "./AuthFormFooter";
 import FormSuccess from "@/components/FormSuccess";
+import ShowFormPassword from "./ShowFormPassword";
 
 const RegisterForm = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined,
   );
@@ -116,7 +118,7 @@ const RegisterForm = () => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Mot de passe</FieldLabel>
-                  <Input {...field} />
+                  <Input {...field} type={showPassword ? "text" : "password"} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -130,7 +132,7 @@ const RegisterForm = () => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Confirmez le mot de passe</FieldLabel>
-                  <Input {...field} />
+                  <Input {...field} type={showPassword ? "text" : "password"} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -138,6 +140,12 @@ const RegisterForm = () => {
               )}
             />
           </FieldGroup>
+
+          <ShowFormPassword
+            showPassword={showPassword}
+            toggleShowPassword={() => setShowPassword((prev) => !prev)}
+            label="Afficher les mots de passe"
+          />
 
           <FormSuccess message={successMessage} />
 

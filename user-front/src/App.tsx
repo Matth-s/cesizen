@@ -50,7 +50,6 @@ const App = () => {
   console.log(isPending, "pending fetch");
 
   useEffect(() => {
-    console.log("p");
     if (data) {
       dispatch(setUser(data));
       navigate("/");

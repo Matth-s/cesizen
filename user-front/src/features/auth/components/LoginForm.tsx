@@ -27,11 +27,12 @@ import SubmitButton from "@/components/SubmitButton";
 import FormErrorMessage from "@/components/FormError";
 import AuthFormFooter from "./AuthFormFooter";
 import FormSuccess from "@/components/FormSuccess";
+import ShowFormPassword from "./ShowFormPassword";
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined,
   );
@@ -112,12 +113,18 @@ const LoginForm = () => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Mot de passe</FieldLabel>
-                  <Input {...field} />
+                  <Input {...field} type={showPassword ? "text" : "password"} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
               )}
+            />
+
+            <ShowFormPassword
+              showPassword={showPassword}
+              toggleShowPassword={() => setShowPassword((prev) => !prev)}
+              label="Afficher le mot de passe"
             />
 
             <NavLink

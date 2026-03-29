@@ -24,12 +24,14 @@ import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/SubmitButton";
 import FormSuccess from "@/components/FormSuccess";
 import FormErrorMessage from "@/components/FormError";
+import ShowFormPassword from "./ShowFormPassword";
 
 type ResetPasswordFormProps = {
   token: string;
 };
 
 const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined,
   );
@@ -89,7 +91,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Mot de passe</FieldLabel>
-                  <Input {...field} />
+                  <Input {...field} type={showPassword ? "text" : "password"} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -103,7 +105,8 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Confirmez le mot de passe</FieldLabel>
-                  <Input {...field} />
+
+                  <Input {...field} type={showPassword ? "text" : "password"} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -111,6 +114,12 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
               )}
             />
           </FieldGroup>
+
+          <ShowFormPassword
+            showPassword={showPassword}
+            toggleShowPassword={() => setShowPassword((prev) => !prev)}
+            label="Afficher les mots de passe"
+          />
 
           <FormSuccess message={successMessage} />
           <FormErrorMessage message={root?.message} />
