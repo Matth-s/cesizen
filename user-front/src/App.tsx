@@ -47,8 +47,6 @@ const App = () => {
     });
   }, []);
 
-  console.log(isPending, "pending fetch");
-
   useEffect(() => {
     if (data) {
       dispatch(setUser(data));
