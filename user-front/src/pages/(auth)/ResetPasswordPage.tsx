@@ -6,7 +6,9 @@ const ResetPasswordPage = () => {
 
   const token = searchParams.get("token");
 
-  return <ResetPasswordForm token={token ?? ""} />;
+  if (!token) return <p>Token manquant</p>;
+
+  return <ResetPasswordForm token={token} />;
 };
 
 export default ResetPasswordPage;

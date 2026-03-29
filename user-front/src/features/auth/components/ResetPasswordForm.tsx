@@ -35,6 +35,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined,
   );
+
   const form = useForm<resetPasswordType>({
     defaultValues: {
       password: "",
