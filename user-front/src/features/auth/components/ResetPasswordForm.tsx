@@ -74,7 +74,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   };
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Modifier votre mot de passe</CardTitle>
         <CardDescription>Réinitialisation du mot de passe</CardDescription>

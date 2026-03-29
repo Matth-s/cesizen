@@ -18,15 +18,15 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { setUser } from "@/store/slices/user-slice";
+import { NavLink, useNavigate } from "react-router";
+import { useAppDispatch } from "@/store/hooks";
+
 import SubmitButton from "@/components/SubmitButton";
 import FormErrorMessage from "@/components/FormError";
 import AuthFormFooter from "./AuthFormFooter";
-import { useState } from "react";
-import { useAppDispatch } from "@/store/hooks";
-
 import FormSuccess from "@/components/FormSuccess";
-import { setUser } from "@/store/slices/user-slice";
-import { NavLink, useNavigate } from "react-router";
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();

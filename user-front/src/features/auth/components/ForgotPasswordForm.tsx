@@ -20,8 +20,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import SubmitButton from "@/components/SubmitButton";
 import { forgotPasswordApi } from "../api/forgot-password-api";
+
+import SubmitButton from "@/components/SubmitButton";
 import FormErrorMessage from "@/components/FormError";
 import FormSuccess from "@/components/FormSuccess";
 
@@ -71,7 +72,7 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Mot de passe oublié ?</CardTitle>
         <CardDescription>
@@ -103,7 +104,7 @@ const ForgotPasswordForm = () => {
 
           <SubmitButton
             className="submit-button"
-            textButton="Envoyer le lien de réinitialisation"
+            textButton="Recevoir le lien"
             isDisabled={resetPasswordMutation.isPending}
           />
         </form>

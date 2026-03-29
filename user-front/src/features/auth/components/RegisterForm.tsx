@@ -17,11 +17,12 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import { registerApi } from "../api/register-api";
+
 import FormErrorMessage from "@/components/FormError";
 import SubmitButton from "@/components/SubmitButton";
 import AuthFormFooter from "./AuthFormFooter";
-import { useMutation } from "@tanstack/react-query";
-import { registerApi } from "../api/register-api";
 import FormSuccess from "@/components/FormSuccess";
 
 const RegisterForm = () => {
@@ -51,7 +52,6 @@ const RegisterForm = () => {
 
     onSuccess: (data) => {
       setSuccessMessage(data.message);
-      console.log("p");
     },
 
     onError: (err) => {
