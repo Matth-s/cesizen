@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router";
-import ResetPasswordForm from "./ResetPasswordForm";
+import ResetPasswordForm from "@/features/auth/components/ResetPasswordForm";
 
 const ResetPasswordPage = () => {
   const [searchParams] = useSearchParams();

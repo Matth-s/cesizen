@@ -12,8 +12,9 @@ export const resetPasswordController = async (
   reply: FastifyReply,
 ) => {
   const prisma = request.server.prisma;
-  const { password } = request.body;
   const token = request.query.token;
+
+  const { password } = request.body;
 
   try {
     const user = await getUserWithPasswordToken(prisma, token);

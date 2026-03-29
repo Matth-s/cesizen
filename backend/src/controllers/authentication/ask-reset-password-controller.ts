@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getResetPasswordExpiration } from '../../constants/expiration-date';
 import { FastifyRequestTypeBox } from '../../types/auth-request-type';
 import { emailSchema } from '../../schemas/authenticate-schema';
+import { sendResetPasswordEmail } from '../../libs/mail';
 
 export const askResetPasswordController = async (
   request: FastifyRequestTypeBox<typeof emailSchema>,
@@ -27,6 +28,12 @@ export const askResetPasswordController = async (
     await updateUser(prisma, existingUser.id, {
       resetPasswordExpire,
       resetPasswordToken,
+    });
+
+    await sendResetPasswordEmail({
+      email: existingUser.email,
+      username: existingUser.username,
+      link: `cesizen://reset?token=${resetPasswordToken} `,
     });
 
     return reply.code(200).send({

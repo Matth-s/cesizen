@@ -4,7 +4,7 @@ import ConfirmEmailPage from "./pages/(auth)/ConfirmEmailPage";
 import ForgotPasswordPage from "./pages/(auth)/ForgotPasswordPage";
 import AuthLayout from "./pages/(auth)/AuthLayout";
 import HomePage from "./pages/(main)/HomePage";
-import ResetPasswordPage from "./features/auth/components/ResetPasswordPage";
+import ResetPasswordPage from "./pages/(auth)/ResetPasswordPage";
 
 import { Route, Routes, useNavigate } from "react-router";
 import { AuthOutlet } from "./components/AuthOutlet";
@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCurrentUserApi } from "./features/users/api/get-current-user-api";
 import { useEffect } from "react";
 import { setUser } from "./store/slices/user-slice";
+import { App as AppCapacitor } from "@capacitor/app";
 
 const App = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -20,24 +21,41 @@ const App = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { isPending, isError, data } = useQuery({
+  const { isPending, data } = useQuery({
     queryFn: getCurrentUserApi,
     queryKey: ["current-user"],
     retry: 0,
   });
 
   useEffect(() => {
+    AppCapacitor.addListener("appUrlOpen", (event) => {
+      const url = new URL(event.url);
+      const token = url.searchParams.get("token") ?? "";
+
+      switch (url.hostname) {
+        case "confirm":
+          navigate(`/authentification/confirmer-email?token=${token}`);
+          break;
+        case "reset":
+          navigate(
+            `/authentification/reinitialiser-mot-de-passe?token=${token}`,
+          );
+          break;
+        default:
+          break;
+      }
+    });
+  }, []);
+
+  console.log(isPending, "pending fetch");
+
+  useEffect(() => {
+    console.log("p");
     if (data) {
       dispatch(setUser(data));
       navigate("/");
     }
   }, [data, user, dispatch]);
-
-  useEffect(() => {
-    if (isError) {
-      console.log("error");
-    }
-  }, [isError]);
 
   if (isPending) return;
 

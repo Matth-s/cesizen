@@ -6,6 +6,7 @@ import { createUser, getUserByEmail } from '../../services/user';
 import { v4 as uuidv4 } from 'uuid';
 import { getEmailExpiration } from '../../constants/expiration-date';
 import { Role } from '../../generated/prisma/enums';
+import { sendConfirmEmail, sendEmail } from '../../libs/mail';
 
 export const registerController = async (
   request: FastifyRequestTypeBox<typeof registerSchema>,
@@ -26,6 +27,7 @@ export const registerController = async (
     }
 
     const hashedPassword = await hashPassword(password);
+    const emailConfirmationToken = uuidv4();
 
     const { email: emailSaved } = await createUser(
       request.server.prisma,
@@ -35,16 +37,21 @@ export const registerController = async (
         password: hashedPassword,
         role: Role.USER,
         emailConfirmationExpire: getEmailExpiration(),
-        emailConfirmationToken: uuidv4(),
+        emailConfirmationToken,
       },
     );
 
-    // ajouter l envoie d email
+    await sendConfirmEmail({
+      email: emailSaved,
+      username,
+      link: `cesizen://confirm?token=${emailConfirmationToken} `,
+    });
 
     return reply.code(201).send({
       message: `Un email à été envoyé à ${emailSaved}`,
     });
-  } catch {
+  } catch (err) {
+    console.log(err);
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });
