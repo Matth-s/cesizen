@@ -40,7 +40,7 @@ export const confirmEmailController = async (
       emailVerified: new Date(),
     });
 
-    return reply.send({
+    return reply.code(200).send({
       message: "L'email a été vérifié avec succès",
     });
   } catch {

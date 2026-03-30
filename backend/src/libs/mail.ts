@@ -15,6 +15,7 @@ const mailerSend = new MailerSend({
 });
 
 const sentFrom = new Sender('noreply@mail.matthdev.fr', 'Matthdev');
+
 export const sendEmail = async ({
   to,
   subject,

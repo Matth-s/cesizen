@@ -6,7 +6,7 @@ import { createUser, getUserByEmail } from '../../services/user';
 import { v4 as uuidv4 } from 'uuid';
 import { getEmailExpiration } from '../../constants/expiration-date';
 import { Role } from '../../generated/prisma/enums';
-import { sendConfirmEmail, sendEmail } from '../../libs/mail';
+import { sendConfirmEmail } from '../../libs/mail';
 
 export const registerController = async (
   request: FastifyRequestTypeBox<typeof registerSchema>,
