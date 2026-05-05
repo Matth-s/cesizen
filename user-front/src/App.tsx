@@ -5,15 +5,18 @@ import ForgotPasswordPage from "./pages/(auth)/ForgotPasswordPage";
 import AuthLayout from "./pages/(auth)/AuthLayout";
 import HomePage from "./pages/(main)/HomePage";
 import ResetPasswordPage from "./pages/(auth)/ResetPasswordPage";
+import PageLayout from "./pages/PageLayout";
 
 import { Route, Routes, useNavigate } from "react-router";
-import { AuthOutlet } from "./components/AuthOutlet";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUserApi } from "./features/users/api/get-current-user-api";
 import { useEffect } from "react";
 import { setUser } from "./store/slices/user-slice";
 import { App as AppCapacitor } from "@capacitor/app";
+import ParamsPage from "./pages/(main)/ParamsPage";
+import DiagnosticPage from "./pages/(main)/DiagnosticPage";
+import { QUERY_KEY } from "./types/query-key-type";
 
 const App = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -23,8 +26,8 @@ const App = () => {
 
   const { isPending, data } = useQuery({
     queryFn: getCurrentUserApi,
-    queryKey: ["current-user"],
-    retry: 0,
+    queryKey: [QUERY_KEY.CURRENT_USER],
+    retry: false,
   });
 
   useEffect(() => {
@@ -50,30 +53,33 @@ const App = () => {
   useEffect(() => {
     if (data) {
       dispatch(setUser(data));
-      navigate("/");
     }
   }, [data, user, dispatch]);
 
   if (isPending) return;
 
   return (
-    <Routes>
-      {/* pages d'authentification */}
-      <Route path="/authentification" element={<AuthLayout />}>
-        <Route path="connexion" element={<LoginPage />} />
-        <Route path="inscription" element={<RegisterPage />} />
-        <Route path="confirmer-email" element={<ConfirmEmailPage />} />
-        <Route path="mot-de-passe-oublie" element={<ForgotPasswordPage />} />
-        <Route
-          path="reinitialiser-mot-de-passe"
-          element={<ResetPasswordPage />}
-        />
-      </Route>
+    <PageLayout>
+      <Routes>
+        {/* pages d'authentification */}
+        <Route path="/authentification" element={<AuthLayout />}>
+          <Route path="connexion" element={<LoginPage />} />
+          <Route path="inscription" element={<RegisterPage />} />
+          <Route path="confirmer-email" element={<ConfirmEmailPage />} />
+          <Route path="mot-de-passe-oublie" element={<ForgotPasswordPage />} />
+          <Route
+            path="reinitialiser-mot-de-passe"
+            element={<ResetPasswordPage />}
+          />
+        </Route>
 
-      <Route element={<AuthOutlet />}>
-        <Route path="/" element={<HomePage />} />
-      </Route>
-    </Routes>
+        <Route>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/parametres" element={<ParamsPage />} />
+          <Route path="/diagnostic" element={<DiagnosticPage />} />
+        </Route>
+      </Routes>
+    </PageLayout>
   );
 };
 

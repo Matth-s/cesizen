@@ -1,4 +1,4 @@
-import { api } from "@/libs/api-client";
+import { api } from "@/lib/api-client";
 import {
   forgotPasswordResponse,
   type forgotPasswordResponseType,

@@ -20,18 +20,19 @@
     "@fastify/type-provider-typebox": "^6.1.0",
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
+    "@sinclair/typebox": "^0.34.49",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.3.1",
     "fastify": "^5.8.2",
     "mailersend": "^2.6.0",
     "pg": "^8.20.0",
     "typebox": "^1.1.6",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
     "@types/pg": "^8.18.0",
-    "prisma": "^7.5.0",
+    "prisma": "^6.19.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
