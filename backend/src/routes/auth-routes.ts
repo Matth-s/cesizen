@@ -17,6 +17,7 @@ import {
   resetPasswordController,
   confirmEmailController,
   askResetPasswordController,
+  adminLoginController,
 } from '../controllers/authentication/index';
 
 export const authRoutes: FastifyPluginAsync = async (fastify) => {
@@ -32,6 +33,14 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
       // },
     },
     loginController,
+  );
+
+  fastify.post(
+    '/admin/login',
+    {
+      schema: LoginSchema,
+    },
+    adminLoginController,
   );
 
   fastify.post(

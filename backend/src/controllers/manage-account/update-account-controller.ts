@@ -9,6 +9,12 @@ export const updateAccountController = async (
 ) => {
   const prisma = request.server.prisma;
   const userIdParams = request.query.userId;
+  const currentUser = request.user.userId;
+
+  if (currentUser === userIdParams)
+    return reply.code(403).send({
+      error: 'Vous ne pouvez pas modifier votre status',
+    });
 
   try {
     const existingUser = await getUserById(prisma, userIdParams);
@@ -19,19 +25,12 @@ export const updateAccountController = async (
       });
     }
 
-    if (existingUser.role === 'ADMIN') {
-      return reply.code(403).send({
-        message:
-          "Vous ne pouvez pas modifier le status d'un compte admin",
-      });
-    }
-
     await updateUser(prisma, existingUser.id, {
       isActive: !existingUser.isActive,
     });
 
     return reply.code(201).send({
-      message: `Le compte de ${existingUser.username} a été ${!existingUser.isActive ? 'désactivé' : 'activé'}`,
+      message: `Le compte de ${existingUser.username} a été ${!existingUser.isActive ? 'activé' : 'désactivé'}`,
     });
   } catch {
     return reply.code(500).send({

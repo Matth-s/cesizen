@@ -29,8 +29,10 @@ model User {
 }
 
 model Quiz {
-  id     String   @id @default(cuid())
-  answer Answer[]
+  id        String   @id @default(cuid())
+  answer    Answer[]
+  title     String
+  createdAt DateTime @default(now())
 }
 
 model Answer {

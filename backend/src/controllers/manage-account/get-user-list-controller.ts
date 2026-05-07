@@ -6,13 +6,16 @@ export const getUserListController = async (
   reply: FastifyReply,
 ) => {
   const prisma = request.server.prisma;
+  const userId = request.user.userId;
 
   try {
     const users = await getUserList(prisma);
 
-    return reply.code(200).send({
-      message: users,
-    });
+    const updatedUserArray = users.filter(
+      (user) => user.id !== userId,
+    );
+
+    return reply.code(200).send(updatedUserArray);
   } catch {
     return reply.code(500).send({
       message: 'Une erreur est survenue',

@@ -1,5 +1,25 @@
-import { PrismaClient } from '../generated/prisma/client';
-import { IQuizWithAnswer } from '../types/quiz-type';
+import { PrismaClient, Quiz } from '../generated/prisma/client';
+import {
+  IQuizWithAnswer,
+  IQuizWithAnswerCount,
+} from '../types/quiz-type';
+
+export const getAllQuizService = async (
+  prisma: PrismaClient,
+): Promise<IQuizWithAnswerCount[]> => {
+  return await prisma.quiz.findMany({
+    orderBy: {
+      createdAt: 'asc',
+    },
+    include: {
+      _count: {
+        select: {
+          answer: true,
+        },
+      },
+    },
+  });
+};
 
 export const getQuiz = async (
   prisma: PrismaClient,

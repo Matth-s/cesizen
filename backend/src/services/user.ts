@@ -128,6 +128,7 @@ export const getUserList = async (
     | 'isActive'
     | 'emailVerified'
     | 'createAt'
+    | 'role'
   >[]
 > => {
   try {
@@ -139,6 +140,10 @@ export const getUserList = async (
         isActive: true,
         emailVerified: true,
         createAt: true,
+        role: true,
+      },
+      orderBy: {
+        createAt: 'desc',
       },
     });
   } catch {

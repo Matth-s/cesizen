@@ -3,3 +3,4 @@ export { confirmEmailController } from './confirm-email-controller';
 export { loginController } from './login-controller';
 export { registerController } from './register-controller';
 export { resetPasswordController } from './reset-password-controller';
+export { adminLoginController } from './admin-login-controller';

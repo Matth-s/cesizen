@@ -14,6 +14,12 @@ export const getQuizResultSchema = {
   }),
 };
 
+export const quizIdParams = {
+  params: Type.Object({
+    quizId: Type.String(),
+  }),
+};
+
 export type IQuizUserResponse = Static<
   typeof getQuizResultSchema.body
 >;

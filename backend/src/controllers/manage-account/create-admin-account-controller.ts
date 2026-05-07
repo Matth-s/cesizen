@@ -6,7 +6,6 @@ import { getEmailExpiration } from '../../constants/expiration-date';
 import { hashPassword } from '../../libs/bcrypt';
 import { userAdminSchema } from '../../schemas/user-schema';
 import { sendConfirmEmail } from '../../libs/mail';
-import app from '../../app';
 
 export const createAdminAccountController = async (
   request: FastifyRequestTypeBox<typeof userAdminSchema>,
@@ -32,7 +31,7 @@ export const createAdminAccountController = async (
 
     switch (role) {
       case 'ADMIN':
-        appUrl = `process.env.FRONTEND_URL/authentification/confirm-email?token=${emailConfirmationToken}`;
+        appUrl = `${process.env.FRONTEND_URL}/authentification/confirm-email?token=${emailConfirmationToken}`;
         break;
       case 'USER':
         appUrl = `cesizen://confirm?token=${emailConfirmationToken} `;
@@ -43,11 +42,11 @@ export const createAdminAccountController = async (
     }
 
     if (appUrl) {
-      await sendConfirmEmail({
-        email,
-        username,
-        link: appUrl,
-      });
+      // await sendConfirmEmail({
+      //   email,
+      //   username,
+      //   link: appUrl,
+      // });
     }
 
     const passwordHashed = await hashPassword(password);

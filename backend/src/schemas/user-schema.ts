@@ -11,7 +11,7 @@ export const userAdminSchema = {
     confirmPassword: Type.String(),
     username: Type.String({
       minLength: 3,
-      maxLength: 12,
+      maxLength: 20,
     }),
     role: Type.Enum(Role),
   }),
@@ -19,9 +19,7 @@ export const userAdminSchema = {
 
 export const deleteUserSchema = {
   querystring: Type.Object({
-    userId: Type.String({
-      format: 'uuid',
-    }),
+    userId: Type.String(),
   }),
 };
 

@@ -94,7 +94,9 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 
 export const QuizScalarFieldEnum = {
-  id: 'id'
+  id: 'id',
+  title: 'title',
+  createdAt: 'createdAt'
 } as const
 
 export type QuizScalarFieldEnum = (typeof QuizScalarFieldEnum)[keyof typeof QuizScalarFieldEnum]
