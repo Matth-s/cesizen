@@ -13,8 +13,8 @@ export const updateMenuItemController = async (
   request: FastifyRequestTypeBox<typeof updateMenuItemSchema>,
   reply: FastifyReply,
 ) => {
-  const { id } = request.params;
   const data = request.body;
+  const { id } = request.params;
   const { prisma } = request.server;
 
   try {
@@ -23,7 +23,7 @@ export const updateMenuItemController = async (
       data.path,
     );
 
-    if (existingPath)
+    if (existingPath && data.id !== existingPath.id)
       return reply.code(409).send({
         error: 'Ce lien existe déjà',
       });
