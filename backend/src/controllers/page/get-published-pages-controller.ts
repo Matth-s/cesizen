@@ -9,6 +9,7 @@ export const getPublishedPagesController = async (
     select: {
       id: true,
       title: true,
+      description: true,
       slug: true,
       content: true,
       imageUrl: true,

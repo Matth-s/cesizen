@@ -15,6 +15,7 @@ const SearchPage = () => {
   const filteredPages = pages?.filter((page: any) =>
     page.isPublished && (
       page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (page.description?.toLowerCase().includes(searchTerm.toLowerCase())) ||
       page.content.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
@@ -48,6 +49,11 @@ const SearchPage = () => {
                 className="block rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition hover:shadow-md"
               >
                 <h2 className="text-xl font-semibold text-blue-600">{page.title}</h2>
+                {page.description && (
+                  <p className="mt-1 font-medium text-gray-800 line-clamp-1">
+                    {page.description}
+                  </p>
+                )}
                 <p className="mt-2 line-clamp-2 text-gray-600">
                   {page.content}
                 </p>

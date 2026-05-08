@@ -3,6 +3,7 @@ import { Type, Static } from '@sinclair/typebox';
 export const createPageSchema = {
   body: Type.Object({
     title: Type.String(),
+    description: Type.Optional(Type.String()),
     content: Type.String(),
     imageUrl: Type.Optional(Type.String()),
     slug: Type.String(),

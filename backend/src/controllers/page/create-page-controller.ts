@@ -5,7 +5,7 @@ export const createPageController = async (
   request: FastifyRequest<{ Body: ICreatePage }>,
   reply: FastifyReply,
 ) => {
-  const { title, content, imageUrl, slug, isPublished } = request.body;
+  const { title, description, content, imageUrl, slug, isPublished } = request.body;
 
   const existingPage = await request.server.prisma.page.findUnique({
     where: { slug },
@@ -18,6 +18,7 @@ export const createPageController = async (
   const page = await request.server.prisma.page.create({
     data: {
       title,
+      description,
       content,
       imageUrl,
       slug,

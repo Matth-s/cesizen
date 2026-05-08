@@ -25,6 +25,7 @@ const PageEditor = () => {
       const page = pages.find((p: any) => p.id === id);
       if (page) {
         setValue('title', page.title);
+        setValue('description', page.description || '');
         setValue('content', page.content);
         setValue('slug', page.slug);
         setValue('imageUrl', page.imageUrl || '');
@@ -32,6 +33,17 @@ const PageEditor = () => {
       }
     }
   }, [id, pages, isEdit, setValue]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setValue('imageUrl', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const mutation = useMutation({
     mutationFn: (data: any) => isEdit ? updatePageApi({ id, ...data }) : createPageApi(data),
@@ -65,8 +77,16 @@ const PageEditor = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Image URL</label>
-          <input {...register('imageUrl')} className="w-full border rounded p-2" placeholder="https://..." />
+          <label className="block text-sm font-medium mb-1">Image</label>
+          <input type="file" accept="image/*" onChange={handleFileChange} className="w-full border rounded p-2" />
+          {watch('imageUrl') && (
+            <img src={watch('imageUrl')} alt="Preview" className="mt-2 h-32 object-cover rounded" />
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Description (Résumé)</label>
+          <textarea {...register('description')} className="w-full border rounded p-2 h-20" placeholder="Bref résumé de la page..." />
         </div>
 
         <div>
