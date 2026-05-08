@@ -1,73 +1,79 @@
-// import { Puck } from '@puckeditor/core';
-// import '@puckeditor/core/puck.css';
-// import type { JSX } from 'react';
+import {
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router';
+import { AuthOutlet } from './components/AuthOulet';
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useQuery } from '@tanstack/react-query';
+import { getCurrentUserApi } from './api/get-current-user-api';
+import { useEffect } from 'react';
+import { login } from './features/auth/auth.slice';
+import { setCsrfToken } from './lib/api-client';
 
-// const config = {
-//   components: {
-//     HeadingBlock: {
-//       fields: {
-//         content: {
-//           type: 'text',
-//           label: 'Titre',
-//         },
-//         align: {
-//           type: 'select',
-//           label: 'Alignement',
-//           options: [
-//             { label: 'Gauche', value: 'left' },
-//             { label: 'Centre', value: 'center' },
-//             { label: 'Droite', value: 'right' },
-//           ],
-//         },
-//         marginBottom: {
-//           type: 'select',
-//           label: 'Espacement bas',
-//           options: [
-//             { label: 'Petit', value: 'mb-2' },
-//             { label: 'Moyen', value: 'mb-4' },
-//             { label: 'Grand', value: 'mb-6' },
-//           ],
-//         },
-//       },
+import AuthLayout from './pages/(auth)/AuthLayout';
+import LoginPage from './pages/(auth)/LoginPage';
 
-//       render: ({
-//         content,
-//         align,
-//         marginBottom,
-//       }: {
-//         content: string;
-//         align?: string;
-//         marginBottom?: string;
-//       }) => {
-//         return (
-//           <h1
-//             className={`text-lg font-bold ${
-//               align === 'center'
-//                 ? 'text-center'
-//                 : align === 'right'
-//                   ? 'text-right'
-//                   : 'text-left'
-//             } ${marginBottom || 'mb-2'}`}
-//           >
-//             {content}
-//           </h1>
-//         );
-//       },
-//     },
-//   },
-// };
+import HomePage from './pages/(main)/HomePage';
+import MainLayout from './pages/(main)/MainLayout';
+import UserPage from './pages/(main)/UserPage';
+import DiagnosticPage from './pages/(main)/DiagnosticPage';
+import ArticlesPage from './pages/(main)/ArticlesPage';
+import NotFoundPage from './pages/(main)/NotFoundPage';
+import DiagnosticIdPage from './pages/(main)/DiagnosticIdPage';
 
-// // Describe the initial data
-// const initialData = {};
+const App = () => {
+  const { user } = useAppSelector((state) => state.auth);
+  const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-// // Save the data to your database
-// const save = (data) => {
-//   console.log(data);
-// };
+  const { isPending, isError, data } = useQuery({
+    queryFn: getCurrentUserApi,
+    queryKey: ['current-user'],
+    retry: false,
+  });
 
-// // Render Puck editor
-// export const App = () => {
-//   return <Puck config={config} data={initialData} onPublish={save} />;
-// };
+  useEffect(() => {
+    if (data) {
+      dispatch(login(data));
+      setCsrfToken(data.csrfToken);
+      const pathnameUrl =
+        pathname === '/authentification/connexion' ? '/' : pathname;
+      navigate(pathnameUrl);
+    }
+  }, [data, user, dispatch]);
 
-// export default App;
+  useEffect(() => {
+    if (isError) {
+      navigate('/authentification/connexion');
+    }
+  }, [isError]);
+
+  if (isPending) return;
+
+  return (
+    <Routes>
+      <Route path="authentification" element={<AuthLayout />}>
+        <Route path="connexion" element={<LoginPage />} />
+      </Route>
+
+      <Route element={<AuthOutlet />}>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/utilisateurs" element={<UserPage />} />
+          <Route path="/articles" element={<ArticlesPage />} />
+          <Route path="/diagnostics" element={<DiagnosticPage />} />
+          <Route
+            path="/diagnostics/:id"
+            element={<DiagnosticIdPage />}
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Route>
+    </Routes>
+  );
+};
+
+export default App;
