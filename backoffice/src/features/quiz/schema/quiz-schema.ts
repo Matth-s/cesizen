@@ -11,14 +11,20 @@ export const quizObjectSchema = z.object({
 
 export const diagnosticObjectAnswer = z.object({
   id: z.string(),
-  name: z.string(),
-  value: z.number(),
+  name: z.string().trim().min(1, {
+    error: 'Veuillez entrez une question',
+  }),
+  value: z.number().min(1, {
+    error: 'Veuillez attribuer un nombre de point supérieur à 0',
+  }),
   quizId: z.string(),
 });
 
 export const diagnosticWithAnswerSchema = z.object({
   id: z.string(),
-  title: z.string(),
+  title: z.string().min(1, {
+    error: 'Veuillez entrer un titre',
+  }),
   createdAt: z.string(),
   answer: z.array(diagnosticObjectAnswer),
 });

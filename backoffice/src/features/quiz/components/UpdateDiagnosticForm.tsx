@@ -13,14 +13,22 @@ import {
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateDiagnosticApi } from '../api/update-diagnostic-api';
+import SubmitButton from '@/components/SubmitButton';
+import { toast } from 'sonner';
+import { QUERY_KEY } from '@/types/query-key';
 
 type UpdateDiagnosticFormProps = {
   diagnostic: IDiagnosticWithAnswer;
+  switchToView: () => void;
 };
 
 const UpdateDiagnosticForm = ({
   diagnostic,
+  switchToView,
 }: UpdateDiagnosticFormProps) => {
+  const queryClient = useQueryClient();
   const form = useForm<IDiagnosticWithAnswer>({
     defaultValues: { ...diagnostic },
     resolver: zodResolver(diagnosticWithAnswerSchema),
@@ -33,8 +41,31 @@ const UpdateDiagnosticForm = ({
     name: 'answer',
   });
 
+  const diagnosticMutation = useMutation({
+    mutationFn: updateDiagnosticApi,
+
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.DIAG, diagnostic.id],
+      });
+      switchToView();
+      toast.success('Le diagnostic à été modifié avec succès');
+      window.scrollTo(0, 0);
+    },
+
+    onError(err) {
+      let error = 'Une erreur est survenue';
+
+      if (err instanceof Error) {
+        error = err.message;
+      }
+
+      toast.error(error);
+    },
+  });
+
   const handleFormSubmit = (data: IDiagnosticWithAnswer) => {
-    console.log(data);
+    diagnosticMutation.mutate(data);
   };
 
   return (
@@ -46,84 +77,99 @@ const UpdateDiagnosticForm = ({
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <Controller
-          name="title"
-          control={control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel>Nom du diagnostic</FieldLabel>
-              <Input {...field} />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
-            </Field>
-          )}
-        />
-
-        <div className="space-y-4">
-          <h3 className="font-semibold">Questions</h3>
-
-          {fields.map((item, index) => (
-            <div
-              key={item.id}
-              className="flex gap-3 items-end border p-3 rounded-lg"
-            >
-              <Controller
-                name={`answer.${index}.name`}
-                control={control}
-                render={({ field }) => (
-                  <Field className="flex-1">
-                    <FieldLabel>Question</FieldLabel>
-                    <Input {...field} />
-                  </Field>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(handleFormSubmit)}
+        >
+          <Controller
+            name="title"
+            control={control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Nom du diagnostic</FieldLabel>
+                <Input {...field} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
                 )}
-              />
+              </Field>
+            )}
+          />
+          <div className="space-y-4">
+            <h3 className="font-semibold">Questions</h3>
 
-              <Controller
-                name={`answer.${index}.value`}
-                control={control}
-                render={({ field }) => (
-                  <Field className="w-24">
-                    <FieldLabel>Points</FieldLabel>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) =>
-                        field.onChange(Number(e.target.value))
-                      }
-                    />
-                  </Field>
-                )}
-              />
-
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={() => remove(index)}
+            {fields.map((item, index) => (
+              <div
+                key={item.id}
+                className="flex gap-3 items-center border p-3 rounded-lg"
               >
-                Supprimer
-              </Button>
-            </div>
-          ))}
+                <div className="flex gap-3 items-top w-full ">
+                  <Controller
+                    name={`answer.${index}.name`}
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field className="flex-1">
+                        <FieldLabel>Question</FieldLabel>
+                        <Input {...field} />{' '}
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
 
-          <Button
-            type="button"
-            onClick={() =>
-              append({
-                id: crypto.randomUUID(),
-                name: '',
-                value: 0,
-                quizId: diagnostic.id,
-              })
-            }
-          >
-            Ajouter une question
-          </Button>
-        </div>
+                  <Controller
+                    name={`answer.${index}.value`}
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field className="w-24">
+                        <FieldLabel>Points</FieldLabel>
+                        <Input
+                          min={1}
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                </div>
 
-        <Button onClick={handleSubmit(handleFormSubmit)}>
-          Enregistrer
-        </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => remove(index)}
+                >
+                  Supprimer
+                </Button>
+              </div>
+            ))}
+
+            <Button
+              type="button"
+              className="w-full"
+              onClick={() =>
+                append({
+                  id: crypto.randomUUID(),
+                  name: '',
+                  value: 0,
+                  quizId: diagnostic.id,
+                })
+              }
+            >
+              Ajouter une question
+            </Button>
+          </div>
+
+          <SubmitButton
+            text="Modifier le diagnostic"
+            isDisabled={diagnosticMutation.isPending}
+          />
+        </form>
       </CardContent>
     </Card>
   );

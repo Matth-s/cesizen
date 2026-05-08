@@ -20,7 +20,7 @@ const DiagnosticIdPage = () => {
 
   return (
     <div className="w-4/5 mx-auto">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <Link
           to={'/diagnostics'}
           className="w-fit flex items-center gap-x-3 hover:underline"
@@ -40,7 +40,10 @@ const DiagnosticIdPage = () => {
       </div>
 
       {isEditing ? (
-        <UpdateDiagnosticForm diagnostic={data} />
+        <UpdateDiagnosticForm
+          diagnostic={data}
+          switchToView={() => setIsEditing(false)}
+        />
       ) : (
         <ViewDiagnostic diagnostic={data} />
       )}
