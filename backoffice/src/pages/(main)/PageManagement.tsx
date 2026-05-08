@@ -3,6 +3,9 @@ import { getPagesApi, deletePageApi, updatePageApi } from '@/api/page-api';
 import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const PageManagement = () => {
   const queryClient = useQueryClient();
@@ -28,7 +31,14 @@ const PageManagement = () => {
     },
   });
 
-  if (isLoading) return <div>Chargement...</div>;
+  if (isLoading) {
+    return (
+      <div className="p-8 space-y-4">
+        <Skeleton className="h-8 w-[200px]" />
+        <Skeleton className="h-[400px] w-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-8">
@@ -40,26 +50,26 @@ const PageManagement = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50 text-left">
-            <tr>
-              <th className="p-4">Titre</th>
-              <th className="p-4">Slug</th>
-              <th className="p-4">Statut</th>
-              <th className="p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Titre</TableHead>
+              <TableHead>Slug</TableHead>
+              <TableHead>Statut</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {pages?.map((page: any) => (
-              <tr key={page.id}>
-                <td className="p-4">{page.title}</td>
-                <td className="p-4">{page.slug}</td>
-                <td className="p-4">
-                  <span className={`px-2 py-1 rounded text-sm ${page.isPublished ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+              <TableRow key={page.id}>
+                <TableCell className="font-medium">{page.title}</TableCell>
+                <TableCell>{page.slug}</TableCell>
+                <TableCell>
+                  <Badge variant={page.isPublished ? "default" : "secondary"}>
                     {page.isPublished ? 'Publiée' : 'Brouillon'}
-                  </span>
-                </td>
-                <td className="p-4 flex gap-2">
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-right flex justify-end gap-2">
                   <Button variant="outline" size="sm" asChild>
                     <Link to={`/pages/modifier/${page.id}`}>Modifier</Link>
                   </Button>
@@ -81,11 +91,11 @@ const PageManagement = () => {
                   >
                     Supprimer
                   </Button>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

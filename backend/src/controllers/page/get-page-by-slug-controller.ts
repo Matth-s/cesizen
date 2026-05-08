@@ -17,7 +17,7 @@ export const getPageBySlugController = async (
   // If not admin, check if published
   if (!page.isPublished) {
     try {
-      await request.authenticate(request, reply);
+      await request.server.authenticate(request, reply);
       const user: any = request.user;
       if (user.role !== 'ADMIN') {
         return reply.status(404).send({ message: 'Page not found' });

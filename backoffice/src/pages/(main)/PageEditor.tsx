@@ -3,8 +3,13 @@ import { useNavigate, useParams } from 'react-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createPageApi, getPagesApi, updatePageApi } from '@/api/page-api';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const PageEditor = () => {
   const { id } = useParams();
@@ -14,7 +19,7 @@ const PageEditor = () => {
 
   const isEdit = !!id;
 
-  const { data: pages } = useQuery({
+  const { data: pages, isLoading } = useQuery({
     queryKey: ['pages'],
     queryFn: getPagesApi,
     enabled: isEdit,
@@ -61,45 +66,58 @@ const PageEditor = () => {
     mutation.mutate(data);
   };
 
+  if (isEdit && isLoading) {
+    return (
+      <div className="p-8 max-w-4xl mx-auto space-y-6">
+        <Skeleton className="h-8 w-[250px]" />
+        <Skeleton className="h-[600px] w-full" />
+      </div>
+    );
+  }
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">{isEdit ? 'Modifier la page' : 'Créer une nouvelle page'}</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-white p-6 rounded-lg shadow">
-        <div>
-          <label className="block text-sm font-medium mb-1">Titre</label>
-          <input {...register('title', { required: true })} className="w-full border rounded p-2" />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-white p-6 rounded-lg shadow">
+        <div className="space-y-2">
+          <Label htmlFor="title">Titre</Label>
+          <Input id="title" {...register('title', { required: true })} />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Slug</label>
-          <input {...register('slug', { required: true })} className="w-full border rounded p-2" placeholder="ma-page" />
+        <div className="space-y-2">
+          <Label htmlFor="slug">Slug</Label>
+          <Input id="slug" {...register('slug', { required: true })} placeholder="ma-page" />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Image</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} className="w-full border rounded p-2" />
+        <div className="space-y-2">
+          <Label htmlFor="image">Image</Label>
+          <Input id="image" type="file" accept="image/*" onChange={handleFileChange} />
           {watch('imageUrl') && (
-            <img src={watch('imageUrl')} alt="Preview" className="mt-2 h-32 object-cover rounded" />
+            <img src={watch('imageUrl')} alt="Preview" className="mt-2 h-32 object-cover rounded border" />
           )}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Description (Résumé)</label>
-          <textarea {...register('description')} className="w-full border rounded p-2 h-20" placeholder="Bref résumé de la page..." />
+        <div className="space-y-2">
+          <Label htmlFor="description">Description (Résumé)</Label>
+          <Textarea id="description" {...register('description')} className="h-20" placeholder="Bref résumé de la page..." />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Contenu</label>
-          <textarea {...register('content', { required: true })} className="w-full border rounded p-2 h-64" />
+        <div className="space-y-2">
+          <Label htmlFor="content">Contenu</Label>
+          <Textarea id="content" {...register('content', { required: true })} className="h-64" />
         </div>
 
-        <div className="flex items-center gap-2">
-          <input type="checkbox" {...register('isPublished')} id="isPublished" />
-          <label htmlFor="isPublished">Publier immédiatement</label>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="isPublished"
+            checked={watch('isPublished')}
+            onCheckedChange={(checked) => setValue('isPublished', checked)}
+          />
+          <Label htmlFor="isPublished">Publier immédiatement</Label>
         </div>
 
-        <div className="flex justify-end gap-2 pt-4">
+        <div className="flex justify-end gap-2 pt-4 border-t">
           <Button type="button" variant="outline" onClick={() => navigate('/pages')}>Annuler</Button>
           <Button type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? 'Enregistrement...' : 'Enregistrer'}
