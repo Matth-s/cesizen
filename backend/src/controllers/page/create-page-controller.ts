@@ -1,30 +1,42 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
-import { ICreatePage } from '../../schemas/page-schema';
+import { FastifyReply } from 'fastify';
+import { createPageSchema } from '../../schemas/page-schema';
+import { FastifyRequestTypeBox } from '../../types/auth-request-type';
+import {
+  getPageBySlugService,
+  savePageService,
+} from '../../services/page-service';
 
 export const createPageController = async (
-  request: FastifyRequest<{ Body: ICreatePage }>,
+  request: FastifyRequestTypeBox<typeof createPageSchema>,
   reply: FastifyReply,
 ) => {
-  const { title, description, content, imageUrl, slug, isPublished } = request.body;
+  const { slug, content, title, description, imageUrl, isPublished } =
+    request.body;
 
-  const existingPage = await request.server.prisma.page.findUnique({
-    where: { slug },
-  });
+  const { prisma } = request.server;
 
-  if (existingPage) {
-    return reply.status(400).send({ message: 'Slug already exists' });
-  }
+  try {
+    const existingPage = await getPageBySlugService(prisma, slug);
 
-  const page = await request.server.prisma.page.create({
-    data: {
-      title,
-      description,
-      content,
-      imageUrl,
+    if (existingPage) {
+      return reply
+        .status(400)
+        .send({ message: 'Slug already exists' });
+    }
+
+    const page = await savePageService(prisma, {
       slug,
+      content,
+      title,
+      description: description ?? null,
+      imageUrl: imageUrl ?? null,
       isPublished,
-    },
-  });
+    });
 
-  return reply.status(201).send(page);
+    return reply.status(201).send(page);
+  } catch {
+    return reply.code(500).send({
+      error: 'Une erreur est survenue',
+    });
+  }
 };

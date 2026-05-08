@@ -1,4 +1,5 @@
 import { PrismaClient, Quiz } from '../generated/prisma/client';
+import { updateDiagnosticWithAnswerSchema } from '../schemas/quiz-schema';
 import {
   IQuizWithAnswer,
   IQuizWithAnswerCount,
@@ -55,4 +56,32 @@ export const getQuizAndAnswerById = async (
   } catch {
     throw new Error('Erreur bdd');
   }
+};
+
+export const updateDiagnostic = async ({
+  prisma,
+  id,
+  data,
+}: {
+  prisma: PrismaClient;
+  id: string;
+  data: IQuizWithAnswer;
+}) => {
+  const { title, answer } = data;
+  await prisma.quiz.update({
+    where: {
+      id,
+    },
+    data: {
+      title,
+      answer: {
+        deleteMany: {},
+        create: answer.map(({ id, name, value }) => ({
+          id,
+          name,
+          value,
+        })),
+      },
+    },
+  });
 };

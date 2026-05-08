@@ -6,30 +6,65 @@ import { getPublishedPagesController } from '../controllers/page/get-published-p
 import { getPageBySlugController } from '../controllers/page/get-page-by-slug-controller';
 import { updatePageController } from '../controllers/page/update-page-controller';
 import { deletePageController } from '../controllers/page/delete-page-controller';
-import { createPageSchema, updatePageSchema, pageIdParams, pageSlugParams } from '../schemas/page-schema';
+import {
+  createPageSchema,
+  updatePageSchema,
+  pageIdParams,
+  pageSlugParams,
+} from '../schemas/page-schema';
 
 export const pageRoutes: FastifyPluginAsync = async (fastify) => {
-  // Public routes
   fastify.get('/published', getPublishedPagesController);
-  fastify.get('/:slug', { schema: pageSlugParams }, getPageBySlugController);
+  fastify.get(
+    '/:slug',
+    { schema: pageSlugParams },
+    getPageBySlugController,
+  );
 
-  // Admin routes
-  fastify.get('/', {
-    preHandler: [fastify.authenticate, fastify.requireRole([Role.ADMIN])],
-  }, getAllPagesController);
+  fastify.get(
+    '/',
+    {
+      preHandler: [
+        fastify.authenticate,
+        fastify.requireRole([Role.ADMIN]),
+      ],
+    },
+    getAllPagesController,
+  );
 
-  fastify.post('/', {
-    schema: createPageSchema,
-    preHandler: [fastify.authenticate, fastify.requireRole([Role.ADMIN])],
-  }, createPageController);
+  fastify.post(
+    '/',
+    {
+      schema: createPageSchema,
+      preHandler: [
+        fastify.authenticate,
+        fastify.requireRole([Role.ADMIN]),
+      ],
+    },
+    createPageController,
+  );
 
-  fastify.put('/:id', {
-    schema: updatePageSchema,
-    preHandler: [fastify.authenticate, fastify.requireRole([Role.ADMIN])],
-  }, updatePageController);
+  fastify.put(
+    '/:id',
+    {
+      schema: updatePageSchema,
+      preHandler: [
+        fastify.authenticate,
+        fastify.requireRole([Role.ADMIN]),
+      ],
+    },
+    updatePageController,
+  );
 
-  fastify.delete('/:id', {
-    schema: pageIdParams,
-    preHandler: [fastify.authenticate, fastify.requireRole([Role.ADMIN])],
-  }, deletePageController);
+  fastify.delete(
+    '/:id',
+    {
+      schema: pageIdParams,
+      preHandler: [
+        fastify.authenticate,
+        fastify.requireRole([Role.ADMIN]),
+      ],
+    },
+    deletePageController,
+  );
 };

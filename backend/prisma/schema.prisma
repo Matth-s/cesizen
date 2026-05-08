@@ -29,21 +29,20 @@ model User {
 }
 
 model Page {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   description String?
   content     String
   imageUrl    String?
-  slug        String   @unique
-  isPublished Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  slug        String    @unique
+  isPublished Boolean   @default(false)
+  createdAt   DateTime? @default(now())
 
   menuItems MenuItem[]
 }
 
 model MenuItem {
-  id     String @id @default(cuid())
+  id     String  @id @default(cuid())
   label  String
   path   String
   order  Int

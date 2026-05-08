@@ -1,7 +1,9 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyReply } from 'fastify';
+import { pageIdParams } from '../../schemas/page-schema';
+import { FastifyRequestTypeBox } from '../../types/auth-request-type';
 
 export const deletePageController = async (
-  request: FastifyRequest<{ Params: { id: string } }>,
+  request: FastifyRequestTypeBox<typeof pageIdParams>,
   reply: FastifyReply,
 ) => {
   const { id } = request.params;
