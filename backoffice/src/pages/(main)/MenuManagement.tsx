@@ -1,15 +1,41 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getMenuItemsApi, createMenuItemApi, deleteMenuItemApi } from '@/api/menu-api';
-import { getPagesApi } from '@/api/page-api';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import {
+  getMenuItemsApi,
+  createMenuItemApi,
+  deleteMenuItemApi,
+} from '@/api/menu-api';
+import { getPageListApi } from '@/features/pages-management/api/page-api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 const MenuManagement = () => {
   const queryClient = useQueryClient();
@@ -22,7 +48,7 @@ const MenuManagement = () => {
 
   const { data: pages, isLoading: loadingPages } = useQuery({
     queryKey: ['pages'],
-    queryFn: getPagesApi,
+    queryFn: getPageListApi,
   });
 
   const createMutation = useMutation({
@@ -73,30 +99,45 @@ const MenuManagement = () => {
             <CardTitle>Ajouter un lien</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-4"
+            >
               <div className="space-y-2">
                 <Label htmlFor="label">Libellé</Label>
-                <Input id="label" {...register('label', { required: true })} />
+                <Input
+                  id="label"
+                  {...register('label', { required: true })}
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="pageId">Lier à une page (optionnel)</Label>
-                <Select onValueChange={(value) => {
-                  const actualValue = value === 'none' ? null : value;
-                  setValue('pageId', actualValue);
-                  const page = pages?.find((p: any) => p.id === actualValue);
-                  if (page) {
-                    setValue('label', page.title);
-                    setValue('path', `/page/${page.slug}`);
-                  }
-                }}>
+                <Label htmlFor="pageId">
+                  Lier à une page (optionnel)
+                </Label>
+                <Select
+                  onValueChange={(value) => {
+                    const actualValue =
+                      value === 'none' ? null : value;
+                    setValue('pageId', actualValue);
+                    const page = pages?.find(
+                      (p: any) => p.id === actualValue,
+                    );
+                    if (page) {
+                      setValue('label', page.title);
+                      setValue('path', `/page/${page.slug}`);
+                    }
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Choisir une page" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="none">-- Aucune --</SelectItem>
                     {pages?.map((page: any) => (
-                      <SelectItem key={page.id} value={page.id}>{page.title}</SelectItem>
+                      <SelectItem key={page.id} value={page.id}>
+                        {page.title}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -104,16 +145,31 @@ const MenuManagement = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="path">Ou URL personnalisée</Label>
-                <Input id="path" {...register('path')} placeholder="/exemple" />
+                <Input
+                  id="path"
+                  {...register('path')}
+                  placeholder="/exemple"
+                />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="order">Ordre</Label>
-                <Input id="order" type="number" {...register('order')} defaultValue={0} />
+                <Input
+                  id="order"
+                  type="number"
+                  {...register('order')}
+                  defaultValue={0}
+                />
               </div>
 
-              <Button type="submit" disabled={createMutation.isPending} className="w-full">
-                {createMutation.isPending ? 'Ajout...' : 'Ajouter au menu'}
+              <Button
+                type="submit"
+                disabled={createMutation.isPending}
+                className="w-full"
+              >
+                {createMutation.isPending
+                  ? 'Ajout...'
+                  : 'Ajouter au menu'}
               </Button>
             </form>
           </CardContent>
@@ -137,7 +193,9 @@ const MenuManagement = () => {
                   <TableRow key={item.id}>
                     <TableCell>
                       <div className="font-medium">{item.label}</div>
-                      <div className="text-xs text-gray-500">{item.path}</div>
+                      <div className="text-xs text-gray-500">
+                        {item.path}
+                      </div>
                     </TableCell>
                     <TableCell>{item.order}</TableCell>
                     <TableCell className="text-right">

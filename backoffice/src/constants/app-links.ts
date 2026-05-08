@@ -10,10 +10,6 @@ export const APP_LINKS: ILinks[] = [
     label: 'Utilisateurs',
   },
   {
-    path: '/articles',
-    label: 'Articles',
-  },
-  {
     path: '/pages',
     label: 'Pages',
   },

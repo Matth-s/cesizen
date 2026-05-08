@@ -19,7 +19,6 @@ import HomePage from './pages/(main)/HomePage';
 import MainLayout from './pages/(main)/MainLayout';
 import UserPage from './pages/(main)/UserPage';
 import DiagnosticPage from './pages/(main)/DiagnosticPage';
-import ArticlesPage from './pages/(main)/ArticlesPage';
 import NotFoundPage from './pages/(main)/NotFoundPage';
 import DiagnosticIdPage from './pages/(main)/DiagnosticIdPage';
 import PageManagement from './pages/(main)/PageManagement';
@@ -66,11 +65,15 @@ const App = () => {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/utilisateurs" element={<UserPage />} />
-          <Route path="/articles" element={<ArticlesPage />} />
+
           <Route path="/pages" element={<PageManagement />} />
           <Route path="/pages/nouveau" element={<PageEditor />} />
-          <Route path="/pages/modifier/:id" element={<PageEditor />} />
+          <Route
+            path="/pages/modifier/:id"
+            element={<PageEditor />}
+          />
           <Route path="/menu" element={<MenuManagement />} />
+
           <Route path="/diagnostics" element={<DiagnosticPage />} />
           <Route
             path="/diagnostics/:id"
