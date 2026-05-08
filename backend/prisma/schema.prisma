@@ -28,6 +28,28 @@ model User {
   twoFactorExpire  DateTime?
 }
 
+model Page {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  imageUrl    String?
+  slug        String   @unique
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  menuItems MenuItem[]
+}
+
+model MenuItem {
+  id     String @id @default(cuid())
+  label  String
+  path   String
+  order  Int
+  pageId String?
+  page   Page?   @relation(fields: [pageId], references: [id])
+}
+
 model Quiz {
   id        String   @id @default(cuid())
   answer    Answer[]

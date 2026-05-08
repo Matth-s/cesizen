@@ -1,4 +1,4 @@
-import { Menu, User, LogIn } from "lucide-react";
+import { Menu, User, LogIn, Search } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useAppSelector } from "@/store/hooks";
 import { Link } from "react-router";
@@ -8,9 +8,16 @@ import {
   USER_NOT_CONNECT_LINK,
 } from "@/constants/app-links";
 import LogoutButton from "@/features/users/components/LogoutButton";
+import { useQuery } from "@tanstack/react-query";
+import { getMenuItemsApi } from "@/api/cms-api";
 
 const Aside = () => {
   const { user } = useAppSelector((state) => state.user);
+
+  const { data: dynamicMenuItems } = useQuery({
+    queryKey: ["menuItems"],
+    queryFn: getMenuItemsApi,
+  });
 
   return (
     <Sheet>
@@ -22,6 +29,27 @@ const Aside = () => {
         <ul className="flex flex-col gap-2">
           {DEFAULT_LINK.map((link) => (
             <li key={link.path}>
+              <Link
+                to={link.path}
+                className="block rounded-lg px-3 py-2 text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+
+          <li>
+            <Link
+              to="/recherche"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
+            >
+              <Search size={18} />
+              Rechercher
+            </Link>
+          </li>
+
+          {dynamicMenuItems?.map((link: any) => (
+            <li key={link.id}>
               <Link
                 to={link.path}
                 className="block rounded-lg px-3 py-2 text-gray-700 transition hover:bg-blue-50 hover:text-blue-600"
