@@ -22,6 +22,9 @@ import DiagnosticPage from './pages/(main)/DiagnosticPage';
 import ArticlesPage from './pages/(main)/ArticlesPage';
 import NotFoundPage from './pages/(main)/NotFoundPage';
 import DiagnosticIdPage from './pages/(main)/DiagnosticIdPage';
+import PageManagement from './pages/(main)/PageManagement';
+import PageEditor from './pages/(main)/PageEditor';
+import MenuManagement from './pages/(main)/MenuManagement';
 
 const App = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -64,6 +67,10 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/utilisateurs" element={<UserPage />} />
           <Route path="/articles" element={<ArticlesPage />} />
+          <Route path="/pages" element={<PageManagement />} />
+          <Route path="/pages/nouveau" element={<PageEditor />} />
+          <Route path="/pages/modifier/:id" element={<PageEditor />} />
+          <Route path="/menu" element={<MenuManagement />} />
           <Route path="/diagnostics" element={<DiagnosticPage />} />
           <Route
             path="/diagnostics/:id"

@@ -52,6 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Page: 'Page',
+  MenuItem: 'MenuItem',
   Quiz: 'Quiz',
   Answer: 'Answer'
 } as const
@@ -91,6 +93,31 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const PageScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  content: 'content',
+  imageUrl: 'imageUrl',
+  slug: 'slug',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt'
+} as const
+
+export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
+
+
+export const MenuItemScalarFieldEnum = {
+  id: 'id',
+  label: 'label',
+  path: 'path',
+  order: 'order',
+  pageId: 'pageId'
+} as const
+
+export type MenuItemScalarFieldEnum = (typeof MenuItemScalarFieldEnum)[keyof typeof MenuItemScalarFieldEnum]
 
 
 export const QuizScalarFieldEnum = {

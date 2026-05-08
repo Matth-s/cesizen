@@ -14,6 +14,32 @@ export const getQuizResultSchema = {
   }),
 };
 
+export const updateDiagnosticWithAnswerSchema = {
+  body: Type.Object({
+    id: Type.String(),
+    title: Type.String({
+      minLength: 1,
+    }),
+    createdAt: Type.String(),
+    answer: Type.Array(
+      Type.Object({
+        id: Type.String(),
+        name: Type.String({
+          minLength: 1,
+        }),
+        value: Type.Number({
+          minimum: 1,
+        }),
+        quizId: Type.String(),
+      }),
+    ),
+  }),
+
+  params: Type.Object({
+    quizId: Type.String(),
+  }),
+};
+
 export const quizIdParams = {
   params: Type.Object({
     quizId: Type.String(),

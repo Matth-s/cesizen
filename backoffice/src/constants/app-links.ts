@@ -14,6 +14,14 @@ export const APP_LINKS: ILinks[] = [
     label: 'Articles',
   },
   {
+    path: '/pages',
+    label: 'Pages',
+  },
+  {
+    path: '/menu',
+    label: 'Menu',
+  },
+  {
     path: '/diagnostics',
     label: 'Diagnostic',
   },

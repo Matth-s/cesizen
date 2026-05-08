@@ -6,6 +6,8 @@ import AuthLayout from "./pages/(auth)/AuthLayout";
 import HomePage from "./pages/(main)/HomePage";
 import ResetPasswordPage from "./pages/(auth)/ResetPasswordPage";
 import PageLayout from "./pages/PageLayout";
+import DynamicPage from "./pages/(main)/DynamicPage";
+import SearchPage from "./pages/(main)/SearchPage";
 
 import { Route, Routes, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
@@ -77,6 +79,8 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/parametres" element={<ParamsPage />} />
           <Route path="/diagnostic" element={<DiagnosticPage />} />
+          <Route path="/recherche" element={<SearchPage />} />
+          <Route path="/page/:slug" element={<DynamicPage />} />
         </Route>
       </Routes>
     </PageLayout>
