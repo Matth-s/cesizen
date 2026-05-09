@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Page
@@ -186,7 +186,7 @@ export type PageGroupByOutputType = {
   _max: PageMaxAggregateOutputType | null
 }
 
-type GetPageGroupByPayload<T extends PageGroupByArgs> = Prisma.PrismaPromise<
+export type GetPageGroupByPayload<T extends PageGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PageGroupByOutputType, T['by']> &
       {

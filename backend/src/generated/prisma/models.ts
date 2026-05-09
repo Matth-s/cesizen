@@ -8,9 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User.js'
-export type * from './models/Page.js'
-export type * from './models/MenuItem.js'
-export type * from './models/Quiz.js'
-export type * from './models/Answer.js'
-export type * from './commonInputTypes.js'
+export type * from './models/User'
+export type * from './models/Page'
+export type * from './models/MenuItem'
+export type * from './models/Quiz'
+export type * from './models/Answer'
+export type * from './commonInputTypes'

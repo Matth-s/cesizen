@@ -12,13 +12,13 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace.js"
+import type * as Prisma from "./prismaNamespace"
 
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.5.0",
-  "engineVersion": "280c870be64f457428992c43c1f6d557fab6e29e",
+  "clientVersion": "7.8.0",
+  "engineVersion": "3c6e192761c0362d496ed980de936e2f3cebcd3a",
   "activeProvider": "postgresql",
   "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id       String   @id @default(cuid())\n  email    String   @unique\n  password String\n  role     Role\n  username String\n  createAt DateTime @default(now())\n  isActive Boolean  @default(true)\n\n  emailVerified           DateTime?\n  emailConfirmationToken  String?\n  emailConfirmationExpire DateTime?\n\n  resetPasswordToken  String?\n  resetPasswordExpire DateTime?\n}\n\nmodel Page {\n  id          String    @id @default(cuid())\n  title       String\n  description String?\n  content     String\n  imageUrl    String?\n  slug        String    @unique\n  isPublished Boolean   @default(false)\n  createdAt   DateTime? @default(now())\n\n  menuItemId String?\n  menuItem   MenuItem? @relation(fields: [menuItemId], references: [id])\n}\n\nmodel MenuItem {\n  id    String  @id @default(cuid())\n  label String\n  path  String\n  show  Boolean\n\n  pages Page[]\n}\n\nmodel Quiz {\n  id        String   @id @default(cuid())\n  answer    Answer[]\n  title     String\n  createdAt DateTime @default(now())\n}\n\nmodel Answer {\n  id     String @id @default(uuid())\n  name   String\n  value  Int\n  quizId String\n  quiz   Quiz   @relation(fields: [quizId], references: [id])\n}\n\nenum Role {\n  ADMIN\n  USER\n}\n",
   "runtimeDataModel": {
@@ -45,10 +45,10 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.js"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.js")
     return await decodeBase64AsWasm(wasm)
   },
 
@@ -180,7 +180,7 @@ export interface PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): runtime.Types.Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): runtime.Types.Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => runtime.Types.Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): runtime.Types.Utils.JsPromise<R>
 
