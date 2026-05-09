@@ -14,12 +14,11 @@ const PublishToggleButton = ({ page }: PublishToggleButtonProps) => {
 
   const togglePublishMutation = useMutation({
     mutationFn: ({
-      id,
       isPublished,
     }: {
       id: string;
       isPublished: boolean;
-    }) => updatePageApi({ id, isPublished }),
+    }) => updatePageApi({ ...page, isPublished }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PAGES] });
       toast.success('Statut de publication mis à jour');

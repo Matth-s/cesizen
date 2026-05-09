@@ -26,6 +26,7 @@ const PageCard = ({ page }: PageCardProps) => {
             Modifier
           </Button>
         </Link>
+
         <PublishToggleButton page={page} />
         <DeletePageButton pageId={page.id} />
       </TableCell>

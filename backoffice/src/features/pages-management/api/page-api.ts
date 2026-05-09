@@ -1,8 +1,11 @@
 import { api } from '@/lib/api-client';
 import {
   pageArraySchema,
+  pageObjectSchema,
   type ICreatePage,
   type IPageArray,
+  type IPageObject,
+  type IUpdatePage,
 } from '../schemas/pages-schema';
 
 export const getPageListApi = async (): Promise<IPageArray> => {
@@ -19,13 +22,22 @@ export const createPageApi = async (
   await api.post('/page', data);
 };
 
-export const getPageBySlugApi = async (slug: string) => {
-  const response = await api.get(`/page/${slug}`);
-  return response.data;
+export const getPagePageById = async (
+  id?: string,
+): Promise<IPageObject> => {
+  const { data } = await api.get(`/page/by-id/${id}`);
+
+  const validatedData = pageObjectSchema.parse(data);
+
+  return validatedData;
 };
 
-export const updatePageApi = async ({ id, ...data }: any) => {
-  const response = await api.put(`/page/${id}`, data);
+export const updatePageApi = async (formData: IUpdatePage) => {
+  await await api.put(`/page/${formData.id}`, formData);
+};
+
+export const getPageBySlugApi = async (slug: string) => {
+  const response = await api.get(`/page/${slug}`);
   return response.data;
 };
 

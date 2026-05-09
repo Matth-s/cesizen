@@ -4,20 +4,22 @@ import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { QUERY_KEY } from '@/types/query-key';
-import PageList from '@/features/pages-management/components/PageList';
 import { getPageListApi } from '@/features/pages-management/api/page-api';
+
+import PageList from '@/features/pages-management/components/PageList';
 
 const PageManagement = () => {
   const { data: pages = [], isLoading } = useQuery({
     queryKey: [QUERY_KEY.PAGES],
     queryFn: getPageListApi,
+    retry: false,
   });
 
   if (isLoading) {
     return (
       <div className="p-8 space-y-4">
-        <Skeleton className="h-8 w-[200px]" />
-        <Skeleton className="h-[400px] w-full" />
+        <Skeleton className="h-8 w-50" />
+        <Skeleton className="h-100 w-full" />
       </div>
     );
   }
