@@ -12,6 +12,7 @@ import {
   pageIdParams,
   pageSlugParams,
 } from '../schemas/page-schema';
+import { getPageByIdController } from '../controllers/page/get-page-by-id-controller';
 
 export const pageRoutes: FastifyPluginAsync = async (fastify) => {
   fastify.get('/published', getPublishedPagesController);
@@ -19,6 +20,12 @@ export const pageRoutes: FastifyPluginAsync = async (fastify) => {
     '/:slug',
     { schema: pageSlugParams },
     getPageBySlugController,
+  );
+
+  fastify.get(
+    '/by-id/:id',
+    { schema: pageIdParams },
+    getPageByIdController,
   );
 
   fastify.get(
