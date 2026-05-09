@@ -20,13 +20,11 @@ const PageEditor = () => {
   if (isEdit && isLoading) {
     return (
       <div className="p-8 max-w-4xl mx-auto space-y-6">
-        <Skeleton className="h-8 w-[250px]" />
-        <Skeleton className="h-[600px] w-full" />
+        <Skeleton className="h-8 w-62.5" />
+        <Skeleton className="h-150 w-full" />
       </div>
     );
   }
-
-  if (!page) return <p>Il semblerait que cette page n'existe pas</p>;
 
   return (
     <div className="p-8 max-w-4xl mx-auto">

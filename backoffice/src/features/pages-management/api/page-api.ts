@@ -32,16 +32,20 @@ export const getPagePageById = async (
   return validatedData;
 };
 
-export const updatePageApi = async (formData: IUpdatePage) => {
-  await await api.put(`/page/${formData.id}`, formData);
+export const updatePageApi = async (
+  formData: IUpdatePage,
+): Promise<void> => {
+  await api.put(`/page/${formData.id}`, formData);
 };
 
-export const getPageBySlugApi = async (slug: string) => {
-  const response = await api.get(`/page/${slug}`);
-  return response.data;
+export const deletePageApi = async (id: string): Promise<void> => {
+  await api.delete(`/page/${id}`);
 };
 
-export const deletePageApi = async (id: string) => {
-  const response = await api.delete(`/page/${id}`);
-  return response.data;
+export const getPublishPageApi = async (): Promise<IPageArray> => {
+  const { data } = await api.get('page');
+
+  const validatedData = pageArraySchema.parse(data);
+
+  return validatedData;
 };

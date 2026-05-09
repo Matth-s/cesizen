@@ -2,4 +2,7 @@ export const QUERY_KEY = {
   USERS: 'USERS',
   DIAG: 'DIAG',
   PAGES: 'PAGES',
+  MENUS: 'MENUS',
+  PAGES_UPLOADED: 'PAGES_UPLOADED',
+  STATS: 'STATS',
 } as const;

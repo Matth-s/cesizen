@@ -9,6 +9,7 @@ export const pageObjectSchema = z.object({
   slug: z.string(),
   isPublished: z.boolean(),
   createdAt: z.string(),
+  menuItemId: z.string(),
 });
 
 export const createPageSchema = z.object({
@@ -22,6 +23,9 @@ export const createPageSchema = z.object({
   imageUrl: z.string().optional(),
   slug: z.string(),
   isPublished: z.boolean(),
+  menuItemId: z.string().min(1, {
+    error: 'Veuillez sélectionner le lien de la page',
+  }),
 });
 
 export const updatePageSchema = z.object({
@@ -37,6 +41,9 @@ export const updatePageSchema = z.object({
   isPublished: z.boolean(),
   id: z.string(),
   createdAt: z.string(),
+  menuItemId: z.string().min(1, {
+    error: 'Veuillez sélectionner le lien de la page',
+  }),
 });
 
 export const pageArraySchema = z.array(pageObjectSchema);

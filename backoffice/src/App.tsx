@@ -24,6 +24,7 @@ import DiagnosticIdPage from './pages/(main)/DiagnosticIdPage';
 import PageManagement from './pages/(main)/PageManagement';
 import PageEditor from './pages/(main)/PageEditor';
 import MenuManagement from './pages/(main)/MenuManagement';
+import ViewUploadedPage from './pages/(main)/ViewUploadedPage';
 
 const App = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -72,6 +73,7 @@ const App = () => {
             path="/pages/modifier/:id"
             element={<PageEditor />}
           />
+          <Route path="/pages/:id" element={<ViewUploadedPage />} />
           <Route path="/menu" element={<MenuManagement />} />
 
           <Route path="/diagnostics" element={<DiagnosticPage />} />

@@ -57,7 +57,9 @@ const DeleteUserDialog = ({ user }: DeleteUserDialogProps) => {
         `L'utilisateur ${username} a été supprimé avec succès`,
       );
       setIsOpen(false);
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USERS] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.USERS, QUERY_KEY.STATS],
+      });
     },
 
     onError(err) {

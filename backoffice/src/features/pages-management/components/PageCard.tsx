@@ -21,6 +21,12 @@ const PageCard = ({ page }: PageCardProps) => {
         </Badge>
       </TableCell>
       <TableCell className="text-right flex justify-end gap-2">
+        <Link to={`/pages/${page.id}`}>
+          <Button variant="outline" size="sm">
+            Voir
+          </Button>
+        </Link>
+
         <Link to={`/pages/modifier/${page.id}`}>
           <Button variant="outline" size="sm">
             Modifier
