@@ -7,7 +7,6 @@ import HomePage from "./pages/(main)/HomePage";
 import ResetPasswordPage from "./pages/(auth)/ResetPasswordPage";
 import PageLayout from "./pages/PageLayout";
 import DynamicPage from "./pages/(main)/DynamicPage";
-import SearchPage from "./pages/(main)/SearchPage";
 
 import { Route, Routes, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
@@ -16,9 +15,12 @@ import { getCurrentUserApi } from "./features/users/api/get-current-user-api";
 import { useEffect } from "react";
 import { setUser } from "./store/slices/user-slice";
 import { App as AppCapacitor } from "@capacitor/app";
+import { QUERY_KEY } from "./types/query-key-type";
+
 import ParamsPage from "./pages/(main)/ParamsPage";
 import DiagnosticPage from "./pages/(main)/DiagnosticPage";
-import { QUERY_KEY } from "./types/query-key-type";
+import NotFoundPage from "./pages/(main)/NotFoundPage";
+import DynamicPageContent from "./pages/(main)/DynamicPageContent";
 
 const App = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -79,9 +81,11 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/parametres" element={<ParamsPage />} />
           <Route path="/diagnostic" element={<DiagnosticPage />} />
-          <Route path="/recherche" element={<SearchPage />} />
-          <Route path="/page/:slug" element={<DynamicPage />} />
+          <Route path="/dynamic/:id" element={<DynamicPage />} />
+          <Route path="/dynamic/:id/:pageId" element={<DynamicPageContent />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </PageLayout>
   );

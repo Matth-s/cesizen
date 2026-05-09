@@ -9,13 +9,6 @@ export const USER_NOT_CONNECT_LINK = [
   },
 ];
 
-export const USER_CONNECTED_LINK = [
-  {
-    label: "Compte",
-    path: "/parametres",
-  },
-];
-
 export const DEFAULT_LINK = [
   {
     label: "Accueil",
