@@ -16,6 +16,7 @@ const MenuList = ({ setIsOpen }: MenuListProps) => {
   } = useQuery({
     queryKey: [QUERY_KEY.MENU],
     queryFn: getMenuItemsApi,
+    retry: false,
   });
 
   if (isPending) {
