@@ -25,6 +25,7 @@ import PageManagement from './pages/(main)/PageManagement';
 import PageEditor from './pages/(main)/PageEditor';
 import MenuManagement from './pages/(main)/MenuManagement';
 import ViewUploadedPage from './pages/(main)/ViewUploadedPage';
+import { QUERY_KEY } from './types/query-key';
 
 const App = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -34,7 +35,7 @@ const App = () => {
 
   const { isPending, isError, data } = useQuery({
     queryFn: getCurrentUserApi,
-    queryKey: ['current-user'],
+    queryKey: [QUERY_KEY.CURRENT_USER],
     retry: false,
   });
 

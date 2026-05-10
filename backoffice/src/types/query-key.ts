@@ -5,4 +5,5 @@ export const QUERY_KEY = {
   MENUS: 'MENUS',
   PAGES_UPLOADED: 'PAGES_UPLOADED',
   STATS: 'STATS',
+  CURRENT_USER: 'CURRENT_USER',
 } as const;
