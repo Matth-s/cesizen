@@ -1,4 +1,4 @@
-import Type from 'typebox';
+import { Type } from '@sinclair/typebox';
 import { Role } from '../generated/prisma/enums';
 
 export const userAdminSchema = {
