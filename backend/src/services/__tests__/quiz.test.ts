@@ -4,7 +4,7 @@ import {
   getAllQuizService,
   getQuiz,
   getQuizAndAnswerById,
-  updateDiagnostic
+  updateDiagnostic,
 } from '../quiz';
 
 describe('QuizService', () => {
@@ -13,19 +13,21 @@ describe('QuizService', () => {
     title: 'Test Quiz',
     createdAt: new Date(),
     answer: [
-      { id: 'ans-1', name: 'Option 1', value: 10, quizId: 'quiz-1' }
-    ]
+      { id: 'ans-1', name: 'Option 1', value: 10, quizId: 'quiz-1' },
+    ],
   };
 
   describe('getAllQuizService', () => {
     it('should return all quizzes with answer count', async () => {
-      const mockQuizzes = [{
-        ...mockQuiz,
-        _count: { answer: 1 }
-      }];
-      prismaMock.quiz.findMany.mockResolvedValue(mockQuizzes as any);
+      const mockQuizzes = [
+        {
+          ...mockQuiz,
+          _count: { answer: 1 },
+        },
+      ];
+      prismaMock.quiz.findMany.mockResolvedValue(mockQuizzes);
 
-      const result = await getAllQuizService(prismaMock as any);
+      const result = await getAllQuizService(prismaMock);
 
       expect(result).toEqual(mockQuizzes);
     });
@@ -33,9 +35,9 @@ describe('QuizService', () => {
 
   describe('getQuiz', () => {
     it('should return the first quiz with answers', async () => {
-      prismaMock.quiz.findFirst.mockResolvedValue(mockQuiz as any);
+      prismaMock.quiz.findFirst.mockResolvedValue(mockQuiz);
 
-      const result = await getQuiz(prismaMock as any);
+      const result = await getQuiz(prismaMock);
 
       expect(result).toEqual(mockQuiz);
     });
@@ -43,32 +45,32 @@ describe('QuizService', () => {
     it('should throw error on db failure', async () => {
       prismaMock.quiz.findFirst.mockRejectedValue(new Error());
 
-      await expect(getQuiz(prismaMock as any)).rejects.toThrow('Erreur bdd');
+      await expect(getQuiz(prismaMock)).rejects.toThrow('Erreur bdd');
     });
   });
 
   describe('getQuizAndAnswerById', () => {
     it('should return quiz by id', async () => {
-      prismaMock.quiz.findFirst.mockResolvedValue(mockQuiz as any);
+      prismaMock.quiz.findFirst.mockResolvedValue(mockQuiz);
 
-      const result = await getQuizAndAnswerById(prismaMock as any, 'quiz-1');
+      const result = await getQuizAndAnswerById(prismaMock, 'quiz-1');
 
       expect(result).toEqual(mockQuiz);
       expect(prismaMock.quiz.findFirst).toHaveBeenCalledWith({
         where: { id: 'quiz-1' },
-        include: { answer: true }
+        include: { answer: true },
       });
     });
   });
 
   describe('updateDiagnostic', () => {
     it('should update quiz and its answers', async () => {
-      prismaMock.quiz.update.mockResolvedValue(mockQuiz as any);
+      prismaMock.quiz.update.mockResolvedValue(mockQuiz);
 
       await updateDiagnostic({
-        prisma: prismaMock as any,
+        prisma: prismaMock,
         id: 'quiz-1',
-        data: mockQuiz as any
+        data: mockQuiz,
       });
 
       expect(prismaMock.quiz.update).toHaveBeenCalledWith({
@@ -77,11 +79,9 @@ describe('QuizService', () => {
           title: mockQuiz.title,
           answer: {
             deleteMany: {},
-            create: [
-              { id: 'ans-1', name: 'Option 1', value: 10 }
-            ]
-          }
-        }
+            create: [{ id: 'ans-1', name: 'Option 1', value: 10 }],
+          },
+        },
       });
     });
   });

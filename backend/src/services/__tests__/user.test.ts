@@ -8,7 +8,7 @@ import {
   deleteUserById,
   getUserList,
   getUserWithEmailToken,
-  getUserWithPasswordToken
+  getUserWithPasswordToken,
 } from '../user';
 import { Role } from '../../generated/prisma/enums';
 
@@ -32,7 +32,7 @@ describe('UserService', () => {
     it('should create a new user', async () => {
       prismaMock.user.create.mockResolvedValue(mockUser);
 
-      const result = await createUser(prismaMock as any, {
+      const result = await createUser(prismaMock, {
         username: 'testuser',
         email: 'test@example.com',
         password: 'password',
@@ -49,15 +49,19 @@ describe('UserService', () => {
     it('should return a user by id', async () => {
       prismaMock.user.findUnique.mockResolvedValue(mockUser);
 
-      const result = await getUserById(prismaMock as any, 'user-1');
+      const result = await getUserById(prismaMock, 'user-1');
 
       expect(result).toEqual(mockUser);
     });
 
     it('should throw an error when prisma fails', async () => {
-      prismaMock.user.findUnique.mockRejectedValue(new Error('Prisma error'));
+      prismaMock.user.findUnique.mockRejectedValue(
+        new Error('Prisma error'),
+      );
 
-      await expect(getUserById(prismaMock as any, 'user-1')).rejects.toThrow('Une erreur est survenue');
+      await expect(getUserById(prismaMock, 'user-1')).rejects.toThrow(
+        'Une erreur est survenue',
+      );
     });
   });
 
@@ -65,7 +69,10 @@ describe('UserService', () => {
     it('should return a user by email', async () => {
       prismaMock.user.findUnique.mockResolvedValue(mockUser);
 
-      const result = await getUserByEmail(prismaMock as any, 'test@example.com');
+      const result = await getUserByEmail(
+        prismaMock,
+        'test@example.com',
+      );
 
       expect(result).toEqual(mockUser);
     });
@@ -75,17 +82,22 @@ describe('UserService', () => {
     it('should return a user by email token', async () => {
       prismaMock.user.findFirst.mockResolvedValue(mockUser);
 
-      const result = await getUserWithEmailToken(prismaMock as any, 'email-token');
+      const result = await getUserWithEmailToken(
+        prismaMock,
+        'email-token',
+      );
 
       expect(result).toEqual(mockUser);
       expect(prismaMock.user.findFirst).toHaveBeenCalledWith({
-        where: { emailConfirmationToken: 'email-token' }
+        where: { emailConfirmationToken: 'email-token' },
       });
     });
 
     it('should throw an error on failure', async () => {
       prismaMock.user.findFirst.mockRejectedValue(new Error());
-      await expect(getUserWithEmailToken(prismaMock as any, 'token')).rejects.toThrow('Une erreur est survenue');
+      await expect(
+        getUserWithEmailToken(prismaMock, 'token'),
+      ).rejects.toThrow('Une erreur est survenue');
     });
   });
 
@@ -93,17 +105,22 @@ describe('UserService', () => {
     it('should return a user by password token', async () => {
       prismaMock.user.findFirst.mockResolvedValue(mockUser);
 
-      const result = await getUserWithPasswordToken(prismaMock as any, 'password-token');
+      const result = await getUserWithPasswordToken(
+        prismaMock,
+        'password-token',
+      );
 
       expect(result).toEqual(mockUser);
       expect(prismaMock.user.findFirst).toHaveBeenCalledWith({
-        where: { resetPasswordToken: 'password-token' }
+        where: { resetPasswordToken: 'password-token' },
       });
     });
 
     it('should throw an error on failure', async () => {
       prismaMock.user.findFirst.mockRejectedValue(new Error());
-      await expect(getUserWithPasswordToken(prismaMock as any, 'token')).rejects.toThrow('Une erreur est survenue');
+      await expect(
+        getUserWithPasswordToken(prismaMock, 'token'),
+      ).rejects.toThrow('Une erreur est survenue');
     });
   });
 
@@ -111,7 +128,7 @@ describe('UserService', () => {
     it('should update a user', async () => {
       prismaMock.user.update.mockResolvedValue(mockUser);
 
-      await updateUser(prismaMock as any, 'user-1', { username: 'updated' });
+      await updateUser(prismaMock, 'user-1', { username: 'updated' });
 
       expect(prismaMock.user.update).toHaveBeenCalledWith({
         where: { id: 'user-1' },
@@ -120,9 +137,15 @@ describe('UserService', () => {
     });
 
     it('should throw an error when update fails', async () => {
-      prismaMock.user.update.mockRejectedValue(new Error('Prisma error'));
+      prismaMock.user.update.mockRejectedValue(
+        new Error('Prisma error'),
+      );
 
-      await expect(updateUser(prismaMock as any, 'user-1', {})).rejects.toThrow("Une erreur est survenue lors de la mise a jour de l'utilisateur");
+      await expect(
+        updateUser(prismaMock, 'user-1', {}),
+      ).rejects.toThrow(
+        "Une erreur est survenue lors de la mise a jour de l'utilisateur",
+      );
     });
   });
 
@@ -130,7 +153,7 @@ describe('UserService', () => {
     it('should delete a user', async () => {
       prismaMock.user.delete.mockResolvedValue(mockUser);
 
-      await deleteUserById(prismaMock as any, 'user-1');
+      await deleteUserById(prismaMock, 'user-1');
 
       expect(prismaMock.user.delete).toHaveBeenCalledWith({
         where: { id: 'user-1' },
@@ -138,26 +161,34 @@ describe('UserService', () => {
     });
 
     it('should throw an error when delete fails', async () => {
-      prismaMock.user.delete.mockRejectedValue(new Error('Prisma error'));
+      prismaMock.user.delete.mockRejectedValue(
+        new Error('Prisma error'),
+      );
 
-      await expect(deleteUserById(prismaMock as any, 'user-1')).rejects.toThrow('Une erreur est survenue');
+      await expect(
+        deleteUserById(prismaMock, 'user-1'),
+      ).rejects.toThrow('Une erreur est survenue');
     });
   });
 
   describe('getUserList', () => {
     it('should return a list of users', async () => {
       const users = [mockUser];
-      prismaMock.user.findMany.mockResolvedValue(users as any);
+      prismaMock.user.findMany.mockResolvedValue(users);
 
-      const result = await getUserList(prismaMock as any);
+      const result = await getUserList(prismaMock);
 
       expect(result).toEqual(users);
     });
 
     it('should throw an error when findMany fails', async () => {
-      prismaMock.user.findMany.mockRejectedValue(new Error('Prisma error'));
+      prismaMock.user.findMany.mockRejectedValue(
+        new Error('Prisma error'),
+      );
 
-      await expect(getUserList(prismaMock as any)).rejects.toThrow('Une erreur est survenue');
+      await expect(getUserList(prismaMock)).rejects.toThrow(
+        'Une erreur est survenue',
+      );
     });
   });
 });

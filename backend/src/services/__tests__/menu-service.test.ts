@@ -5,7 +5,7 @@ import {
   existingMenuPathService,
   getMenuItemService,
   updateMenuItemService,
-  deleteMenuItemService
+  deleteMenuItemService,
 } from '../menu-service';
 
 describe('MenuService', () => {
@@ -21,9 +21,11 @@ describe('MenuService', () => {
       const { id, ...data } = mockMenuItem;
       prismaMock.menuItem.create.mockResolvedValue(mockMenuItem);
 
-      await createMenuService(prismaMock as any, data);
+      await createMenuService(prismaMock, data);
 
-      expect(prismaMock.menuItem.create).toHaveBeenCalledWith({ data });
+      expect(prismaMock.menuItem.create).toHaveBeenCalledWith({
+        data,
+      });
     });
   });
 
@@ -31,7 +33,7 @@ describe('MenuService', () => {
     it('should return menu item by path', async () => {
       prismaMock.menuItem.findFirst.mockResolvedValue(mockMenuItem);
 
-      const result = await existingMenuPathService(prismaMock as any, '/');
+      const result = await existingMenuPathService(prismaMock, '/');
 
       expect(result).toEqual(mockMenuItem);
     });
@@ -41,19 +43,23 @@ describe('MenuService', () => {
     it('should return all menu items when withHidden is true', async () => {
       prismaMock.menuItem.findMany.mockResolvedValue([mockMenuItem]);
 
-      const result = await getMenuItemService(prismaMock as any, true);
+      const result = await getMenuItemService(prismaMock, true);
 
       expect(result).toEqual([mockMenuItem]);
-      expect(prismaMock.menuItem.findMany).toHaveBeenCalledWith({ where: {} });
+      expect(prismaMock.menuItem.findMany).toHaveBeenCalledWith({
+        where: {},
+      });
     });
 
     it('should return only visible menu items when withHidden is false', async () => {
       prismaMock.menuItem.findMany.mockResolvedValue([mockMenuItem]);
 
-      const result = await getMenuItemService(prismaMock as any, false);
+      const result = await getMenuItemService(prismaMock, false);
 
       expect(result).toEqual([mockMenuItem]);
-      expect(prismaMock.menuItem.findMany).toHaveBeenCalledWith({ where: { show: true } });
+      expect(prismaMock.menuItem.findMany).toHaveBeenCalledWith({
+        where: { show: true },
+      });
     });
   });
 
@@ -61,7 +67,7 @@ describe('MenuService', () => {
     it('should update a menu item', async () => {
       prismaMock.menuItem.update.mockResolvedValue(mockMenuItem);
 
-      await updateMenuItemService(prismaMock as any, mockMenuItem);
+      await updateMenuItemService(prismaMock, mockMenuItem);
 
       expect(prismaMock.menuItem.update).toHaveBeenCalledWith({
         where: { id: mockMenuItem.id },
@@ -74,7 +80,7 @@ describe('MenuService', () => {
     it('should delete a menu item', async () => {
       prismaMock.menuItem.delete.mockResolvedValue(mockMenuItem);
 
-      await deleteMenuItemService(prismaMock as any, 'menu-1');
+      await deleteMenuItemService(prismaMock, 'menu-1');
 
       expect(prismaMock.menuItem.delete).toHaveBeenCalledWith({
         where: { id: 'menu-1' },
