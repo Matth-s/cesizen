@@ -7,8 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "build": "prisma generate && tsc"
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",

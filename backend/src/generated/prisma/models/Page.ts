@@ -186,7 +186,7 @@ export type PageGroupByOutputType = {
   _max: PageMaxAggregateOutputType | null
 }
 
-export type GetPageGroupByPayload<T extends PageGroupByArgs> = Prisma.PrismaPromise<
+type GetPageGroupByPayload<T extends PageGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PageGroupByOutputType, T['by']> &
       {

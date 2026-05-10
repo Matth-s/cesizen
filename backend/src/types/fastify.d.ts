@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '../generated/prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 import { FastifyJwtNamespace } from '@fastify/jwt';
 
 declare module 'fastify' {
@@ -14,7 +14,7 @@ declare module 'fastify' {
     ) => Promise<void>;
 
     requireRole: (
-      roles: Role[],
+      roles: string[],
     ) => (
       request: FastifyRequest,
       reply: FastifyReply,

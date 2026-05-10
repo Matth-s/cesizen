@@ -6,7 +6,7 @@ import {
   getPageBySlugService,
   savePageService,
   updatePageByIdService,
-  getAllPageWithMenuIdService,
+  getAllPageWithMenuIdService
 } from '../page-service';
 
 describe('PageService', () => {
@@ -26,7 +26,7 @@ describe('PageService', () => {
     it('should return all pages', async () => {
       prismaMock.page.findMany.mockResolvedValue([mockPage]);
 
-      const result = await getAllPageService(prismaMock);
+      const result = await getAllPageService(prismaMock as any);
 
       expect(result).toEqual([mockPage]);
       expect(prismaMock.page.findMany).toHaveBeenCalled();
@@ -37,11 +37,7 @@ describe('PageService', () => {
     it('should return page by id', async () => {
       prismaMock.page.findFirst.mockResolvedValue(mockPage);
 
-      const result = await getPageByIdService(
-        prismaMock,
-        'page-1',
-        false,
-      );
+      const result = await getPageByIdService(prismaMock as any, 'page-1', false);
 
       expect(result).toEqual(mockPage);
     });
@@ -49,7 +45,7 @@ describe('PageService', () => {
     it('should filter by published status if requested', async () => {
       prismaMock.page.findFirst.mockResolvedValue(mockPage);
 
-      await getPageByIdService(prismaMock, 'page-1', true);
+      await getPageByIdService(prismaMock as any, 'page-1', true);
 
       expect(prismaMock.page.findFirst).toHaveBeenCalledWith({
         where: {
@@ -64,10 +60,7 @@ describe('PageService', () => {
     it('should return page by slug', async () => {
       prismaMock.page.findUnique.mockResolvedValue(mockPage);
 
-      const result = await getPageBySlugService(
-        prismaMock,
-        'test-page',
-      );
+      const result = await getPageBySlugService(prismaMock as any, 'test-page');
 
       expect(result).toEqual(mockPage);
     });
@@ -78,7 +71,7 @@ describe('PageService', () => {
       const { id, createdAt, ...pageData } = mockPage;
       prismaMock.page.create.mockResolvedValue(mockPage);
 
-      const result = await savePageService(prismaMock, pageData);
+      const result = await savePageService(prismaMock as any, pageData);
 
       expect(result).toEqual(mockPage);
       expect(prismaMock.page.create).toHaveBeenCalledWith({
@@ -92,7 +85,7 @@ describe('PageService', () => {
       prismaMock.page.update.mockResolvedValue(mockPage);
 
       const result = await updatePageByIdService({
-        prisma: prismaMock,
+        prisma: prismaMock as any,
         id: 'page-1',
         data: { title: 'Updated Title' },
       });
@@ -109,10 +102,7 @@ describe('PageService', () => {
     it('should return published pages for a menu item', async () => {
       prismaMock.page.findMany.mockResolvedValue([mockPage]);
 
-      const result = await getAllPageWithMenuIdService(
-        prismaMock,
-        'menu-1',
-      );
+      const result = await getAllPageWithMenuIdService(prismaMock as any, 'menu-1');
 
       expect(result).toEqual([mockPage]);
       expect(prismaMock.page.findMany).toHaveBeenCalledWith({

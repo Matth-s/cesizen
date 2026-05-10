@@ -151,7 +151,7 @@ export type MenuItemGroupByOutputType = {
   _max: MenuItemMaxAggregateOutputType | null
 }
 
-export type GetMenuItemGroupByPayload<T extends MenuItemGroupByArgs> = Prisma.PrismaPromise<
+type GetMenuItemGroupByPayload<T extends MenuItemGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<MenuItemGroupByOutputType, T['by']> &
       {
