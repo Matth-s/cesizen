@@ -149,6 +149,11 @@ body,
   gap: 9px;
 }
 
+.safe-area {
+  padding-top: max(env(safe-area-inset-top), 1rem);
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

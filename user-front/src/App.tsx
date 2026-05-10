@@ -16,11 +16,14 @@ import { useEffect } from "react";
 import { setUser } from "./store/slices/user-slice";
 import { App as AppCapacitor } from "@capacitor/app";
 import { QUERY_KEY } from "./types/query-key-type";
+import { Keyboard } from "@capacitor/keyboard";
+import { StatusBar, Style } from "@capacitor/status-bar";
 
 import ParamsPage from "./pages/(main)/ParamsPage";
 import DiagnosticPage from "./pages/(main)/DiagnosticPage";
 import NotFoundPage from "./pages/(main)/NotFoundPage";
 import DynamicPageContent from "./pages/(main)/DynamicPageContent";
+import { setCsrfToken } from "./lib/api-client";
 
 const App = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -57,8 +60,52 @@ const App = () => {
   useEffect(() => {
     if (data) {
       dispatch(setUser(data));
+      setCsrfToken(data.csrfToken);
     }
   }, [data, user, dispatch]);
+
+  useEffect(() => {
+    let listener: Awaited<ReturnType<typeof Keyboard.addListener>>;
+
+    const setupKeyboard = async () => {
+      listener = await Keyboard.addListener("keyboardWillShow", () => {
+        const activeElement = document.activeElement as HTMLElement | null;
+
+        if (activeElement) {
+          setTimeout(() => {
+            activeElement.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }, 150);
+        }
+      });
+    };
+
+    setupKeyboard();
+
+    return () => {
+      listener?.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    const setupStatusBar = async () => {
+      await StatusBar.setOverlaysWebView({
+        overlay: true,
+      });
+
+      await StatusBar.setStyle({
+        style: Style.Dark,
+      });
+
+      await StatusBar.setBackgroundColor({
+        color: "#ffffff",
+      });
+    };
+
+    setupStatusBar();
+  }, []);
 
   if (isPending) return;
 

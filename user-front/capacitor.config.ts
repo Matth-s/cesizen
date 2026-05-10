@@ -5,6 +5,14 @@ const config: CapacitorConfig = {
   appName: "cesizen",
   webDir: "dist",
   plugins: {
+    Keyboard: {
+      resize: "body",
+    },
+    StatusBar: {
+      overlaysWebView: false,
+      style: "DARK",
+      backgroundColor: "#ffffff",
+    },
     SplashScreen: {
       launchShowDuration: 2000,
       launchAutoHide: true,

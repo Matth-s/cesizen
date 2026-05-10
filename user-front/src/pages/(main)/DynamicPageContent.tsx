@@ -4,8 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { QUERY_KEY } from "@/types/query-key-type";
 import { getDynamicPageByIdApi } from "@/features/dynamic-page/api/get-dynamic-page-api";
-
-import PageContent from "@/features/dynamic-page/components/DynamicPageContent";
+import PageContent from "@/features/dynamic-page/components/PageContent";
 
 const DynamicPageContent = () => {
   const { pageId } = useParams();
@@ -19,7 +18,7 @@ const DynamicPageContent = () => {
 
   if (isPending) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4">
+      <div className="h-fit p-4">
         <Card className="mx-auto max-w-4xl overflow-hidden">
           <Skeleton className="h-[300px] w-full" />
 

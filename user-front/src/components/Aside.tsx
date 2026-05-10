@@ -18,7 +18,7 @@ const Aside = () => {
         <Menu />
       </SheetTrigger>
 
-      <SheetContent className="flex flex-col p-6">
+      <SheetContent className="safe-area flex flex-col p-6">
         <ul className="flex flex-col gap-2">
           {DEFAULT_LINK.map((link) => (
             <li key={link.path}>
@@ -53,7 +53,7 @@ const Aside = () => {
               </div>
             </Link>
           ) : (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 pb-3">
               {USER_NOT_CONNECT_LINK.map((link, index) => (
                 <Link
                   key={link.path}

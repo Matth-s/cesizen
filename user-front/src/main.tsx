@@ -8,6 +8,7 @@ import { store } from "./store/store.ts";
 import App from "./App.tsx";
 
 import "./index.css";
+import { Toaster } from "sonner";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <App />
+          <Toaster />
         </QueryClientProvider>
       </Provider>
     </BrowserRouter>
