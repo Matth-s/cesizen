@@ -37,9 +37,6 @@ export type UserMinAggregateOutputType = {
   emailConfirmationExpire: Date | null
   resetPasswordToken: string | null
   resetPasswordExpire: Date | null
-  twoFactorEnabled: boolean | null
-  twoFactorToken: string | null
-  twoFactorExpire: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -55,9 +52,6 @@ export type UserMaxAggregateOutputType = {
   emailConfirmationExpire: Date | null
   resetPasswordToken: string | null
   resetPasswordExpire: Date | null
-  twoFactorEnabled: boolean | null
-  twoFactorToken: string | null
-  twoFactorExpire: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -73,9 +67,6 @@ export type UserCountAggregateOutputType = {
   emailConfirmationExpire: number
   resetPasswordToken: number
   resetPasswordExpire: number
-  twoFactorEnabled: number
-  twoFactorToken: number
-  twoFactorExpire: number
   _all: number
 }
 
@@ -93,9 +84,6 @@ export type UserMinAggregateInputType = {
   emailConfirmationExpire?: true
   resetPasswordToken?: true
   resetPasswordExpire?: true
-  twoFactorEnabled?: true
-  twoFactorToken?: true
-  twoFactorExpire?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -111,9 +99,6 @@ export type UserMaxAggregateInputType = {
   emailConfirmationExpire?: true
   resetPasswordToken?: true
   resetPasswordExpire?: true
-  twoFactorEnabled?: true
-  twoFactorToken?: true
-  twoFactorExpire?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -129,9 +114,6 @@ export type UserCountAggregateInputType = {
   emailConfirmationExpire?: true
   resetPasswordToken?: true
   resetPasswordExpire?: true
-  twoFactorEnabled?: true
-  twoFactorToken?: true
-  twoFactorExpire?: true
   _all?: true
 }
 
@@ -220,9 +202,6 @@ export type UserGroupByOutputType = {
   emailConfirmationExpire: Date | null
   resetPasswordToken: string | null
   resetPasswordExpire: Date | null
-  twoFactorEnabled: boolean
-  twoFactorToken: string | null
-  twoFactorExpire: Date | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -259,9 +238,6 @@ export type UserWhereInput = {
   emailConfirmationExpire?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   resetPasswordToken?: Prisma.StringNullableFilter<"User"> | string | null
   resetPasswordExpire?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
-  twoFactorToken?: Prisma.StringNullableFilter<"User"> | string | null
-  twoFactorExpire?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -277,9 +253,6 @@ export type UserOrderByWithRelationInput = {
   emailConfirmationExpire?: Prisma.SortOrderInput | Prisma.SortOrder
   resetPasswordToken?: Prisma.SortOrderInput | Prisma.SortOrder
   resetPasswordExpire?: Prisma.SortOrderInput | Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
-  twoFactorToken?: Prisma.SortOrderInput | Prisma.SortOrder
-  twoFactorExpire?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -298,9 +271,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   emailConfirmationExpire?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   resetPasswordToken?: Prisma.StringNullableFilter<"User"> | string | null
   resetPasswordExpire?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
-  twoFactorToken?: Prisma.StringNullableFilter<"User"> | string | null
-  twoFactorExpire?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -316,9 +286,6 @@ export type UserOrderByWithAggregationInput = {
   emailConfirmationExpire?: Prisma.SortOrderInput | Prisma.SortOrder
   resetPasswordToken?: Prisma.SortOrderInput | Prisma.SortOrder
   resetPasswordExpire?: Prisma.SortOrderInput | Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
-  twoFactorToken?: Prisma.SortOrderInput | Prisma.SortOrder
-  twoFactorExpire?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -340,9 +307,6 @@ export type UserScalarWhereWithAggregatesInput = {
   emailConfirmationExpire?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   resetPasswordToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   resetPasswordExpire?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-  twoFactorEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  twoFactorToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  twoFactorExpire?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -358,9 +322,6 @@ export type UserCreateInput = {
   emailConfirmationExpire?: Date | string | null
   resetPasswordToken?: string | null
   resetPasswordExpire?: Date | string | null
-  twoFactorEnabled?: boolean
-  twoFactorToken?: string | null
-  twoFactorExpire?: Date | string | null
 }
 
 export type UserUncheckedCreateInput = {
@@ -376,9 +337,6 @@ export type UserUncheckedCreateInput = {
   emailConfirmationExpire?: Date | string | null
   resetPasswordToken?: string | null
   resetPasswordExpire?: Date | string | null
-  twoFactorEnabled?: boolean
-  twoFactorToken?: string | null
-  twoFactorExpire?: Date | string | null
 }
 
 export type UserUpdateInput = {
@@ -394,9 +352,6 @@ export type UserUpdateInput = {
   emailConfirmationExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resetPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetPasswordExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  twoFactorToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twoFactorExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateInput = {
@@ -412,9 +367,6 @@ export type UserUncheckedUpdateInput = {
   emailConfirmationExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resetPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetPasswordExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  twoFactorToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twoFactorExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCreateManyInput = {
@@ -430,9 +382,6 @@ export type UserCreateManyInput = {
   emailConfirmationExpire?: Date | string | null
   resetPasswordToken?: string | null
   resetPasswordExpire?: Date | string | null
-  twoFactorEnabled?: boolean
-  twoFactorToken?: string | null
-  twoFactorExpire?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -448,9 +397,6 @@ export type UserUpdateManyMutationInput = {
   emailConfirmationExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resetPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetPasswordExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  twoFactorToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twoFactorExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -466,9 +412,6 @@ export type UserUncheckedUpdateManyInput = {
   emailConfirmationExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   resetPasswordToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetPasswordExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  twoFactorToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twoFactorExpire?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -484,9 +427,6 @@ export type UserCountOrderByAggregateInput = {
   emailConfirmationExpire?: Prisma.SortOrder
   resetPasswordToken?: Prisma.SortOrder
   resetPasswordExpire?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
-  twoFactorToken?: Prisma.SortOrder
-  twoFactorExpire?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -502,9 +442,6 @@ export type UserMaxOrderByAggregateInput = {
   emailConfirmationExpire?: Prisma.SortOrder
   resetPasswordToken?: Prisma.SortOrder
   resetPasswordExpire?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
-  twoFactorToken?: Prisma.SortOrder
-  twoFactorExpire?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -520,9 +457,6 @@ export type UserMinOrderByAggregateInput = {
   emailConfirmationExpire?: Prisma.SortOrder
   resetPasswordToken?: Prisma.SortOrder
   resetPasswordExpire?: Prisma.SortOrder
-  twoFactorEnabled?: Prisma.SortOrder
-  twoFactorToken?: Prisma.SortOrder
-  twoFactorExpire?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -564,9 +498,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailConfirmationExpire?: boolean
   resetPasswordToken?: boolean
   resetPasswordExpire?: boolean
-  twoFactorEnabled?: boolean
-  twoFactorToken?: boolean
-  twoFactorExpire?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -582,9 +513,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailConfirmationExpire?: boolean
   resetPasswordToken?: boolean
   resetPasswordExpire?: boolean
-  twoFactorEnabled?: boolean
-  twoFactorToken?: boolean
-  twoFactorExpire?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -600,9 +528,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailConfirmationExpire?: boolean
   resetPasswordToken?: boolean
   resetPasswordExpire?: boolean
-  twoFactorEnabled?: boolean
-  twoFactorToken?: boolean
-  twoFactorExpire?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -618,12 +543,9 @@ export type UserSelectScalar = {
   emailConfirmationExpire?: boolean
   resetPasswordToken?: boolean
   resetPasswordExpire?: boolean
-  twoFactorEnabled?: boolean
-  twoFactorToken?: boolean
-  twoFactorExpire?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "username" | "createAt" | "isActive" | "emailVerified" | "emailConfirmationToken" | "emailConfirmationExpire" | "resetPasswordToken" | "resetPasswordExpire" | "twoFactorEnabled" | "twoFactorToken" | "twoFactorExpire", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "username" | "createAt" | "isActive" | "emailVerified" | "emailConfirmationToken" | "emailConfirmationExpire" | "resetPasswordToken" | "resetPasswordExpire", ExtArgs["result"]["user"]>
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -641,9 +563,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     emailConfirmationExpire: Date | null
     resetPasswordToken: string | null
     resetPasswordExpire: Date | null
-    twoFactorEnabled: boolean
-    twoFactorToken: string | null
-    twoFactorExpire: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1079,9 +998,6 @@ export interface UserFieldRefs {
   readonly emailConfirmationExpire: Prisma.FieldRef<"User", 'DateTime'>
   readonly resetPasswordToken: Prisma.FieldRef<"User", 'String'>
   readonly resetPasswordExpire: Prisma.FieldRef<"User", 'DateTime'>
-  readonly twoFactorEnabled: Prisma.FieldRef<"User", 'Boolean'>
-  readonly twoFactorToken: Prisma.FieldRef<"User", 'String'>
-  readonly twoFactorExpire: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 

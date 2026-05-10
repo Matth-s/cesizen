@@ -829,10 +829,7 @@ export const UserScalarFieldEnum = {
   emailConfirmationToken: 'emailConfirmationToken',
   emailConfirmationExpire: 'emailConfirmationExpire',
   resetPasswordToken: 'resetPasswordToken',
-  resetPasswordExpire: 'resetPasswordExpire',
-  twoFactorEnabled: 'twoFactorEnabled',
-  twoFactorToken: 'twoFactorToken',
-  twoFactorExpire: 'twoFactorExpire'
+  resetPasswordExpire: 'resetPasswordExpire'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -846,7 +843,8 @@ export const PageScalarFieldEnum = {
   imageUrl: 'imageUrl',
   slug: 'slug',
   isPublished: 'isPublished',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  menuItemId: 'menuItemId'
 } as const
 
 export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
@@ -856,8 +854,7 @@ export const MenuItemScalarFieldEnum = {
   id: 'id',
   label: 'label',
   path: 'path',
-  order: 'order',
-  pageId: 'pageId'
+  show: 'show'
 } as const
 
 export type MenuItemScalarFieldEnum = (typeof MenuItemScalarFieldEnum)[keyof typeof MenuItemScalarFieldEnum]

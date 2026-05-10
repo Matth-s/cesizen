@@ -22,10 +22,6 @@ model User {
 
   resetPasswordToken  String?
   resetPasswordExpire DateTime?
-
-  twoFactorEnabled Boolean   @default(false)
-  twoFactorToken   String?
-  twoFactorExpire  DateTime?
 }
 
 model Page {
@@ -38,16 +34,17 @@ model Page {
   isPublished Boolean   @default(false)
   createdAt   DateTime? @default(now())
 
-  menuItems MenuItem[]
+  menuItemId String?
+  menuItem   MenuItem? @relation(fields: [menuItemId], references: [id])
 }
 
 model MenuItem {
-  id     String  @id @default(cuid())
-  label  String
-  path   String
-  order  Int
-  pageId String?
-  page   Page?   @relation(fields: [pageId], references: [id])
+  id    String  @id @default(cuid())
+  label String
+  path  String
+  show  Boolean
+
+  pages Page[]
 }
 
 model Quiz {

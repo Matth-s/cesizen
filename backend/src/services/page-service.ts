@@ -14,12 +14,18 @@ export const getAllPageService = async (
 export const getPageByIdService = async (
   prisma: PrismaClient,
   id: string,
+  shouldBePublish: boolean,
 ): Promise<Page | null> => {
   return await prisma.page.findFirst({
-    where: { id },
+    where: {
+      id,
+
+      ...(shouldBePublish && {
+        isPublished: true,
+      }),
+    },
   });
 };
-
 export const getPageBySlugService = async (
   prisma: PrismaClient,
   slug: string,
@@ -54,5 +60,17 @@ export const updatePageByIdService = async ({
       id,
     },
     data,
+  });
+};
+
+export const getAllPageWithMenuIdService = async (
+  prisma: PrismaClient,
+  id: string,
+): Promise<Page[]> => {
+  return await prisma.page.findMany({
+    where: {
+      menuItemId: id,
+      isPublished: true,
+    },
   });
 };

@@ -381,6 +381,14 @@ export type AnswerUncheckedUpdateManyWithoutQuizNestedInput = {
   deleteMany?: Prisma.AnswerScalarWhereInput | Prisma.AnswerScalarWhereInput[]
 }
 
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type AnswerCreateWithoutQuizInput = {
   id?: string
   name: string

@@ -1,22 +1,22 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyReply } from 'fastify';
+import { getAllPageWithMenuIdService } from '../../services/page-service';
+import { FastifyRequestTypeBox } from '../../types/auth-request-type';
+import { pageIdParams } from '../../schemas/page-schema';
 
 export const getPublishedPagesController = async (
-  request: FastifyRequest,
+  request: FastifyRequestTypeBox<typeof pageIdParams>,
   reply: FastifyReply,
 ) => {
-  const pages = await request.server.prisma.page.findMany({
-    where: { isPublished: true },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      slug: true,
-      content: true,
-      imageUrl: true,
-      createdAt: true,
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+  const { prisma } = request.server;
+  const { id } = request.params;
 
-  return reply.send(pages);
+  try {
+    const pages = await getAllPageWithMenuIdService(prisma, id);
+
+    return reply.code(200).send(pages);
+  } catch {
+    return reply.code(200).send({
+      error: 'Une erreur est survenue',
+    });
+  }
 };

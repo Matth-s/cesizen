@@ -4,8 +4,7 @@ export const createMenuItemSchema = {
   body: Type.Object({
     label: Type.String(),
     path: Type.String(),
-    order: Type.Number(),
-    pageId: Type.Optional(Type.String()),
+    show: Type.Boolean(),
   }),
 };
 
@@ -13,7 +12,12 @@ export const updateMenuItemSchema = {
   params: Type.Object({
     id: Type.String(),
   }),
-  body: Type.Partial(createMenuItemSchema.body),
+  body: Type.Object({
+    id: Type.String(),
+    label: Type.String(),
+    path: Type.String(),
+    show: Type.Boolean(),
+  }),
 };
 
 export const menuItemIdParams = {
@@ -22,5 +26,9 @@ export const menuItemIdParams = {
   }),
 };
 
-export type ICreateMenuItem = Static<typeof createMenuItemSchema.body>;
-export type IUpdateMenuItem = Static<typeof updateMenuItemSchema.body>;
+export type ICreateMenuItem = Static<
+  typeof createMenuItemSchema.body
+>;
+export type IUpdateMenuItem = Static<
+  typeof updateMenuItemSchema.body
+>;

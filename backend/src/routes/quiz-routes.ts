@@ -1,4 +1,4 @@
-import { FastifyPluginAsync, FastifyReply } from 'fastify';
+import { FastifyPluginAsync } from 'fastify';
 import { getQuizController } from '../controllers/quiz/get-quiz-controller';
 import {
   getQuizResultSchema,

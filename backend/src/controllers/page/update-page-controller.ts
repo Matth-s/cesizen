@@ -16,7 +16,7 @@ export const updatePageController = async (
     request.body;
 
   try {
-    const existingPage = await getPageByIdService(prisma, id);
+    const existingPage = await getPageByIdService(prisma, id, true);
 
     if (!existingPage) {
       return reply.code(404).send({
@@ -24,7 +24,7 @@ export const updatePageController = async (
       });
     }
 
-    const pageUpdated = await updatePageByIdService({
+    await updatePageByIdService({
       prisma,
       id,
       data: {

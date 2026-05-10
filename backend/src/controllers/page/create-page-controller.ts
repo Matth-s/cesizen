@@ -10,8 +10,15 @@ export const createPageController = async (
   request: FastifyRequestTypeBox<typeof createPageSchema>,
   reply: FastifyReply,
 ) => {
-  const { slug, content, title, description, imageUrl, isPublished } =
-    request.body;
+  const {
+    slug,
+    content,
+    title,
+    description,
+    imageUrl,
+    isPublished,
+    menuItemId,
+  } = request.body;
 
   const { prisma } = request.server;
 
@@ -31,6 +38,7 @@ export const createPageController = async (
       description: description ?? null,
       imageUrl: imageUrl ?? null,
       isPublished,
+      menuItemId,
     });
 
     return reply.status(201).send(page);

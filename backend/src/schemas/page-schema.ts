@@ -8,6 +8,7 @@ export const createPageSchema = {
     imageUrl: Type.Optional(Type.String()),
     slug: Type.String(),
     isPublished: Type.Boolean(),
+    menuItemId: Type.String(),
   }),
 };
 

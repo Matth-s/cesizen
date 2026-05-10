@@ -91,7 +91,7 @@ export const loginController = async (
       httpOnly: true,
       secure: false,
       sameSite: 'lax',
-      path: '/refresh',
+      path: '/',
       maxAge: 60 * 60 * 60,
     });
 

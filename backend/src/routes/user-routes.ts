@@ -3,10 +3,14 @@ import {
   FastifyReply,
   FastifyRequest,
 } from 'fastify';
-import { updatePasswordSchema } from '../schemas/user-schema';
+import {
+  deleteAccountSchema,
+  updatePasswordSchema,
+} from '../schemas/user-schema';
 import { updateUserPasswordController } from '../controllers/user-controller/index';
-import { Role } from '../generated/prisma/enums';
 import { getCUrrentUserController } from '../controllers/user-controller/index';
+import { deleteAccountController } from '../controllers/user-controller/delete-user-controller';
+import { logoutController } from '../controllers/user-controller/logout-controller';
 
 export const userRoutes: FastifyPluginAsync = async (fastify) => {
   fastify.get(
@@ -33,12 +37,19 @@ export const userRoutes: FastifyPluginAsync = async (fastify) => {
           });
         }
       },
-      preHandler: [
-        fastify.authenticate,
-        fastify.requireRole([Role.USER]),
-        fastify.csrfProtection,
-      ],
+      preHandler: [fastify.authenticate, fastify.csrfProtection],
     },
     updateUserPasswordController,
   );
+
+  fastify.post(
+    '/delete',
+    {
+      schema: deleteAccountSchema,
+      preHandler: [fastify.authenticate, fastify.csrfProtection],
+    },
+    deleteAccountController,
+  );
+
+  fastify.post('/logout', logoutController);
 };

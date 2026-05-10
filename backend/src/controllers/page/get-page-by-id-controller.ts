@@ -9,9 +9,10 @@ export const getPageByIdController = async (
 ) => {
   const { prisma } = request.server;
   const { id } = request.params;
+  const role = request.user?.role ?? null;
 
   try {
-    const existingPage = await getPageByIdService(prisma, id);
+    const existingPage = await getPageByIdService(prisma, id, !!role);
 
     if (!existingPage)
       return reply.code(404).send({

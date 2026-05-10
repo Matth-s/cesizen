@@ -6,6 +6,7 @@ import { manageAccountRoutes } from './manage-account-routes';
 import { quizRoutes } from './quiz-routes';
 import { pageRoutes } from './page-routes';
 import { menuRoutes } from './menu-routes';
+import { dashboardRoutes } from './dashboard-route';
 
 export default async function apiRoutes(fastify: FastifyInstance) {
   fastify.register(authRoutes, { prefix: '/authentication' });
@@ -14,4 +15,7 @@ export default async function apiRoutes(fastify: FastifyInstance) {
   fastify.register(quizRoutes, { prefix: '/quiz' });
   fastify.register(pageRoutes, { prefix: '/page' });
   fastify.register(menuRoutes, { prefix: '/menu' });
+  fastify.register(dashboardRoutes, {
+    prefix: '/dashboard',
+  });
 }

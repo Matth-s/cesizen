@@ -23,6 +23,12 @@ export const deleteUserSchema = {
   }),
 };
 
+export const deleteAccountSchema = {
+  body: Type.Object({
+    password: Type.String(),
+  }),
+};
+
 export const updatePasswordSchema = {
   body: Type.Object({
     password: Type.String({

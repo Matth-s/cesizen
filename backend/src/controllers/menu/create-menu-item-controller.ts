@@ -1,20 +1,33 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { ICreateMenuItem } from '../../schemas/menu-schema';
+import { FastifyRequestTypeBox } from '../../types/auth-request-type';
+import { createMenuItemSchema } from '../../schemas/menu-schema';
+import {
+  createMenuService,
+  existingMenuPathService,
+} from '../../services/menu-service';
 
 export const createMenuItemController = async (
-  request: FastifyRequest<{ Body: ICreateMenuItem }>,
+  request: FastifyRequestTypeBox<typeof createMenuItemSchema>,
+
   reply: FastifyReply,
 ) => {
-  const { label, path, order, pageId } = request.body;
+  const { prisma } = request.server;
 
-  const menuItem = await request.server.prisma.menuItem.create({
-    data: {
-      label,
-      path,
-      order,
-      pageId,
-    },
-  });
+  try {
+    const existingPath = await existingMenuPathService(
+      prisma,
+      request.body.path,
+    );
 
-  return reply.status(201).send(menuItem);
+    if (existingPath)
+      return reply.code(409).send({
+        error: 'Ce lien existe déjà',
+      });
+
+    await createMenuService(prisma, request.body);
+  } catch {
+    return reply.code(500).send({
+      error: 'Une erreur est survenue',
+    });
+  }
 };
