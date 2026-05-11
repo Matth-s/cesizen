@@ -1,33 +1,81 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import MockAdapter from 'axios-mock-adapter';
-import { loginApi } from '../login-api';
-import { api } from '@/lib/api-client';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { api } from "@/lib/api-client";
+import { registerApi } from "../register-api";
+import { loginApi } from "../login-api";
+import { confirmEmailApi } from "../confirm-email-api";
+import { forgotPasswordApi } from "../forgot-password-api";
+import { resetPasswordApi } from "../reset-password-api";
 
-describe('AuthApi', () => {
-  let mock: MockAdapter;
+vi.mock("@/lib/api-client", () => ({
+  api: {
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+  },
+}));
 
+describe("Authentication Workflow API", () => {
   beforeEach(() => {
-    mock = new MockAdapter(api);
+    vi.clearAllMocks();
   });
 
-  it('should return validated data on successful login', async () => {
+  it("registerApi devrait envoyer les données et valider la réponse", async () => {
+    const userData = {
+      email: "new@user.fr",
+      username: "NewUser",
+      password: "Password123!",
+      confirmPassword: "Password123!",
+    };
+    vi.mocked(api.post).mockResolvedValue({ data: { message: "Compte créé" } });
+
+    const result = await registerApi(userData);
+    expect(api.post).toHaveBeenCalledWith("/authentication/register", userData);
+    expect(result.message).toBe("Compte créé");
+  });
+
+  it("loginApi devrait retourner l’utilisateur et le message de succès", async () => {
+    const credentials = { email: "admin@cesi.fr", password: "Password123!" };
     const mockResponse = {
-      message: 'Logged in',
-      user: {
-        username: 'user',
-        role: 'USER',
-        csrfToken: 'token',
-      }
+      message: "Bienvenue",
+      user: { username: "Admin", role: "ADMIN", csrfToken: "csrf-123" },
+    };
+    vi.mocked(api.post).mockResolvedValue({ data: mockResponse });
+
+    const result = await loginApi(credentials);
+    expect(result.user?.role).toBe("ADMIN");
+  });
+
+  it("confirmEmailApi devrait valider le token via GET", async () => {
+    vi.mocked(api.get).mockResolvedValue({
+      data: { message: "Email confirmé" },
+    });
+
+    const result = await confirmEmailApi("token-test-123");
+    expect(api.get).toHaveBeenCalledWith(
+      "/authentication/confirm-email?token=token-test-123",
+    );
+    expect(result.message).toBe("Email confirmé");
+  });
+
+  it("resetPasswordApi devrait échouer si les mots de passe ne correspondent pas", async () => {
+    const formData = {
+      password: "Password123!",
+      confirmPassword: "DifferentPassword456!",
     };
 
-    mock.onPost('/authentication/login').reply(200, mockResponse);
-
-    const result = await loginApi({ email: 'test@example.com', password: 'password' });
-    expect(result).toEqual(mockResponse);
+    await expect(
+      resetPasswordApi({ formData: formData, token: "abc" }),
+    ).rejects.toThrow();
   });
 
-  it('should throw error on failure', async () => {
-    mock.onPost('/authentication/login').reply(401, { message: 'Unauthorized' });
-    await expect(loginApi({ email: 'test@example.com', password: 'p' })).rejects.toThrow();
+  it("forgotPasswordApi devrait envoyer l’email de récupération", async () => {
+    vi.mocked(api.post).mockResolvedValue({ data: { message: "Lien envoyé" } });
+
+    const result = await forgotPasswordApi({ email: "test@cesi.fr" });
+    expect(api.post).toHaveBeenCalledWith(
+      "/authentication/ask-reset-password",
+      { email: "test@cesi.fr" },
+    );
+    expect(result.message).toBe("Lien envoyé");
   });
 });

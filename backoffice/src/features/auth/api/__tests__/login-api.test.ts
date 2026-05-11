@@ -1,44 +1,59 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { loginApi } from '../login-api';
 import { api } from '@/lib/api-client';
 
-describe('LoginApi', () => {
-  let mock: MockAdapter;
+vi.mock('@/lib/api-client', () => ({
+  api: {
+    post: vi.fn(),
+  },
+}));
 
+describe('LoginApi', () => {
   beforeEach(() => {
-    mock = new MockAdapter(api);
+    vi.clearAllMocks();
   });
 
-  it('should return validated data on successful login', async () => {
+  it('devrait retourner les données utilisateur lors d’une connexion réussie', async () => {
     const mockResponse = {
       username: 'testuser',
       role: 'ADMIN',
       csrfToken: 'token123',
     };
 
-    mock.onPost('/authentication/admin/login').reply(200, mockResponse);
+    vi.mocked(api.post).mockResolvedValue({ data: mockResponse });
 
-    const result = await loginApi({ email: 'test@example.com', password: 'password' });
+    const result = await loginApi({
+      email: 'test@example.com',
+      password: 'password',
+    });
 
+    expect(api.post).toHaveBeenCalledWith(
+      '/authentication/admin/login',
+      {
+        email: 'test@example.com',
+        password: 'password',
+      },
+    );
     expect(result).toEqual(mockResponse);
   });
 
-  it('should throw an error on failed login', async () => {
-    mock.onPost('/authentication/admin/login').reply(401, { message: 'Unauthorized' });
+  it('devrait lever une erreur en cas d’identifiants incorrects (401)', async () => {
+    vi.mocked(api.post).mockRejectedValue(new Error('Unauthorized'));
 
-    await expect(loginApi({ email: 'test@example.com', password: 'wrong' })).rejects.toThrow('Unauthorized');
+    await expect(
+      loginApi({ email: 'test@example.com', password: 'wrong' }),
+    ).rejects.toThrow('Unauthorized');
   });
 
-  it('should throw an error if response data is invalid', async () => {
+  it('devrait lever une erreur si les données reçues sont invalides (Echec Zod)', async () => {
     const invalidResponse = {
       username: 'testuser',
-      // missing role and csrfToken
     };
 
-    mock.onPost('/authentication/admin/login').reply(200, invalidResponse);
+    vi.mocked(api.post).mockResolvedValue({ data: invalidResponse });
 
-    await expect(loginApi({ email: 'test@example.com', password: 'password' })).rejects.toThrow();
+    await expect(
+      loginApi({ email: 'test@example.com', password: 'password' }),
+    ).rejects.toThrow();
   });
 });
