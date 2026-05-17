@@ -11,6 +11,8 @@ import {
 export const getPageListApi = async (): Promise<IPageArray> => {
   const { data } = await api.get('/page');
 
+  console.log(data);
+
   const validatedData = pageArraySchema.parse(data);
 
   return validatedData;

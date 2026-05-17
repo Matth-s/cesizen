@@ -51,11 +51,11 @@ export const loginController = async (
         emailConfirmationToken,
       });
 
-      await sendConfirmEmail({
-        email: existingUser.email,
-        username: existingUser.username,
-        link: `cesizen://confirm?token=${emailConfirmationToken} `,
-      });
+      // await sendConfirmEmail({
+      //   email: existingUser.email,
+      //   username: existingUser.username,
+      //   link: `cesizen://confirm?token=${emailConfirmationToken} `,
+      // });
 
       return reply.code(201).send({
         message: 'Un email de confirmation vous a été envoyé',

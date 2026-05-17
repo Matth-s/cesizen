@@ -4,6 +4,10 @@ const config: CapacitorConfig = {
   appId: "com.example.app",
   appName: "cesizen",
   webDir: "dist",
+   server: {
+    androidScheme: 'http',
+    cleartext: true,
+  },
   plugins: {
     Keyboard: {
       resize: "body",

@@ -58,7 +58,7 @@ const DeleteUserDialog = ({ user }: DeleteUserDialogProps) => {
       );
       setIsOpen(false);
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.USERS, QUERY_KEY.STATS],
+        queryKey: [QUERY_KEY.USERS],
       });
     },
 

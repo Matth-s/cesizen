@@ -57,7 +57,7 @@ const CreateUserDialog = () => {
       toast.success("L'utilisateur a été crée avec succès");
       setIsOpen(false);
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.USERS, QUERY_KEY.STATS],
+        queryKey: [QUERY_KEY.USERS],
       });
       form.reset();
     },

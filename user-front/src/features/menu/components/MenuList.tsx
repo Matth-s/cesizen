@@ -32,7 +32,8 @@ const MenuList = ({ setIsOpen }: MenuListProps) => {
   if (error) {
     return (
       <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-        Une erreur est survenue lors du chargement du menu.
+        {JSON.stringify(error)}
+        {error.message.toString()}
       </div>
     );
   }

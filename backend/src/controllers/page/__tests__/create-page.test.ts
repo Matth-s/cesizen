@@ -64,7 +64,7 @@ describe('createPageController', () => {
 
     expect(mockReply.status).toHaveBeenCalledWith(400);
     expect(mockReply.send).toHaveBeenCalledWith({
-      message: 'Slug already exists',
+      message: 'Ce slug est déjà utilisé',
     });
 
     expect(saveSpy).not.toHaveBeenCalled();
