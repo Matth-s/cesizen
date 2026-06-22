@@ -9,7 +9,7 @@ import {
   userAdminSchema,
 } from '../schemas/user-schema';
 
-import { Role } from '../generated/prisma/enums';
+import { Role } from '@prisma/client';
 
 import {
   createAdminAccountController,

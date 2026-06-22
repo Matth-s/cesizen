@@ -1,8 +1,4 @@
-import {
-  Prisma,
-  PrismaClient,
-  User,
-} from '../generated/prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 
 export const createUser = async (
   prisma: PrismaClient,

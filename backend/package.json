@@ -3,15 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "npx prisma generate && node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "build": "prisma generate && tsc",
-    "start": "node dist/server.js"
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",

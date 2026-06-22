@@ -1,5 +1,4 @@
-import { Page, PrismaClient } from '../generated/prisma/client';
-import { PageUpdateInput } from '../generated/prisma/models';
+import { Page, PrismaClient } from '@prisma/client';
 
 export const getAllPageService = async (
   prisma: PrismaClient,
@@ -53,7 +52,7 @@ export const updatePageByIdService = async ({
 }: {
   prisma: PrismaClient;
   id: string;
-  data: PageUpdateInput;
+  data: Partial<Page>;
 }): Promise<Page> => {
   return await prisma.page.update({
     where: {

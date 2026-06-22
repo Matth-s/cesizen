@@ -1,5 +1,5 @@
 import { Type } from '@sinclair/typebox';
-import { Role } from '../generated/prisma/enums';
+import { Role } from '@prisma/client';
 
 export const userAdminSchema = {
   body: Type.Object({

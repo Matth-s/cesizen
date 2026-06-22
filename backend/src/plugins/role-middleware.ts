@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
-import { Role } from '../generated/prisma/enums';
+import { Role } from '@prisma/client';
 
 export default fp(async (fastify) => {
   fastify.decorate('requireRole', function (roles: Role[]) {

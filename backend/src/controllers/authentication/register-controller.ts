@@ -5,8 +5,7 @@ import { hashPassword } from '../../libs/bcrypt.js';
 import { createUser, getUserByEmail } from '../../services/user';
 import { v4 as uuidv4 } from 'uuid';
 import { getEmailExpiration } from '../../constants/expiration-date';
-import { Role } from '../../generated/prisma/enums';
-import { sendConfirmEmail } from '../../libs/mail';
+import { Role } from '@prisma/client';
 
 export const registerController = async (
   request: FastifyRequestTypeBox<typeof registerSchema>,
@@ -27,6 +26,7 @@ export const registerController = async (
     }
 
     const hashedPassword = await hashPassword(password);
+
     const emailConfirmationToken = uuidv4();
 
     const { email: emailSaved } = await createUser(

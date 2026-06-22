@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import { Role } from '../generated/prisma/enums';
+import { Role } from '@prisma/client';
 import { createPageController } from '../controllers/page/create-page-controller';
 import { getAllPagesController } from '../controllers/page/get-all-pages-controller';
 import { getPublishedPagesController } from '../controllers/page/get-published-pages-controller';

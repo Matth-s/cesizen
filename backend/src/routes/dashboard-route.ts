@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import { Role } from '../generated/prisma/enums';
+import { Role } from '@prisma/client';
 import { getDashBoardStatsController } from '../controllers/dashboard/get-dashboard-stats';
 
 export const dashboardRoutes: FastifyPluginAsync = async (

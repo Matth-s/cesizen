@@ -1,8 +1,4 @@
-import {
-  MenuItem,
-  Prisma,
-  PrismaClient,
-} from '../generated/prisma/client';
+import { MenuItem, Prisma, PrismaClient } from '@prisma/client';
 
 export const createMenuService = async (
   prisma: PrismaClient,

@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import { Role } from '../generated/prisma/enums';
+import { Role } from '@prisma/client';
 import { createMenuItemController } from '../controllers/menu/create-menu-item-controller';
 import { getAllMenuItemsController } from '../controllers/menu/get-all-menu-items-controller';
 import { updateMenuItemController } from '../controllers/menu/update-menu-item-controller';

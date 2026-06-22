@@ -1,5 +1,4 @@
-import { PrismaClient, Quiz } from '../generated/prisma/client';
-import { updateDiagnosticWithAnswerSchema } from '../schemas/quiz-schema';
+import { PrismaClient } from '@prisma/client';
 import {
   IQuizWithAnswer,
   IQuizWithAnswerCount,

@@ -6,7 +6,7 @@ import {
   updateDiagnosticWithAnswerSchema,
 } from '../schemas/quiz-schema';
 import { getQuizResultController } from '../controllers/quiz/get-quiz-result-controller';
-import { Role } from '../generated/prisma/enums';
+import { Role } from '@prisma/client';
 import { getAllQuizController } from '../controllers/quiz/get-all-quiz-controller';
 import { getQuizByIdController } from '../controllers/quiz/get-quiz-by-id';
 import { updateQuizByIdController } from '../controllers/quiz/update-quiz-by-id-controller';
