@@ -3,5 +3,8 @@ import rateLimit from '@fastify/rate-limit';
 import { FastifyInstance } from 'fastify';
 
 export default fp(async (fastify: FastifyInstance) => {
-  fastify.register(rateLimit);
+  fastify.register(rateLimit, {
+    max: 1000000,
+    timeWindow: '1 minute',
+  });
 });
