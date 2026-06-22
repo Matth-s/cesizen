@@ -24,6 +24,7 @@ import DiagnosticPage from "./pages/(main)/DiagnosticPage";
 import NotFoundPage from "./pages/(main)/NotFoundPage";
 import DynamicPageContent from "./pages/(main)/DynamicPageContent";
 import { setCsrfToken } from "./lib/api-client";
+import { Capacitor } from "@capacitor/core";
 
 const App = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -82,7 +83,9 @@ const App = () => {
       });
     };
 
-    setupKeyboard();
+    if (Capacitor.isNativePlatform()) {
+      setupKeyboard();
+    }
 
     return () => {
       listener?.remove();
@@ -104,7 +107,9 @@ const App = () => {
       });
     };
 
-    setupStatusBar();
+    if (Capacitor.isNativePlatform()) {
+      setupStatusBar();
+    }
   }, []);
 
   if (isPending) return;

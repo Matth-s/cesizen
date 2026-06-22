@@ -26,7 +26,8 @@ export const updateMenuApi = async (
   await api.put(`/menu/${formData.id}`, formData);
 };
 
-export const deleteMenuItemApi = async (id: string) => {
-  const response = await api.delete(`/menu/${id}`);
-  return response.data;
+export const deleteMenuItemApi = async (
+  id: string,
+): Promise<void> => {
+  await api.delete(`/menu/${id}`);
 };

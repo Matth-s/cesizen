@@ -51,7 +51,7 @@ const CreateMenuForm = () => {
     onSuccess() {
       toast.success('Le menu a été créé avec succès');
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.MENUS, QUERY_KEY.STATS],
+        queryKey: [QUERY_KEY.MENUS],
       });
       form.reset();
     },

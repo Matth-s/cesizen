@@ -41,11 +41,11 @@ export const registerController = async (
       },
     );
 
-    await sendConfirmEmail({
-      email: emailSaved,
-      username,
-      link: `cesizen://confirm?token=${emailConfirmationToken} `,
-    });
+    // await sendConfirmEmail({
+    //   email: emailSaved,
+    //   username,
+    //   link: `cesizen://confirm?token=${emailConfirmationToken} `,
+    // });
 
     return reply.code(201).send({
       message: `Un email à été envoyé à ${emailSaved}`,

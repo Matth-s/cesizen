@@ -1,35 +1,76 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import MockAdapter from 'axios-mock-adapter';
-import { getDynamicPageApi, getDynamicPageByIdApi } from '../get-dynamic-page-api';
-import { api } from '@/lib/api-client';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { api } from "@/lib/api-client";
+import {
+  getDynamicPageApi,
+  getDynamicPageByIdApi,
+} from "@/features/dynamic-page/api/get-dynamic-page-api";
 
-describe('DynamicPageApi', () => {
-  let mock: MockAdapter;
+vi.mock("@/lib/api-client", () => ({
+  api: {
+    get: vi.fn(),
+  },
+}));
 
+describe("Dynamic Pages API", () => {
   beforeEach(() => {
-    mock = new MockAdapter(api);
+    vi.clearAllMocks();
   });
 
-  const mockPage = {
-    id: 'p1',
-    title: 'Title',
-    description: 'Desc',
-    content: 'Content',
-    imageUrl: 'img',
-    slug: 'slug',
-    isPublished: true,
-    createdAt: '2023-01-01',
-  };
+  it("getDynamicPageApi devrait retourner un tableau de pages publiées validé", async () => {
+    const mockPages = [
+      {
+        id: "page-1",
+        title: "Titre Dynamique",
+        description: "Ma description",
+        content: "<p>Contenu</p>",
+        imageUrl: "http://image.jpg",
+        slug: "titre-dynamique",
+        isPublished: true,
+        createdAt: "2024-05-11",
+      },
+    ];
 
-  it('should return a list of pages', async () => {
-    mock.onGet('/page/published/menu-1').reply(200, [mockPage]);
-    const result = await getDynamicPageApi('menu-1');
-    expect(result).toEqual([mockPage]);
+    vi.mocked(api.get).mockResolvedValue({ data: mockPages });
+
+    const result = await getDynamicPageApi("menu-id-123");
+
+    expect(api.get).toHaveBeenCalledWith("/page/published/menu-id-123");
+    expect(result).toHaveLength(1);
+    expect(result[0].slug).toBe("titre-dynamique");
   });
 
-  it('should return a single page by id', async () => {
-    mock.onGet('/page/by-id/p1').reply(200, mockPage);
-    const result = await getDynamicPageByIdApi('p1');
-    expect(result).toEqual(mockPage);
+  it("getDynamicPageByIdApi devrait retourner une page unique complète", async () => {
+    const mockPage = {
+      id: "page-1",
+      title: "Focus Article",
+      description: "Desc",
+      content: "Contenu",
+      imageUrl: "img.png",
+      slug: "focus-article",
+      isPublished: true,
+      createdAt: "2024-05-11",
+    };
+
+    vi.mocked(api.get).mockResolvedValue({ data: mockPage });
+
+    const result = await getDynamicPageByIdApi("page-1");
+
+    expect(api.get).toHaveBeenCalledWith("/page/by-id/page-1");
+    expect(result.title).toBe("Focus Article");
+  });
+
+  it("devrait échouer si des champs obligatoires sont manquants (ex: imageUrl)", async () => {
+    const invalidPage = {
+      id: "page-1",
+      title: "Titre",
+      content: "Contenu",
+      slug: "titre",
+      isPublished: true,
+      createdAt: "2024-05-11",
+    };
+
+    vi.mocked(api.get).mockResolvedValue({ data: invalidPage });
+
+    await expect(getDynamicPageByIdApi("page-1")).rejects.toThrow();
   });
 });

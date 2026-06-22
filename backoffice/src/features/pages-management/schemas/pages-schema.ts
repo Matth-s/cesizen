@@ -9,7 +9,7 @@ export const pageObjectSchema = z.object({
   slug: z.string(),
   isPublished: z.boolean(),
   createdAt: z.string(),
-  menuItemId: z.string(),
+  menuItemId: z.string().nullable(),
 });
 
 export const createPageSchema = z.object({
@@ -23,7 +23,7 @@ export const createPageSchema = z.object({
   imageUrl: z.string().optional(),
   slug: z.string(),
   isPublished: z.boolean(),
-  menuItemId: z.string().min(1, {
+  menuItemId: z.string().trim().min(1, {
     error: 'Veuillez sélectionner le lien de la page',
   }),
 });
@@ -41,9 +41,12 @@ export const updatePageSchema = z.object({
   isPublished: z.boolean(),
   id: z.string(),
   createdAt: z.string(),
-  menuItemId: z.string().min(1, {
-    error: 'Veuillez sélectionner le lien de la page',
-  }),
+  menuItemId: z
+    .string()
+    .min(1, {
+      error: 'Veuillez sélectionner le lien de la page',
+    })
+    .nullable(),
 });
 
 export const pageArraySchema = z.array(pageObjectSchema);

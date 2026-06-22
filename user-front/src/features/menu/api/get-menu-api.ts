@@ -7,13 +7,3 @@ export const getMenuItemsApi = async (): Promise<IMenuArray> => {
 
   return validatedData;
 };
-
-export const getPageBySlugApi = async (slug: string) => {
-  const response = await api.get(`/page/${slug}`);
-  return response.data;
-};
-
-export const getPagesApi = async () => {
-  const response = await api.get("/page/published");
-  return response.data;
-};

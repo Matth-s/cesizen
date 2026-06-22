@@ -30,11 +30,11 @@ export const askResetPasswordController = async (
       resetPasswordToken,
     });
 
-    await sendResetPasswordEmail({
-      email: existingUser.email,
-      username: existingUser.username,
-      link: `cesizen://reset?token=${resetPasswordToken} `,
-    });
+    // await sendResetPasswordEmail({
+    //   email: existingUser.email,
+    //   username: existingUser.username,
+    //   link: `cesizen://reset?token=${resetPasswordToken} `,
+    // });
 
     return reply.code(200).send({
       message: 'Un email a été envoyé',

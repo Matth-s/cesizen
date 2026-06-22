@@ -158,7 +158,7 @@ const UpdatePageForm = ({ page }: UpdatePageFormProps) => {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Lien de la page</FieldLabel>
                 <SelectMenuId
-                  value={field.value}
+                  value={field.value ?? undefined}
                   onChange={field.onChange}
                 />
                 {fieldState.invalid && (

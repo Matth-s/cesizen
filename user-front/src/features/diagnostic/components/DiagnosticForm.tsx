@@ -19,19 +19,28 @@ import ChoiceDiagCard from "./ChoiceDiagCard";
 import DiagnosticProgressStatus from "./DiagnosticProgressStatus";
 import { useMutation } from "@tanstack/react-query";
 import { postDiagnosticApi } from "../api/post-diagnostic-api";
+import FormErrorMessage from "@/components/FormError";
 
 type DiagnosticFormProps = {
+  setShowForm: (value: boolean) => void;
+  setResult: (value: number) => void;
   answers: answerType[];
   id: string;
 };
 
-const DiagnosticForm = ({ answers, id }: DiagnosticFormProps) => {
+const DiagnosticForm = ({
+  setShowForm,
+  setResult,
+  answers,
+  id,
+}: DiagnosticFormProps) => {
   const {
     currentAnswer,
     currentIndex,
     isLastAnswer,
     handleNextAnswer,
     handlePrevAnswer,
+    setCurrentIndex,
   } = useDiagnostic(answers);
 
   const form = useForm<postDiagnosticType>({
@@ -47,7 +56,15 @@ const DiagnosticForm = ({ answers, id }: DiagnosticFormProps) => {
     resolver: zodResolver(postDiagnosticSchema),
   });
 
-  const { watch, setValue, handleSubmit } = form;
+  const {
+    watch,
+    setValue,
+    handleSubmit,
+    formState: {
+      errors: { root },
+    },
+    setError,
+  } = form;
 
   const currentValue = watch(`answers.${currentIndex}.value`);
 
@@ -59,10 +76,23 @@ const DiagnosticForm = ({ answers, id }: DiagnosticFormProps) => {
     mutationFn: postDiagnosticApi,
 
     onSuccess(data) {
-      console.log(data);
+      setShowForm(false);
+      setResult(data.result);
+
+      form.reset();
+      setCurrentIndex(0);
     },
 
-    onError() {},
+    onError(err) {
+      let error =
+        "Une erreur est survenue lors de la soumission du diagnostic.";
+
+      if (err instanceof Error) {
+        error = err.message;
+      }
+
+      setError("root", { message: error });
+    },
   });
 
   const handleFormSubmit = (diag: postDiagnosticType) => {
@@ -100,6 +130,8 @@ const DiagnosticForm = ({ answers, id }: DiagnosticFormProps) => {
                 onClick={() => handleSelect(false)}
               />
             </div>
+
+            <FormErrorMessage message={root?.message} />
 
             {isLastAnswer ? (
               <SubmitButton

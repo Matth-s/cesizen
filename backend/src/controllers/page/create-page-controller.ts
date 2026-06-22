@@ -28,7 +28,7 @@ export const createPageController = async (
     if (existingPage) {
       return reply
         .status(400)
-        .send({ message: 'Slug already exists' });
+        .send({ message: 'Ce slug est déjà utilisé' });
     }
 
     const page = await savePageService(prisma, {

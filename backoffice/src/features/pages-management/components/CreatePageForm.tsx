@@ -39,6 +39,7 @@ const CreatePageForm = () => {
       imageUrl: '',
       slug: '',
       isPublished: true,
+      menuItemId: '',
     },
     resolver: zodResolver(createPageSchema),
   });
@@ -71,7 +72,7 @@ const CreatePageForm = () => {
     onSuccess() {
       toast.success('La page à été crée avec succès');
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.PAGES, QUERY_KEY.STATS],
+        queryKey: [QUERY_KEY.PAGES],
       });
       navigate('/pages');
     },

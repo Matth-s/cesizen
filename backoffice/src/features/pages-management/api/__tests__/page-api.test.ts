@@ -1,61 +1,90 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import MockAdapter from 'axios-mock-adapter';
-import { getPageListApi, createPageApi, getPagePageById } from '../page-api';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { api } from '@/lib/api-client';
+import {
+  getPageListApi,
+  createPageApi,
+  getPagePageById,
+  deletePageApi,
+} from '../page-api';
 
-describe('PageApi', () => {
-  let mock: MockAdapter;
+vi.mock('@/lib/api-client', () => ({
+  api: {
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
+  },
+}));
 
+describe('Pages API', () => {
   beforeEach(() => {
-    mock = new MockAdapter(api);
+    vi.clearAllMocks();
   });
 
-  const mockPage = {
-    id: '1',
-    title: 'Test Page',
-    content: 'Content',
-    slug: 'test-page',
-    isPublished: true,
-    createdAt: '2023-01-01',
-    menuItemId: 'menu-1',
-  };
+  it('getPageListApi devrait retourner un tableau de pages validé par Zod', async () => {
+    const mockPages = [
+      {
+        id: 'p1',
+        title: 'Gérer son stress',
+        content: 'Contenu détaillé...',
+        slug: 'gerer-son-stress',
+        isPublished: true,
+        createdAt: '2024-05-10',
+        menuItemId: 'm1',
+      },
+    ];
 
-  it('should return a list of pages', async () => {
-    mock.onGet('/page').reply(200, [mockPage]);
+    vi.mocked(api.get).mockResolvedValue({ data: mockPages });
 
     const result = await getPageListApi();
-
-    expect(result).toEqual([mockPage]);
+    expect(result).toHaveLength(1);
+    expect(result[0].title).toBe('Gérer son stress');
   });
 
-  it('should create a page', async () => {
+  it('createPageApi devrait envoyer les données de la page au serveur', async () => {
     const newPage = {
-      title: 'New Page',
-      content: 'Content',
-      slug: 'new-page',
+      title: 'Nouvelle Page',
+      content: 'Contenu...',
+      slug: 'nouvelle-page',
       isPublished: false,
-      menuItemId: 'menu-1',
+      menuItemId: 'm1',
     };
 
-    mock.onPost('/page').reply(200);
+    vi.mocked(api.post).mockResolvedValue({ status: 201 });
 
     await createPageApi(newPage);
-
-    expect(mock.history.post.length).toBe(1);
-    expect(JSON.parse(mock.history.post[0].data)).toEqual(newPage);
+    expect(api.post).toHaveBeenCalledWith('/page', newPage);
   });
 
-  it('should get a page by id', async () => {
-    mock.onGet('/page/by-id/1').reply(200, mockPage);
+  it('getPagePageById devrait retourner une page unique validée', async () => {
+    const mockPage = {
+      id: 'p1',
+      title: 'Titre',
+      content: 'Corps',
+      slug: 'titre',
+      isPublished: true,
+      createdAt: '2024-05-10',
+      menuItemId: 'm1',
+    };
 
-    const result = await getPagePageById('1');
+    vi.mocked(api.get).mockResolvedValue({ data: mockPage });
 
-    expect(result).toEqual(mockPage);
+    const result = await getPagePageById('p1');
+    expect(api.get).toHaveBeenCalledWith('/page/by-id/p1');
+    expect(result.id).toBe('p1');
   });
 
-  it('should throw error if validation fails', async () => {
-    mock.onGet('/page/by-id/1').reply(200, { invalid: 'data' });
+  it('getPagePageById devrait échouer si le contenu est manquant (Zod)', async () => {
+    const invalidPage = { id: 'p1', title: 'Sans contenu' };
+    vi.mocked(api.get).mockResolvedValue({ data: invalidPage });
 
-    await expect(getPagePageById('1')).rejects.toThrow();
+    await expect(getPagePageById('p1')).rejects.toThrow();
+  });
+
+  it('deletePageApi devrait appeler la bonne route de suppression', async () => {
+    vi.mocked(api.delete).mockResolvedValue({ status: 200 });
+
+    await deletePageApi('p1');
+    expect(api.delete).toHaveBeenCalledWith('/page/p1');
   });
 });

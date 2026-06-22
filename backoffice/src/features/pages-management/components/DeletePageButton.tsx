@@ -27,7 +27,7 @@ const DeletePageButton = ({ pageId }: DeletePageButtonProps) => {
     mutationFn: deletePageApi,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.PAGES, QUERY_KEY.STATS],
+        queryKey: [QUERY_KEY.PAGES],
       });
       toast.success('Page supprimée');
     },
