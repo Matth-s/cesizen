@@ -67,7 +67,7 @@ export const updateDiagnostic = async ({
   data: IQuizWithAnswer;
 }) => {
   const { title, answer } = data;
-  await prisma.quiz.update({
+  return await prisma.quiz.update({
     where: {
       id,
     },

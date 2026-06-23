@@ -3,8 +3,8 @@ import { MenuItem, Prisma, PrismaClient } from '@prisma/client';
 export const createMenuService = async (
   prisma: PrismaClient,
   data: Omit<MenuItem, 'id'>,
-): Promise<void> => {
-  await prisma.menuItem.create({
+): Promise<MenuItem> => {
+  return await prisma.menuItem.create({
     data,
   });
 };
@@ -36,8 +36,8 @@ export const getMenuItemService = async (
 export const updateMenuItemService = async (
   prisma: PrismaClient,
   data: MenuItem,
-): Promise<void> => {
-  await prisma.menuItem.update({
+): Promise<MenuItem> => {
+  return await prisma.menuItem.update({
     where: {
       id: data.id,
     },
