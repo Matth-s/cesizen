@@ -7,7 +7,7 @@ export const setCsrfToken = (token: string) => {
 };
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_ROUTE,
+  baseURL: 'http://api:3000/api',
   withCredentials: true,
 });
 
