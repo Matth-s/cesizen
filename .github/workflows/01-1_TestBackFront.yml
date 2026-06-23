@@ -1,7 +1,6 @@
 name: 01-1 - Integration - TEST
 
 on: workflow_call
-
 jobs:
   Backend:
     runs-on: ubuntu-latest
