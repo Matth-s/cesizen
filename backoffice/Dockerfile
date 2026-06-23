@@ -1,24 +1,13 @@
-FROM node:24-alpine AS deps
+FROM node:24-alpine
+
 WORKDIR /app
 
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package.json .
 
-FROM node:24-alpine AS builder
-WORKDIR /app
+RUN npm install
 
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
-
-FROM node:24-alpine AS runner
-WORKDIR /app
-
-ENV NODE_ENV=production
-
-RUN npm install -g serve
-
-COPY --from=builder /app/dist ./dist
 
 EXPOSE 5173
-CMD ["serve", "-s", "dist", "-l", "5173"]
+
+CMD [ "npm", "run", "dev" ]

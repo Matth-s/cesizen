@@ -9,11 +9,14 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       include: ['src/**/api/**/*.ts', 'src/features/**/api/*.ts'],
+
       exclude: [
         'node_modules/**',
         'src/assets/**',
         '**/*.config.ts',
         '**/*.d.ts',
+        'dist/',
+        'src/__test__/e2e/**',
       ],
     },
   },

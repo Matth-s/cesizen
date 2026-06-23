@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { api } from '@/lib/api-client';
-import { getDiagnosticById } from '../get-diagnostic-by-id-api';
-import { getQuizListApi } from '../get-quiz-list-api';
-import { updateDiagnosticApi } from '../update-diagnostic-api';
+import { getDiagnosticById } from '@/features/quiz/api/get-diagnostic-by-id-api';
+import { getQuizListApi } from '@/features/quiz/api/get-quiz-list-api';
+import { updateDiagnosticApi } from '@/features/quiz/api/update-diagnostic-api';
 
 vi.mock('@/lib/api-client', () => ({
   api: {

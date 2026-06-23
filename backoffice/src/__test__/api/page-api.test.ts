@@ -5,7 +5,7 @@ import {
   createPageApi,
   getPagePageById,
   deletePageApi,
-} from '../page-api';
+} from '../../features/pages-management/api/page-api';
 
 vi.mock('@/lib/api-client', () => ({
   api: {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getStatsApi } from '../get-stats-api';
+import { getStatsApi } from '@/features/dashboard/api/get-stats-api';
 import { api } from '@/lib/api-client';
 
 vi.mock('@/lib/api-client', () => ({
