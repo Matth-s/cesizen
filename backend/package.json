@@ -10,7 +10,8 @@
     "dev": "tsx watch src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "seed:e2e": "tsx prisma/e2e-seed.ts"
   },
   "keywords": [],
   "author": "",

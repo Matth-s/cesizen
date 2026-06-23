@@ -62,9 +62,13 @@ jobs:
         working-directory: backoffice
         run: npm ci
 
-      # - name: Install Playwright browsers
-      #   working-directory: backoffice
-      #   run: npx playwright install --with-deps
+      - name: Seed E2E Database
+        working-directory: backend
+        run: npm run seed:e2e
+
+      - name: Install Playwright browsers
+        working-directory: backoffice
+        run: npx playwright install --with-deps
 
       - name: Run unit tests and coverage
         working-directory: backoffice
@@ -89,17 +93,17 @@ jobs:
       - name: Test Frontend
         run: curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
 
-      # - name: Run E2E tests
-      #   working-directory: backoffice
-      #   run: npm run test:e2e
+      - name: Run E2E tests
+        working-directory: backoffice
+        run: npm run test:e2e
 
-      # - name: Upload Playwright Report
-      #   if: always()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: admin-playwright-report
-      #     path: backoffice/playwright-report
-      #     retention-days: 1
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-playwright-report
+          path: backoffice/playwright-report
+          retention-days: 1
 
   MobileApp:
     runs-on: ubuntu-latest
