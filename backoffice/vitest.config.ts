@@ -4,11 +4,14 @@ import path from 'path';
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'node',
+    environment: 'jsdom',
+
+    exclude: ['node_modules/**', 'dist/**', 'src/__test__/e2e/**'],
+
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      include: ['src/**/api/**/*.ts', 'src/features/**/api/*.ts'],
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/__test__/api/**'],
 
       exclude: [
         'node_modules/**',
