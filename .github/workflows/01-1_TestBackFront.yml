@@ -28,7 +28,7 @@ jobs:
         run: npx prisma generate
 
       - name: Run Tests
-        run: npm run test:cov
+        run: npm run test:coverage
 
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
@@ -39,6 +39,10 @@ jobs:
 
   Frontend:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backoffice
 
     env:
       VITE_PUBLIC_API_ROUTE: http://localhost:3000/api
@@ -52,33 +56,33 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: admin-frontend/package-lock.json
+          cache-dependency-path: backoffice/package-lock.json
 
       - name: Install dependencies
-        working-directory: admin-frontend
+        working-directory: backoffice
         run: npm ci
 
       - name: Install Playwright browsers
-        working-directory: admin-frontend
+        working-directory: backoffice
         run: npx playwright install --with-deps
 
       - name: Run unit tests and coverage
-        working-directory: admin-frontend
+        working-directory: backoffice
         run: npm run test:coverage
 
       - name: Fix coverage paths for Sonar
-        working-directory: admin-frontend
+        working-directory: backoffice
         run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
 
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
         with:
           name: admin-front-coverage-report
-          path: admin-frontend/coverage
+          path: backoffice/coverage
           retention-days: 1
 
       - name: Start frontend
-        working-directory: admin-frontend
+        working-directory: backoffice
         run: |
           nohup npm run dev -- --host 127.0.0.1 > frontend.log 2>&1 &
 
@@ -86,7 +90,7 @@ jobs:
         run: curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
 
       - name: Run E2E tests
-        working-directory: admin-frontend
+        working-directory: backoffice
         run: npm run test:e2e
 
       - name: Upload Playwright Report
@@ -94,11 +98,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: admin-playwright-report
-          path: admin-frontend/playwright-report
+          path: backoffice/playwright-report
           retention-days: 1
 
   MobileApp:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: user-front
 
     env:
       VITE_API_URL: http://localhost:3000/api
