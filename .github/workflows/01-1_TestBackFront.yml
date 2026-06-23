@@ -74,9 +74,9 @@ jobs:
         working-directory: backoffice
         run: npm run test:coverage
 
-      # - name: Fix coverage paths for Sonar
-      #   working-directory: backoffice
-      #   run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
+      - name: Fix coverage paths for Sonar
+        working-directory: backoffice
+        run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
 
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4

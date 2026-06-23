@@ -39,6 +39,7 @@ services:
       context: ./backoffice
       dockerfile: Dockerfile
     container_name: vite_backoffice
+
     restart: always
     ports:
       - '5173:5173'

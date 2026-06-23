@@ -11,7 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      include: ['src/__test__/api/**'],
+      include: ['src/**/*.{ts,tsx}'],
 
       exclude: [
         'node_modules/**',
@@ -20,6 +20,14 @@ export default defineConfig({
         '**/*.d.ts',
         'dist/',
         'src/__test__/e2e/**',
+        '**/components/**',
+        '**/pages/**',
+        '**/constants/**',
+        '**/lib/**',
+        '**/store/**',
+        'src/App.tsx',
+        'src/main.tsx',
+        '**/types/**',
       ],
     },
   },
