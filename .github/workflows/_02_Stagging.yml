@@ -1,4 +1,4 @@
-name: 02 - Stagging
+name: 02 - Staging
 
 on:
   push:
