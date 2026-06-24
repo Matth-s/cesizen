@@ -46,11 +46,11 @@ jobs:
     runs-on: ubuntu-latest
 
     defaults:
-    run:
-    working-directory: backoffice
+      run:
+        working-directory: backoffice
 
     env:
-    VITE_PUBLIC_API_ROUTE: http://127.0.0.1:3000/api
+      VITE_PUBLIC_API_ROUTE: http://127.0.0.1:3000/api
 
     steps:
       - name: Checkout
