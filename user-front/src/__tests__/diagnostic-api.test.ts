@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { api } from "@/lib/api-client";
-import { getDiagnosticApi } from "../get-diagnostic-api";
-import { postDiagnosticApi } from "../post-diagnostic-api";
+import { getDiagnosticApi } from "../features/diagnostic/api/get-diagnostic-api";
+import { postDiagnosticApi } from "../features/diagnostic/api/post-diagnostic-api";
 
 vi.mock("@/lib/api-client", () => ({
   api: {

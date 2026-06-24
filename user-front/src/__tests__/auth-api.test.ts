@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { api } from "@/lib/api-client";
-import { registerApi } from "../register-api";
-import { loginApi } from "../login-api";
-import { confirmEmailApi } from "../confirm-email-api";
-import { forgotPasswordApi } from "../forgot-password-api";
-import { resetPasswordApi } from "../reset-password-api";
+import { registerApi } from "../features/auth/api/register-api";
+import { loginApi } from "../features/auth/api/login-api";
+import { confirmEmailApi } from "../features/auth/api/confirm-email-api";
+import { forgotPasswordApi } from "../features/auth/api/forgot-password-api";
+import { resetPasswordApi } from "../features/auth/api/reset-password-api";
 
 vi.mock("@/lib/api-client", () => ({
   api: {

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { api } from "@/lib/api-client";
-import { getMenuItemsApi } from "../get-menu-api";
+import { getMenuItemsApi } from "@/features/menu/api/get-menu-api";
 
 vi.mock("@/lib/api-client", () => ({
   api: {

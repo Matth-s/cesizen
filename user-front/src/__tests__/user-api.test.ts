@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { api } from "@/lib/api-client";
-import { getCurrentUserApi } from "../get-current-user-api";
-import { updatePasswordUserApi } from "../update-password-user-api";
-import { deleteUserApi } from "../delete-user-api";
-import { logOutApi } from "../logout-api";
+import { getCurrentUserApi } from "@/features/users/api/get-current-user-api";
+import { updatePasswordUserApi } from "@/features/users/api/update-password-user-api";
+import { deleteUserApi } from "@/features/users/api/delete-user-api";
+import { logOutApi } from "@/features/users/api/logout-api";
 
 vi.mock("@/lib/api-client", () => ({
   api: {
