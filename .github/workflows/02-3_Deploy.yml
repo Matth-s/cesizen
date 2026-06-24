@@ -9,7 +9,7 @@ on:
 
 jobs:
   AzureServer:
-    environment: ${{ inputs.environment }} # Reçoit 'buze' depuis le fichier principal
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-22.04
 
     env:
