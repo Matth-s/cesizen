@@ -109,17 +109,13 @@ jobs:
         working-directory: user-front
         run: npm ci
 
-      # - name: Install Playwright browsers
-      #   working-directory: user-front
-      #   run: npx playwright install --with-deps
-
       - name: Run unit tests and coverage
         working-directory: user-front
         run: npm run test:coverage
 
-      # - name: Fix coverage paths for Sonar
-      #   working-directory: user-front
-      #   run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
+      - name: Fix coverage paths for Sonar
+        working-directory: user-front
+        run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
 
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
@@ -127,15 +123,3 @@ jobs:
           name: mobile-coverage-report
           path: user-front/coverage
           retention-days: 1
-
-      # - name: Run E2E tests
-      #   working-directory: user-front
-      #   run: npm run test:e2e
-
-      # - name: Upload Playwright Report
-      #   if: always()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: mobile-playwright-report
-      #     path: user-front/playwright-report
-      #     retention-days: 1
