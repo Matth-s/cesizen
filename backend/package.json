@@ -34,6 +34,9 @@
     "typebox": "^1.1.6",
     "uuid": "^14.0.0"
   },
+  "resolutions": {
+    "esbuild": "^0.25.0"
+  },
   "devDependencies": {
     "@testcontainers/postgresql": "^12.0.3",
     "@types/node": "^25.6.0",
