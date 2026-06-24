@@ -21,5 +21,7 @@ jobs:
     if: success()
     uses: ./.github/workflows/02-3_Deploy.yml
     with:
-      environment: 'buze'
+      environment: buze
     secrets: inherit
+    permissions:
+      id-token: write
