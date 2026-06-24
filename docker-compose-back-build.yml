@@ -21,15 +21,18 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    env_file:
-      - ./backend/.env
     container_name: fastify_api
     restart: always
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
     ports:
       - '3000:3000'
       - '5555:5555'
-    environment:
-      DATABASE_URL: 'postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public'
     depends_on:
       postgres-db:
         condition: service_healthy
+
+volumes:
+  postgres_data:
