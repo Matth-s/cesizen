@@ -62,6 +62,11 @@ jobs:
           docker compose -f docker-compose-back-build.yml up -d
           docker ps -a
 
+      - name: Debug API
+        run: |
+          docker logs fastify_api
+          curl -v http://127.0.0.1:3000
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
