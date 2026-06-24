@@ -39,7 +39,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: backoffice-coverage-report
+          name: admin-front-coverage-report
           path: backoffice/coverage
 
       - name: SonarQube Scan
@@ -62,8 +62,8 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: userfront-coverage-report
-          path: userfront/coverage
+          name: mobile-coverage-report
+          path: user-front/coverage
 
       - name: SonarQube Scan
         uses: SonarSource/sonarcloud-github-action@v3.1.0
