@@ -1,5 +1,7 @@
 name: 01-1 - Integration - TEST
+
 on: workflow_call
+
 jobs:
   Backend:
     runs-on: ubuntu-latest
@@ -25,8 +27,12 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
+      - name: Seed E2E Database
+        working-directory: backend
+        run: npm run seed:e2e
+
       - name: Run Tests
-        run: npm run test:cov
+        run: npm run test:coverage
 
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
@@ -36,7 +42,54 @@ jobs:
           retention-days: 1
 
   Frontend:
+    needs: [Backend]
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backoffice
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: backoffice/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests and coverage
+        run: npm run test:coverage
+
+      - name: Fix coverage paths for Sonar
+        run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
+
+      - name: Upload Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-front-coverage-report
+          path: backoffice/coverage
+          retention-days: 1
+
+      - name: Start frontend
+        run: |
+          nohup npm run dev -- --host 127.0.0.1 > frontend.log 2>&1 &
+
+      - name: Test Frontend
+        run: |
+          curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
+
+  MobileApp:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: user-front
 
     env:
       VITE_PUBLIC_API_ROUTE: http://localhost:3000/api
@@ -50,99 +103,23 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: admin-frontend/package-lock.json
+          cache-dependency-path: user-front/package-lock.json
 
       - name: Install dependencies
-        working-directory: admin-frontend
+        working-directory: user-front
         run: npm ci
 
-      - name: Install Playwright browsers
-        working-directory: admin-frontend
-        run: npx playwright install --with-deps
-
       - name: Run unit tests and coverage
-        working-directory: admin-frontend
+        working-directory: user-front
         run: npm run test:coverage
 
       - name: Fix coverage paths for Sonar
-        working-directory: admin-frontend
-        run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
-
-      - name: Upload Coverage Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: admin-front-coverage-report
-          path: admin-frontend/coverage
-          retention-days: 1
-
-      - name: Start frontend
-        working-directory: admin-frontend
-        run: |
-          nohup npm run dev -- --host 127.0.0.1 > frontend.log 2>&1 &
-
-      - name: Test Frontend
-        run: curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
-
-      - name: Run E2E tests
-        working-directory: admin-frontend
-        run: npm run test:e2e
-
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: admin-playwright-report
-          path: admin-frontend/playwright-report
-          retention-days: 1
-
-  MobileApp:
-    runs-on: ubuntu-latest
-
-    env:
-      VITE_API_URL: http://localhost:3000/api
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: mobile-app/package-lock.json
-
-      - name: Install dependencies
-        working-directory: mobile-app
-        run: npm ci
-
-      - name: Install Playwright browsers
-        working-directory: mobile-app
-        run: npx playwright install --with-deps
-
-      - name: Run unit tests and coverage
-        working-directory: mobile-app
-        run: npm run test:coverage
-
-      - name: Fix coverage paths for Sonar
-        working-directory: mobile-app
+        working-directory: user-front
         run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
 
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
         with:
           name: mobile-coverage-report
-          path: mobile-app/coverage
-          retention-days: 1
-
-      - name: Run E2E tests
-        working-directory: mobile-app
-        run: npm run test:e2e
-
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: mobile-playwright-report
-          path: mobile-app/playwright-report
+          path: user-front/coverage
           retention-days: 1

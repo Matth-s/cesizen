@@ -94,7 +94,7 @@ const LoginForm = () => {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Email</FieldLabel>
-                  <Input {...field} />
+                  <Input {...field} aria-label="email" />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -111,6 +111,7 @@ const LoginForm = () => {
                   <Input
                     {...field}
                     type={showPassword ? 'text' : 'password'}
+                    aria-label="password"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

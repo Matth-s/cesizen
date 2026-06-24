@@ -1,0 +1,9 @@
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './src/__test__/e2e',
+
+  use: {
+    baseURL: 'http://localhost:5173',
+  },
+});

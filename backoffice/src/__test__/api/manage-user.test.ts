@@ -1,10 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { api } from '@/lib/api-client';
-
-import { createUserApi } from '../api/create-user-api';
-import { deleteUserApi } from '../api/delete-user-api';
-import { getUserList } from '../api/get-user-list-api';
-import { updateUserApi } from '../api/update-user-api';
+import { createUserApi } from '@/features/manage-user/api/create-user-api';
+import { deleteUserApi } from '@/features/manage-user/api/delete-user-api';
+import { getUserList } from '@/features/manage-user/api/get-user-list-api';
+import { updateUserApi } from '@/features/manage-user/api/update-user-api';
 import { USER_ROLE } from '@/types/user-role';
 
 vi.mock('@/lib/api-client', () => ({

@@ -7,7 +7,6 @@ import {
 import { AuthOutlet } from './components/AuthOulet';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentUserApi } from './api/get-current-user-api';
 import { useEffect } from 'react';
 import { login } from './features/auth/auth.slice';
 import { setCsrfToken } from './lib/api-client';
@@ -26,6 +25,7 @@ import PageEditor from './pages/(main)/PageEditor';
 import MenuManagement from './pages/(main)/MenuManagement';
 import ViewUploadedPage from './pages/(main)/ViewUploadedPage';
 import { QUERY_KEY } from './types/query-key';
+import { getCurrentUserApi } from './api/get-current-user-api';
 
 const App = () => {
   const { user } = useAppSelector((state) => state.auth);

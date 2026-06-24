@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { logOutApi } from '../logout-api';
 import { api } from '@/lib/api-client';
+import { logOutApi } from '@/features/user/api/logout-api';
 
 // Mock de l'instance API
 vi.mock('@/lib/api-client', () => ({
