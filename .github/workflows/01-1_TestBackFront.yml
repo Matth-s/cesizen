@@ -46,11 +46,11 @@ jobs:
     runs-on: ubuntu-latest
 
     defaults:
-      run:
-        working-directory: backoffice
+    run:
+    working-directory: backoffice
 
     env:
-      VITE_PUBLIC_API_ROUTE: http://api:3000/api
+    VITE_PUBLIC_API_ROUTE: http://127.0.0.1:3000/api
 
     steps:
       - name: Checkout
@@ -60,12 +60,30 @@ jobs:
         run: |
           cd ..
           docker compose -f docker-compose-back-build.yml up -d
+
+      - name: Show containers
+        run: |
           docker ps -a
 
-      - name: Debug API
+      - name: Wait for backend
         run: |
-          docker logs fastify_api
-          curl -v http://127.0.0.1:3000
+          for i in {1..30}; do
+            if curl -f http://127.0.0.1:3000; then
+              echo "Backend ready"
+              exit 0
+            fi
+            sleep 2
+          done
+
+          echo "Backend failed to start"
+          docker logs fastify_api || true
+          docker logs postgres_backend || true
+          exit 1
+
+      - name: Debug API
+        if: always()
+        run: |
+          docker logs fastify_api || true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -75,19 +93,15 @@ jobs:
           cache-dependency-path: backoffice/package-lock.json
 
       - name: Install dependencies
-        working-directory: backoffice
         run: npm ci
 
       - name: Install Playwright browsers
-        working-directory: backoffice
         run: npx playwright install --with-deps
 
       - name: Run unit tests and coverage
-        working-directory: backoffice
         run: npm run test:coverage
 
       - name: Fix coverage paths for Sonar
-        working-directory: backoffice
         run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
 
       - name: Upload Coverage Artifact
@@ -98,15 +112,14 @@ jobs:
           retention-days: 1
 
       - name: Start frontend
-        working-directory: backoffice
         run: |
           nohup npm run dev -- --host 127.0.0.1 > frontend.log 2>&1 &
 
       - name: Test Frontend
-        run: curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
+        run: |
+          curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
 
       - name: Run E2E tests
-        working-directory: backoffice
         run: npm run test:e2e
 
       - name: Upload Playwright Report
