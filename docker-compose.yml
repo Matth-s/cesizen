@@ -1,60 +1,26 @@
 services:
   postgres-db:
     image: postgres:16-alpine
-    container_name: postgres_backend
-    restart: always
-    environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
-      - POSTGRES_DB=mydb
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U myuser -d mydb']
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    env_file:
-      - ./backend/.env
-    container_name: fastify_api
-    restart: always
+    image: ghcr.io/matth-s/cesizen-back
     ports:
       - '3000:3000'
       - '5555:5555'
-    environment:
-      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public'
     depends_on:
       postgres-db:
         condition: service_healthy
 
   backoffice:
-    build:
-      context: ./backoffice
-      dockerfile: Dockerfile
-    container_name: vite_backoffice
-    environment:
-      - VITE_PUBLIC_API_ROUTE=http://api:3000/api
-    restart: always
+    image: ghcr.io/matth-s/cesizen-front
     ports:
       - '5173:5173'
     depends_on:
       - api
 
   mobile-app:
-    build:
-      context: ./user-front
-      dockerfile: Dockerfile
+    image: ghcr.io/matth-s/cesizen-mobile
     ports:
       - '5174:5174'
     depends_on:
-      - mon-api
-
-volumes:
-  postgres_data:
+      - api
