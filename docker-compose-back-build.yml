@@ -23,10 +23,12 @@ services:
       dockerfile: Dockerfile
     container_name: fastify_api
     restart: always
-    env_file:
-      - ./backend/.env
     environment:
       DATABASE_URL: postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
+      JWT_ACCESS_SECRET: 22fc4026b90a45e36be20aed8f92eb0029f0d94e27afb24f4efedd8da
+      JWT_REFRESH_SECRET: 37cd7d8030a83d20
+      FRONTEND_URL: http://localhost:5173
+
     ports:
       - '3000:3000'
       - '5555:5555'
