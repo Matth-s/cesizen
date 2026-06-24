@@ -9,8 +9,14 @@ on:
 
 jobs:
   AzureServer:
-    environment: buze
+    environment: ${{ inputs.environment }} # Reçoit 'buze' depuis le fichier principal
     runs-on: ubuntu-22.04
+
+    # ─── LES PERMISSIONS DOIVENT ÊTRE ICI ───
+    permissions:
+      id-token: write
+      contents: read
+    # ──────
 
     env:
       ResourceGroupName: 'cesizen'

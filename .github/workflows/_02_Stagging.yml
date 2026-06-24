@@ -21,7 +21,5 @@ jobs:
     if: success()
     uses: ./.github/workflows/02-3_Deploy.yml
     with:
-      environment: ${{ github.ref_name == 'develop' && 'staging' || 'production' }}
+      environment: 'buze'
     secrets: inherit
-    permissions:
-      id-token: write
