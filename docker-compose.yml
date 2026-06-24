@@ -4,9 +4,9 @@ services:
     container_name: postgres_backend
     restart: always
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
     ports:
       - '5432:5432'
     volumes:
@@ -29,7 +29,7 @@ services:
       - '3000:3000'
       - '5555:5555'
     environment:
-      DATABASE_URL: 'postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public'
+      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public'
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -40,7 +40,7 @@ services:
       dockerfile: Dockerfile
     container_name: vite_backoffice
     environment:
-      - VITE_PUBLIC_API_ROUTE: http://api:3000/api
+      - VITE_PUBLIC_API_ROUTE=http://api:3000/api
     restart: always
     ports:
       - '5173:5173'

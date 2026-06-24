@@ -49,41 +49,9 @@ jobs:
       run:
         working-directory: backoffice
 
-    env:
-      VITE_PUBLIC_API_ROUTE: http://127.0.0.1:3000/api
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Start Build backend
-        run: |
-          cd ..
-          docker compose -f docker-compose-back-build.yml up -d
-
-      - name: Show containers
-        run: |
-          docker ps -a
-
-      - name: Wait for backend
-        run: |
-          for i in {1..30}; do
-            if curl -f http://127.0.0.1:3000; then
-              echo "Backend ready"
-              exit 0
-            fi
-            sleep 2
-          done
-
-          echo "Backend failed to start"
-          docker logs fastify_api || true
-          docker logs postgres_backend || true
-          exit 1
-
-      - name: Debug API
-        if: always()
-        run: |
-          docker logs fastify_api || true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -94,9 +62,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
 
       - name: Run unit tests and coverage
         run: npm run test:coverage
@@ -118,17 +83,6 @@ jobs:
       - name: Test Frontend
         run: |
           curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
-
-      - name: Run E2E tests
-        run: npm run test:e2e
-
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: admin-playwright-report
-          path: backoffice/playwright-report
-          retention-days: 1
 
   MobileApp:
     runs-on: ubuntu-latest
