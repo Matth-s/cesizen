@@ -55,6 +55,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Start Build backend
+        run: |
+          cd ..
+          docker compose -f docker-compose-back-build.yml up -d
+          docker ps -a
+
+      - name: Sleep for 10 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '10s'
+
+      - name: test Backend Container
+        if: success()
+        run: curl http://127.0.0.1:3000
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
