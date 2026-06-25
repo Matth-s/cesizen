@@ -12,6 +12,7 @@ jobs:
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-22.04
 
+    # a verifier
     env:
       ResourceGroupName: 'cesizen'
       ResourceGroupLocation: 'polandCentral'
