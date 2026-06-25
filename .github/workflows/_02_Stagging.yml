@@ -7,9 +7,9 @@ on:
       - release/*
 
 jobs:
-  Build_Push_Docker:
-    uses: ./.github/workflows/z_Docker-Ghcr.yml
-    secrets: inherit
+  # Build_Push_Docker:
+  #   uses: ./.github/workflows/z_Docker-Ghcr.yml
+  #   secrets: inherit
 
   Trivy_Scan_Package:
     needs: Build_Push_Docker
@@ -23,5 +23,5 @@ jobs:
     with:
       environment: buze
     secrets: inherit
-    permissions:
-      id-token: write
+    # permissions:
+    #   id-token: write
