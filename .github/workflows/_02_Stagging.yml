@@ -12,7 +12,7 @@ jobs:
   #   secrets: inherit
 
   Trivy_Scan_Package:
-    needs: Build_Push_Docker
+    # needs: Build_Push_Docker
     uses: ./.github/workflows/02-2_TrivyScan.yml
     secrets: inherit
 
