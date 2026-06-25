@@ -14,7 +14,7 @@ jobs:
 
     env:
       ResourceGroupName: 'cesizen'
-      ResourceGroupLocation: 'francecentral'
+      ResourceGroupLocation: 'polandCentral'
 
     steps:
       - name: Azure Login
