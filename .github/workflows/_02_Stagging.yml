@@ -7,13 +7,12 @@ on:
       - release/*
 
 jobs:
-  # Build_Push_Docker:
-  #   uses: ./.github/workflows/z_Docker-Ghcr.yml
-
-  #   secrets: inherit
+  Build_Push_Docker:
+    uses: ./.github/workflows/z_Docker-Ghcr.yml
+    secrets: inherit
 
   Trivy_Scan_Package:
-    # needs: Build_Push_Docker
+    needs: Build_Push_Docker
     uses: ./.github/workflows/02-2_TrivyScan.yml
     secrets: inherit
 
@@ -21,8 +20,6 @@ jobs:
     needs: Trivy_Scan_Package
     if: success()
     uses: ./.github/workflows/02-3_Deploy.yml
-    with:
-      environment: buze
     secrets: inherit
-    # permissions:
-    #   id-token: write
+    permissions:
+      id-token: write

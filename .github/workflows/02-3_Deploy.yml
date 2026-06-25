@@ -1,19 +1,11 @@
 name: 02-3 - Deploy
 
-on:
-  workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
+on: workflow_call
+
 jobs:
   AzureServer:
-    environment: ${{ inputs.environment }}
+    environment: buze
     runs-on: ubuntu-22.04
-
-    permissions:
-      id-token: write
-      contents: read
 
     env:
       ResourceGroupName: 'cesizen'
