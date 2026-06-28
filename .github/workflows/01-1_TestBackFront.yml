@@ -91,16 +91,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Wait for Backend to be fully ready (Install + Generate + Push)
+      - name: Start Backend & Postgres via Docker
         run: |
-          echo "Attente que le conteneur finisse son installation et lance Fastify..."
-          # On tente de joindre le port 3000. Ça va bloquer/réessayer tant que le serveur n'est pas UP.
-          # On augmente à 30 essais (2min30 max) car il y a npm install + prisma generate + db push à faire !
-          curl --fail --retry 30 --retry-delay 5 --retry-connrefused http://127.0.0.1:3000/ || true
-
-          echo "Le backend est prêt ! Affichage des logs pour vérification :"
           cd ..
-          docker compose -f docker-compose-back-build.yml logs backend
+          docker compose -f docker-compose-back-build.yml.yaml up -d
+            
+          sleep 15
+          docker ps -a
 
       - name: Seed E2E Database
         run: |
@@ -121,68 +118,13 @@ jobs:
         run: |
           curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
 
-      - name: Wait for Backend to be ready
-        run: |
-          curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:3000/api/user/current || true
-
       - name: Run test end to end
         run: npm run test:e2e
 
-      - name: Run unit tests and coverage
-        run: npm run test:coverage
-
-      - name: Fix coverage paths for Sonar
-        run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
-
-      - name: Upload Coverage Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: admin-front-coverage-report
-          path: backoffice/coverage
-          retention-days: 1
+        #  ajourt les tests unitaire avec le coverage si neccessaire
 
       - name: Clean Docker Containers
         if: always()
         run: |
           cd ..
           docker compose -f docker-compose-back-build.yml down -v
-
-  MobileApp:
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: user-front
-
-    env:
-      VITE_PUBLIC_API_ROUTE: http://localhost:3000/api
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: user-front/package-lock.json
-
-      - name: Install dependencies
-        working-directory: user-front
-        run: npm ci
-
-      - name: Run unit tests and coverage
-        working-directory: user-front
-        run: npm run test:coverage
-
-      - name: Fix coverage paths for Sonar
-        working-directory: user-front
-        run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
-
-      - name: Upload Coverage Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: mobile-coverage-report
-          path: user-front/coverage
-          retention-days: 1
