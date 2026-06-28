@@ -99,6 +99,9 @@ jobs:
       - name: Install Playwright Browsers & Deps
         run: npx playwright install --with-deps
 
+      - name: Curl backend
+        run: curl http://localhost:3000/api/healt
+
       - name: Start frontend
         run: |
           nohup npm run dev -- --host 127.0.0.1 > frontend.log 2>&1 &

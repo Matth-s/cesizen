@@ -16,7 +16,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: process.env.GITHUB_ACTIONS
-          ? 'http://127.0.0.1:3000'
+          ? 'http://localhost:3000'
           : 'http://backend:3000',
         changeOrigin: true,
         secure: false,
