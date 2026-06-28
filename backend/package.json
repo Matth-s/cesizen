@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npx prisma generate && npx prisma db push && tsc -p tsconfig.json",
     "start": "npx prisma generate && node dist/server.js",
-    "dev": "npx prisma generate && npx prisma db push && npx prisma db seed && nodemon -L --exec tsx src/server.ts",
+    "dev": "npx prisma generate && npx prisma db push &&  nodemon -L --exec tsx src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
