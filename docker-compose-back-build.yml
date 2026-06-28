@@ -11,6 +11,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
       - NODE_ENV=development
+      - DISABLE_CSRF=true
     depends_on:
       postgres-db:
         condition: service_healthy
