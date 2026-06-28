@@ -127,10 +127,57 @@ jobs:
       - name: Run test end to end
         run: npm run test:e2e
 
-        #  ajourt les tests unitaire avec le coverage si neccessaire
+      - name: Run Tests
+        run: npm run test:coverage
+
+      - name: Upload Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-front-coverage-report
+          path: backend/coverage
+          retention-days: 1
 
       - name: Clean Docker Containers
         if: always()
         run: |
           cd ..
           docker compose -f docker-compose-back-build.yml down -v
+  MobileApp:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: user-front
+
+    env:
+      VITE_PUBLIC_API_ROUTE: http://localhost:3000/api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: user-front/package-lock.json
+
+      - name: Install dependencies
+        working-directory: user-front
+        run: npm ci
+
+      - name: Run unit tests and coverage
+        working-directory: user-front
+        run: npm run test:coverage
+
+      - name: Fix coverage paths for Sonar
+        working-directory: user-front
+        run: sed -i 's|SF:'$(pwd)'/|SF:|g' coverage/lcov.info
+
+      - name: Upload Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-coverage-report
+          path: user-front/coverage
+          retention-days: 1
