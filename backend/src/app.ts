@@ -15,7 +15,10 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(jwt);
   await fastify.register(rateLimit);
   await fastify.register(cookie);
-  await fastify.register(csrf);
+
+  if (process.env.DISABLE_CSRF == true) {
+    await fastify.register(csrf);
+  }
   await fastify.register(authMiddleware);
   await fastify.register(roleMiddleware);
 
