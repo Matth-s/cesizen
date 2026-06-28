@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './src/__test__/e2e',
 
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://127.0.0.1:5173',
     headless: true,
   },
 });
