@@ -1,12 +1,29 @@
 services:
+  backend:
+    image: node:24-alpine
+    working_dir: /app
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
+      - NODE_ENV=development
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
   postgres-db:
     image: postgres:16-alpine
     container_name: postgres_backend
     restart: always
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - '5432:5432'
     volumes:
@@ -16,25 +33,5 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
-  api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: fastify_api
-    restart: always
-    environment:
-      DATABASE_URL: postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
-      JWT_ACCESS_SECRET: 22fc4026b90a45e36be20aed8f92eb0029f0d94e27afb24f4efedd8da
-      JWT_REFRESH_SECRET: 37cd7d8030a83d20
-      FRONTEND_URL: http://localhost:5173
-
-    ports:
-      - '3000:3000'
-      - '5555:5555'
-    depends_on:
-      postgres-db:
-        condition: service_healthy
-
 volumes:
   postgres_data:

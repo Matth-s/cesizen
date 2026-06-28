@@ -1,4 +1,50 @@
 services:
+  frontend:
+    image: mcr.microsoft.com/playwright:v1.61.1-noble
+    working_dir: /app
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./backoffice:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev"
+
+    depends_on:
+      - backend
+
+  mobileApp:
+    image: mcr.microsoft.com/playwright:v1.61.1-noble
+    working_dir: /app
+    ports:
+      - '5174:5174'
+    volumes:
+      - ./user-front:/app
+      - /app/node_modules
+    command: sh -c "npm install && npx playwright install && npm run dev"
+
+    depends_on:
+      - backend
+
+  backend:
+    image: node:24-alpine
+    working_dir: /app
+    env_file:
+      - ./backend/.env
+
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
+      - NODE_ENV=development
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
   postgres-db:
     image: postgres:16-alpine
     container_name: postgres_backend
@@ -7,6 +53,7 @@ services:
       - POSTGRES_USER=myuser
       - POSTGRES_PASSWORD=mypassword
       - POSTGRES_DB=mydb
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - '5432:5432'
     volumes:
@@ -16,45 +63,5 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
-  api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    env_file:
-      - ./backend/.env
-    container_name: fastify_api
-    restart: always
-    ports:
-      - '3000:3000'
-      - '5555:5555'
-    environment:
-      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public'
-    depends_on:
-      postgres-db:
-        condition: service_healthy
-
-  backoffice:
-    build:
-      context: ./backoffice
-      dockerfile: Dockerfile
-    container_name: vite_backoffice
-    environment:
-      - VITE_PUBLIC_API_ROUTE=http://api:3000/api
-    restart: always
-    ports:
-      - '5173:5173'
-    depends_on:
-      - api
-
-  mobile-app:
-    build:
-      context: ./user-front
-      dockerfile: Dockerfile
-    ports:
-      - '5174:5174'
-    depends_on:
-      - api
-
 volumes:
   postgres_data:
