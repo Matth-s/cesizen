@@ -53,6 +53,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Start Backend & Postgres via Docker
+        run: |
+          cd ..
+          docker compose -f docker-compose-back-build.yml up -d
+          sleep 15
+          docker ps -a
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -62,14 +69,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Start Backend & Postgres via Docker
-        run: |
-          cd ..
-          docker compose -f docker-compose-back-build.yml up -d
-            
-          sleep 15
-          docker ps -a
 
       - name: Seed E2E Database
         run: |
@@ -101,15 +100,7 @@ jobs:
         with:
           name: admin-front-coverage-report
           path: backoffice/coverage
-          retention-days: 1
-
-      - name: Start frontend
-        run: |
-          nohup npm run dev -- --host 127.0.0.1 > frontend.log 2>&1 &
-
-      - name: Test Frontend
-        run: |
-          curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
+          retention-days: 1        curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
 
   MobileApp:
     runs-on: ubuntu-latest
