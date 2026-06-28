@@ -33,14 +33,12 @@ jobs:
 
       - name: Back Build Push
         uses: docker/build-push-action@v5
-        build-args: |
-          DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
-        env_file:
-          - .env
         with:
           context: backend
           push: true
           tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-back
+          build-args: |
+            DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
 
       - name: Front Build Push
         uses: docker/build-push-action@v5
