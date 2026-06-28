@@ -96,6 +96,9 @@ jobs:
           cd ..
           docker compose -f docker-compose-back-build.yml up -d
 
+          echo "=== On attend 45 secondes pour laisser le script dev tourner ==="
+          sleep 45
+
           echo "=== TOUS LES LOGS DU BACKEND (Regarde ici pour voir l'erreur) ==="
           docker compose -f docker-compose-back-build.yml logs backend
 
