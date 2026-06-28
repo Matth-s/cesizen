@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     env:
-      ResourceGroupName: 'cesizen'
+      ResourceGroupName: 'cesi'
       ResourceGroupLocation: 'spaincentral'
 
     steps:
