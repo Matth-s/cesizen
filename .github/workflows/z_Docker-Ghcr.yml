@@ -37,8 +37,6 @@ jobs:
           context: backend
           push: true
           tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-back
-          build-args: |
-            DATABASE_URL=postgresql://postgres:password@127.0.0.1:5432/mydb?schema=public
 
       - name: Front Build Push
         uses: docker/build-push-action@v5
