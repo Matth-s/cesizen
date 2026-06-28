@@ -6,6 +6,26 @@ jobs:
   Backend:
     runs-on: ubuntu-latest
 
+    services:
+      postgres-db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: mydb
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://myuser:mypassword@localhost:5432/mydb?schema=public
+
     defaults:
       run:
         working-directory: backend
@@ -27,6 +47,9 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
+      - name: Push prisma table to database
+        run: npx prisma db push
+
       - name: Seed E2E Database
         working-directory: backend
         run: npm run seed:e2e
@@ -44,7 +67,6 @@ jobs:
   Frontend:
     needs: [Backend]
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: backoffice
@@ -57,7 +79,6 @@ jobs:
         run: |
           cd ..
           docker compose -f docker-compose-back-build.yml up -d
-          sleep 15
           docker ps -a
 
       - name: Setup Node
@@ -65,7 +86,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: backoffice/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -89,18 +110,6 @@ jobs:
       - name: Run test end to end
         run: npm run test:e2e
 
-      - name: Show Frontend Vite Logs on Failure
-        if: failure()
-        run: cat frontend.log
-
-      - name: Upload Playwright Report
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: backoffice/playwright-report/
-          retention-days: 7
-
       - name: Run unit tests and coverage
         run: npm run test:coverage
 
@@ -112,7 +121,13 @@ jobs:
         with:
           name: admin-front-coverage-report
           path: backoffice/coverage
-          retention-days: 1        curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:5173
+          retention-days: 1
+
+      - name: Clean Docker Containers
+        if: always()
+        run: |
+          cd ..
+          docker compose -f docker-compose-back-build.yml down -v
 
   MobileApp:
     runs-on: ubuntu-latest
