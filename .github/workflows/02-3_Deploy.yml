@@ -37,7 +37,7 @@ jobs:
             adminUsername=${{secrets.AZURE_VM_LOGIN}}
             adminPasswordOrKey=${{secrets.AZURE_VM_PASSWORD}}
             vmName=vm-stagging
-            vmSize=Standard_B2s
+            vmSize=Standard_D2s_v3
 
       - name: Open Port on Security Group
         uses: azure/CLI@v2
