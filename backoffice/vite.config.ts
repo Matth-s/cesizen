@@ -14,13 +14,9 @@ export default defineConfig({
     host: true,
     port: 5173,
     proxy: {
-      '/api': {
-        target: process.env.GITHUB_ACTIONS
-          ? 'http://localhost:3000'
-          : 'http://backend:3000',
-        changeOrigin: true,
-        secure: false,
-      },
+      '/api': process.env.CI
+        ? 'http://127.0.0.1:3000'
+        : 'http://backend:3000',
     },
   },
 });
