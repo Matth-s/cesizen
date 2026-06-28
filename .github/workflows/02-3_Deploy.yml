@@ -9,6 +9,7 @@ jobs:
     env:
       ResourceGroupName: 'cesi'
       ResourceGroupLocation: 'spaincentral'
+      VmName: 'vm-stagging'
 
     steps:
       - name: Azure Login
@@ -18,16 +19,35 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Check if VM exists and Start it
+        id: check_vm
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            VM_EXISTS=$(az vm list --resource-group ${{ env.ResourceGroupName }} --query "[?name=='${{ env.VmName }}'].name" -o tsv 2>/dev/null || echo "")
+
+            if [ -n "$VM_EXISTS" ]; then
+              echo "La VM existe déjà dans le groupe '${{ env.ResourceGroupName }}'. Démarrage (Start/Wake up)..."
+              az vm start --resource-group ${{ env.ResourceGroupName }} --name ${{ env.VmName }}
+              echo "vm_exists=true" >> $GITHUB_OUTPUT
+            else
+              echo "La VM n'existe pas. Déploiement Bicep complet requis."
+              echo "vm_exists=false" >> $GITHUB_OUTPUT
+            fi
+
       - name: Azure CLI Resource Group
+        if: steps.check_vm.outputs.vm_exists == 'false'
         uses: azure/CLI@v2
         with:
           inlineScript: |
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
 
       - name: Checkout Bicep
+        if: steps.check_vm.outputs.vm_exists == 'false'
         uses: actions/checkout@v4
 
       - name: Azure Bicep Deploy
+        if: steps.check_vm.outputs.vm_exists == 'false'
         uses: azure/arm-deploy@v2
         with:
           resourceGroupName: ${{ env.ResourceGroupName }}
@@ -36,29 +56,26 @@ jobs:
           parameters: >
             adminUsername=${{secrets.AZURE_VM_LOGIN}}
             adminPasswordOrKey=${{secrets.AZURE_VM_PASSWORD}}
-            vmName=vm-stagging
+            vmName=${{ env.VmName }}
             vmSize=Standard_D2s_v3
 
       - name: Open Port on Security Group
+        if: steps.check_vm.outputs.vm_exists == 'false'
         uses: azure/CLI@v2
         with:
           inlineScript: |
-            az network nsg rule create --resource-group ${{env.ResourceGroupName}} --nsg-name SecGroupNet --name PortApi-3000 --priority 100 --direction Inbound --access Allow --protocol Tcp --destination-port-ranges 3000
-
-            az network nsg rule create --resource-group ${{env.ResourceGroupName}} --nsg-name SecGroupNet --name PortBackoffice-5173 --priority 101 --direction Inbound --access Allow --protocol Tcp --destination-port-ranges 5173
-
-            az network nsg rule create --resource-group ${{env.ResourceGroupName}} --nsg-name SecGroupNet --name PortMobile-5174 --priority 102 --direction Inbound --access Allow --protocol Tcp --destination-port-ranges 5174
+            az network nsg rule create --resource-group ${{env.ResourceGroupName}} --nsg-name SecGroupNet --name PortWeb-80 --priority 100 --direction Inbound --access Allow --protocol Tcp --destination-port-ranges 80
 
       - name: Get Public IP et créer règle
-        if: success()
         uses: azure/CLI@v2
         with:
           inlineScript: |
             #!/bin/bash
-            az vm show -d -g ${{env.ResourceGroupName}} -n vm-stagging --query publicIps -o tsv
-            echo "AZURE_VM_IP=$(az vm show -d -g ${{env.ResourceGroupName}} -n vm-stagging --query publicIps -o tsv)" >> $GITHUB_ENV
+            VM_IP=$(az vm show -d -g ${{env.ResourceGroupName}} -n ${{ env.VmName }} --query publicIps -o tsv)
+            echo "AZURE_VM_IP=$VM_IP" >> $GITHUB_ENV
 
       - name: Install Docker on VM
+        if: steps.check_vm.outputs.vm_exists == 'false'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{env.AZURE_VM_IP}}
@@ -67,18 +84,19 @@ jobs:
           password: ${{secrets.AZURE_VM_PASSWORD}}
           script: |
             curl -o install_docker.sh https://raw.githubusercontent.com/Base-Auto/scripts/refs/heads/main/install_docker_quick.sh
-            ls -al
             sudo bash ./install_docker.sh
 
-      - name: Update Compose File
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Update Production Files
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{env.AZURE_VM_IP}}
           port: ${{secrets.PORT}}
           username: ${{secrets.AZURE_VM_LOGIN}}
           password: ${{secrets.AZURE_VM_PASSWORD}}
-
-          source: './docker-compose.yml'
+          source: './docker-compose.prod.yml,./nginx.conf'
           target: '.'
 
       - name: Downcase Image Name
@@ -94,15 +112,17 @@ jobs:
           script: |
             echo ${{secrets.PAT_TOKEN}} | docker login ghcr.io -u ${{github.actor}} --password-stdin
 
+            # Déclaration des URLs d'images pour le compose
             echo MONO_PROJECT_BACK=ghcr.io/${{env.IMAGE_NAME_LOWER}}-back > .env
             echo MONO_PROJECT_FRONT=ghcr.io/${{env.IMAGE_NAME_LOWER}}-front >> .env
+            echo IMAGE_NAME_LOWER=${{env.IMAGE_NAME_LOWER}} >> .env
 
-            echo MARIADB_ROOT_PASSWORD = toor >> .env
-            echo MARIADB_DATABASE = ratp_foreach >> .env
-            echo MARIADB_USER = ratp_foreach >> .env
-            echo MARIADB_PASSWORD = ratp_foreach >> .env
+            echo AZURE_VM_IP=${{env.AZURE_VM_IP}} >> .env
+
+            echo DATABASE_URL="${{ secrets.SUPABASE_DATABASE_URL }}" >> .env
+            echo JWT_SECRET="${{ secrets.JWT_SECRET }}" >> .env
 
             docker pull ghcr.io/${{env.IMAGE_NAME_LOWER}}-back
             docker pull ghcr.io/${{env.IMAGE_NAME_LOWER}}-front
 
-            docker compose up -d
+            docker compose -f docker-compose.prod.yml up -d
