@@ -95,9 +95,15 @@ jobs:
         run: |
           cd ..
           docker compose -f docker-compose-back-build.yml up -d
-            
-          sleep 15
-          docker ps -a
+
+          echo "=== On attend 45 secondes pour laisser le script dev tourner ==="
+          sleep 45
+
+          echo "=== TOUS LES LOGS DU BACKEND (Regarde ici pour voir l'erreur) ==="
+          docker compose -f docker-compose-back-build.yml logs backend
+
+          echo "=== ESSAI DU CURL ==="
+          curl -v http://127.0.0.1:3000/ || true
 
       - name: Seed E2E Database
         run: |
