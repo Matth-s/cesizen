@@ -120,7 +120,9 @@ jobs:
             echo AZURE_VM_IP=${{env.AZURE_VM_IP}} >> .env
 
             echo DATABASE_URL="${{ secrets.SUPABASE_DATABASE_URL }}" >> .env
-            echo JWT_SECRET="${{ secrets.JWT_SECRET }}" >> .env
+            echo JWT_ACCESS_SECRET="${{ secrets.JWT_SECRET }}" >> .env
+            echo JWT_REFRESH_SECRET="${{ secrets.JWT_SECRET }}" >> .env
+            echo FRONTEND_URL="http://\${AZURE_VM_IP}" >> .env
 
             docker pull ghcr.io/${{env.IMAGE_NAME_LOWER}}-back
             docker pull ghcr.io/${{env.IMAGE_NAME_LOWER}}-front
