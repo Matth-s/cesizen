@@ -66,7 +66,7 @@ jobs:
       - name: Start Backend & Postgres via Docker
         run: |
           cd ..
-          docker compose -f docker-build-backend.yaml up -d
+          docker compose -f docker-compose-back-build.yaml up -d
             
           sleep 15
           docker ps -a
