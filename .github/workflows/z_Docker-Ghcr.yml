@@ -33,6 +33,8 @@ jobs:
 
       - name: Back Build Push
         uses: docker/build-push-action@v5
+        build-args: |
+          DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
         with:
           context: backend
           push: true
