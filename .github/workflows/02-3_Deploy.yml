@@ -124,7 +124,6 @@ jobs:
             echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
             echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
 
-
             docker pull ghcr.io/$IMAGE_NAME_LOWER-back
             docker pull ghcr.io/$IMAGE_NAME_LOWER-front
 
