@@ -18,6 +18,12 @@ services:
     image: ${MONO_PROJECT_BACK}
     container_name: fastify_api
     restart: always
+    environment:
+      # On passe la variable du fichier .env au conteneur
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - FRONTEND_URL=${AZURE_VM_IP}
     expose:
       - '3000'
     env_file:

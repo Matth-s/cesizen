@@ -109,22 +109,24 @@ jobs:
           port: ${{secrets.PORT}}
           username: ${{secrets.AZURE_VM_LOGIN}}
           password: ${{secrets.AZURE_VM_PASSWORD}}
+
+          envs: AZURE_VM_IP, IMAGE_NAME_LOWER
           script: |
             echo ${{secrets.PAT_TOKEN}} | docker login ghcr.io -u ${{github.actor}} --password-stdin
 
-            # Déclaration des URLs d'images pour le compose
-            echo MONO_PROJECT_BACK=ghcr.io/${{env.IMAGE_NAME_LOWER}}-back > .env
-            echo MONO_PROJECT_FRONT=ghcr.io/${{env.IMAGE_NAME_LOWER}}-front >> .env
-            echo IMAGE_NAME_LOWER=${{env.IMAGE_NAME_LOWER}} >> .env
+            echo "MONO_PROJECT_BACK=ghcr.io/$IMAGE_NAME_LOWER-back" > .env
+            echo "MONO_PROJECT_FRONT=ghcr.io/$IMAGE_NAME_LOWER-front" >> .env
+            echo "IMAGE_NAME_LOWER=$IMAGE_NAME_LOWER" >> .env
+            echo "AZURE_VM_IP=$AZURE_VM_IP" >> .env
+            echo "FRONTEND_URL=http://$AZURE_VM_IP" >> .env
 
-            echo AZURE_VM_IP=${{env.AZURE_VM_IP}} >> .env
 
-            echo DATABASE_URL="${{ secrets.SUPABASE_DATABASE_URL }}" >> .env
-            echo JWT_ACCESS_SECRET="${{ secrets.JWT_SECRET }}" >> .env
-            echo JWT_REFRESH_SECRET="${{ secrets.JWT_SECRET }}" >> .env
-            echo FRONTEND_URL="http://\${AZURE_VM_IP}" >> .env
+            echo "DATABASE_URL=${{ secrets.SUPABASE_DATABASE_URL }}" >> .env
+            echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
+            echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
 
-            docker pull ghcr.io/${{env.IMAGE_NAME_LOWER}}-back
-            docker pull ghcr.io/${{env.IMAGE_NAME_LOWER}}-front
+
+            docker pull ghcr.io/$IMAGE_NAME_LOWER-back
+            docker pull ghcr.io/$IMAGE_NAME_LOWER-front
 
             docker compose -f docker-compose.prod.yml up -d
