@@ -31,7 +31,7 @@ jobs:
               az vm start --resource-group ${{ env.ResourceGroupName }} --name ${{ env.VmName }}
               echo "vm_exists=true" >> $GITHUB_OUTPUT
             else
-              echo "La VM n'existe pas. Déploiement Bicep complet requis."
+              echo "La VM n'existe pas . Déploiement Bicep complet requis."
               echo "vm_exists=false" >> $GITHUB_OUTPUT
             fi
 
