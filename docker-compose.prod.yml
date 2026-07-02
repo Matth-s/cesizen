@@ -15,7 +15,7 @@ services:
       - mobile-app
 
   api:
-    image: ${MONO_PROJECT_BACK}
+    image: ${MONO_PROJECT_BACK}:latest
     container_name: fastify_api
     restart: always
     environment:
@@ -30,7 +30,7 @@ services:
       - .env
 
   backoffice:
-    image: ${MONO_PROJECT_FRONT}
+    image: ${MONO_PROJECT_FRONT}:latest
     container_name: vite_backoffice
     restart: always
     expose:
