@@ -120,6 +120,7 @@ jobs:
             echo "AZURE_VM_IP=$AZURE_VM_IP" >> .env
             echo "FRONTEND_URL=http://$AZURE_VM_IP" >> .env
 
+            echo DIRECT_URL=${{ secrets.SUPABASE_DIRECT_URL }} >> .env
             echo "DATABASE_URL=${{ secrets.SUPABASE_DATABASE_URL }}" >> .env
             echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
             echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
