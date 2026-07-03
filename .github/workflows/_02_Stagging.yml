@@ -23,3 +23,9 @@ jobs:
     secrets: inherit
     permissions:
       id-token: write
+
+  Zaproxy_Scan:
+    needs: [Deploy]
+    uses: ./.github/workflows/02-4_ZapScan.yml
+    permissions:
+      issues: write
