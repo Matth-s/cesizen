@@ -1,7 +1,7 @@
 name: 02-4 - Deploy - ZAP Scan
 
 on: workflow_call
-#    changer
+
 jobs:
   Back_Zap_Scan:
     runs-on: ubuntu-latest
@@ -15,6 +15,7 @@ jobs:
           fail_action: true
           artifact_name: 'back_zap_scan'
           issue_title: 'ZAP Back Scan Report'
+          cmd_options: '-p 8090'
 
   Front_Zap_Scan:
     runs-on: ubuntu-latest
@@ -27,3 +28,4 @@ jobs:
           fail_action: true
           artifact_name: 'front_zap_scan'
           issue_title: 'ZAP Front Scan Report'
+          cmd_options: '-p 8091'
