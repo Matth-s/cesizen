@@ -12,11 +12,11 @@ jobs:
         with:
           format: openapi
           target: 'http://68.221.72.147/api/documentation/json'
-          fail_action: false # Passé à false temporairement pour s'assurer que le scan va au bout sans bloquer sur une alerte de sécu
+          fail_action: false
           artifact_name: 'back_zap_scan'
           issue_title: 'ZAP Back Scan Report'
-          # On passe le port via les arguments du script python (-z)
           cmd_options: '-z "-config proxy.port=8090"'
+          config_file: '.zap/zap.conf'
 
   Front_Zap_Scan:
     runs-on: ubuntu-latest
@@ -26,8 +26,7 @@ jobs:
         uses: zaproxy/action-baseline@v0.14.0
         with:
           target: 'http://68.221.72.147:80'
-          fail_action: false # Idem, permet de valider que le scan fonctionne
+          fail_action: false
           artifact_name: 'front_zap_scan'
           issue_title: 'ZAP Front Scan Report'
-          # Syntaxe identique pour le script baseline
           cmd_options: '-z "-config proxy.port=8091"'

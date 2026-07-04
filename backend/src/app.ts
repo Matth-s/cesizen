@@ -9,7 +9,6 @@ import csrf from './plugins/csrf';
 import authMiddleware from './plugins/auth-middleware';
 import roleMiddleware from './plugins/role-middleware';
 import swaggerPlugin from './plugins/swagger';
-import fp from 'fastify-plugin';
 
 export default async function app(fastify: FastifyInstance) {
   await fastify.register(corsPlugin);
@@ -21,36 +20,6 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(authMiddleware);
   await fastify.register(roleMiddleware);
   await fastify.register(swaggerPlugin);
-
-  await fastify.register(
-    fp(async (instance) => {
-      // ON PASSE EN onRequest : Le tout premier cycle de vie de Fastify
-      instance.addHook('onRequest', async (request, reply) => {
-        // On récupère le body brut ou les paramètres de l'URL (ZAP attaque aussi via les queries)
-        const checkInputs = {
-          body: request.body,
-          query: request.query,
-          params: request.params,
-        };
-
-        const bodyString = JSON.stringify(checkInputs);
-
-        // La même regex ultra-agressive
-        const sqlAggressiveRegex = /(\b(AND|OR)\b)|'|--/i;
-
-        if (sqlAggressiveRegex.test(bodyString)) {
-          request.log.warn(
-            `[ZAP BLOCK] Injection bloquée en amont : ${bodyString}`,
-          );
-
-          return reply.code(400).send({
-            error: 'Bad Request',
-            message: 'Invalid input data structure.',
-          });
-        }
-      });
-    }),
-  );
 
   await fastify.register(apiRoutes, {
     prefix: '/api',
