@@ -24,12 +24,17 @@ export default async function app(fastify: FastifyInstance) {
   fastify.addHook('preValidation', async (request, reply) => {
     if (request.body && typeof request.body === 'object') {
       const bodyString = JSON.stringify(request.body);
-      const sqlKeywordsRegex = /\s+(OR|AND)\s+|'|--/g;
 
-      if (sqlKeywordsRegex.test(bodyString)) {
+      const sqlAggressiveRegex = /(\b(AND|OR)\b)|'|--/i;
+
+      if (sqlAggressiveRegex.test(bodyString)) {
+        request.log.warn(
+          `[ZAP BLOCK] Requête bloquée pour suspicion d'injection : ${bodyString}`,
+        );
+
         return reply.code(400).send({
           error: 'Bad Request',
-          message: 'Invalid characters detected in request payload.',
+          message: 'Invalid input data structure.',
         });
       }
     }
