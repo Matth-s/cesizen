@@ -24,23 +24,29 @@ export default async function app(fastify: FastifyInstance) {
 
   await fastify.register(
     fp(async (instance) => {
-      instance.addHook('preValidation', async (request, reply) => {
-        if (request.body && typeof request.body === 'object') {
-          const bodyString = JSON.stringify(request.body);
+      // ON PASSE EN onRequest : Le tout premier cycle de vie de Fastify
+      instance.addHook('onRequest', async (request, reply) => {
+        // On récupère le body brut ou les paramètres de l'URL (ZAP attaque aussi via les queries)
+        const checkInputs = {
+          body: request.body,
+          query: request.query,
+          params: request.params,
+        };
 
-          // Regex ultra-agressive : détecte les apostrophes, tirets et AND/OR
-          const sqlAggressiveRegex = /(\b(AND|OR)\b)|'|--/i;
+        const bodyString = JSON.stringify(checkInputs);
 
-          if (sqlAggressiveRegex.test(bodyString)) {
-            request.log.warn(
-              `[ZAP BLOCK] Injection bloquée : ${bodyString}`,
-            );
+        // La même regex ultra-agressive
+        const sqlAggressiveRegex = /(\b(AND|OR)\b)|'|--/i;
 
-            return reply.code(400).send({
-              error: 'Bad Request',
-              message: 'Invalid input data structure.',
-            });
-          }
+        if (sqlAggressiveRegex.test(bodyString)) {
+          request.log.warn(
+            `[ZAP BLOCK] Injection bloquée en amont : ${bodyString}`,
+          );
+
+          return reply.code(400).send({
+            error: 'Bad Request',
+            message: 'Invalid input data structure.',
+          });
         }
       });
     }),
