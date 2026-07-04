@@ -9,6 +9,7 @@ import csrf from './plugins/csrf';
 import authMiddleware from './plugins/auth-middleware';
 import roleMiddleware from './plugins/role-middleware';
 import swaggerPlugin from './plugins/swagger';
+import fp from 'fastify-plugin';
 
 export default async function app(fastify: FastifyInstance) {
   await fastify.register(corsPlugin);
@@ -21,24 +22,29 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(roleMiddleware);
   await fastify.register(swaggerPlugin);
 
-  fastify.addHook('preValidation', async (request, reply) => {
-    if (request.body && typeof request.body === 'object') {
-      const bodyString = JSON.stringify(request.body);
+  await fastify.register(
+    fp(async (instance) => {
+      instance.addHook('preValidation', async (request, reply) => {
+        if (request.body && typeof request.body === 'object') {
+          const bodyString = JSON.stringify(request.body);
 
-      const sqlAggressiveRegex = /(\b(AND|OR)\b)|'|--/i;
+          // Regex ultra-agressive : détecte les apostrophes, tirets et AND/OR
+          const sqlAggressiveRegex = /(\b(AND|OR)\b)|'|--/i;
 
-      if (sqlAggressiveRegex.test(bodyString)) {
-        request.log.warn(
-          `[ZAP BLOCK] Requête bloquée pour suspicion d'injection : ${bodyString}`,
-        );
+          if (sqlAggressiveRegex.test(bodyString)) {
+            request.log.warn(
+              `[ZAP BLOCK] Injection bloquée : ${bodyString}`,
+            );
 
-        return reply.code(400).send({
-          error: 'Bad Request',
-          message: 'Invalid input data structure.',
-        });
-      }
-    }
-  });
+            return reply.code(400).send({
+              error: 'Bad Request',
+              message: 'Invalid input data structure.',
+            });
+          }
+        }
+      });
+    }),
+  );
 
   await fastify.register(apiRoutes, {
     prefix: '/api',
