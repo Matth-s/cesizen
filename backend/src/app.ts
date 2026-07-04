@@ -21,6 +21,20 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(roleMiddleware);
   await fastify.register(swaggerPlugin);
 
+  fastify.addHook('preValidation', async (request, reply) => {
+    if (request.body && typeof request.body === 'object') {
+      const bodyString = JSON.stringify(request.body);
+      const sqlKeywordsRegex = /\s+(OR|AND)\s+|'|--/g;
+
+      if (sqlKeywordsRegex.test(bodyString)) {
+        return reply.code(400).send({
+          error: 'Bad Request',
+          message: 'Invalid characters detected in request payload.',
+        });
+      }
+    }
+  });
+
   await fastify.register(apiRoutes, {
     prefix: '/api',
   });
