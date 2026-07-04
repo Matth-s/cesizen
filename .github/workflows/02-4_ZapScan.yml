@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Run ZAP Scan
         uses: zaproxy/action-api-scan@v0.9.0
         with:
@@ -16,7 +18,7 @@ jobs:
           artifact_name: 'back_zap_scan'
           issue_title: 'ZAP Back Scan Report'
           cmd_options: '-z "-config proxy.port=8090"'
-          config_file: '.zap/zap.conf'
+          config_file: 'zap.conf'
 
   Front_Zap_Scan:
     runs-on: ubuntu-latest
