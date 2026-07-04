@@ -26,6 +26,20 @@ services:
       - FRONTEND_URL=${AZURE_VM_IP}
     expose:
       - '3000'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'wget',
+          '--no-verbose',
+          '--tries=1',
+          '--spider',
+          'http://localhost:3000',
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
     env_file:
       - .env
 
