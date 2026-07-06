@@ -1,9 +1,9 @@
 name: 01 - Integration
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - develop
 
 jobs:
   Test_Back_Front:
