@@ -18,7 +18,7 @@ export async function setupDatabase() {
 
   const databaseUrl = container.getConnectionUri();
 
-  process.env.DATABASE_URL = databaseUrl;
+  process.env.DIRECT_URL = databaseUrl;
 
   execSync('npx prisma db push', {
     env: process.env,
