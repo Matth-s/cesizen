@@ -27,7 +27,7 @@ jobs:
           echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
           echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
 
-      - name: Create deploy directory
+      - name: Prepare VPS
         uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -35,8 +35,29 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            set -e
+
+            # Installer Docker s'il n'est pas présent
+            if ! command -v docker >/dev/null 2>&1; then
+              echo "=== Installation de Docker ==="
+
+              curl -fsSL https://get.docker.com | sudo sh
+
+              sudo usermod -aG docker $USER
+
+              sudo systemctl enable docker
+              sudo systemctl start docker
+            fi
+
+            echo "=== Vérification Docker ==="
+            docker --version
+            docker compose version
+
+            echo "=== Création du dossier de déploiement ==="
             sudo mkdir -p ${{ env.DEPLOY_PATH }}
             sudo chown -R $USER:$USER ${{ env.DEPLOY_PATH }}
+
+            ls -la ${{ env.DEPLOY_PATH }}
 
       - name: Copy docker-compose
         uses: appleboy/scp-action@v0.1.7
