@@ -27,8 +27,8 @@ services:
       - '3000:3000'
       - '5555:5555'
     environment:
-      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public'
-      - DIRECT_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public'
+      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
+      - DIRECT_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
       - JWT_ACCESS_SECRET=fe14062e57f87e79e619b53ed836ffdbb8a8ef2757224a5f6302d7920dea7be679c91e522fc4026b90a45e36be20aed8f92eb0029f0d94e27afb24f4efedd8da
       - JWT_REFRESH_SECRET=2ce8e15e06badb280b70d7038d7f9d62f0c88fcf38f8cc0638a2a9c3bd79e06ed3fbc7070ecbd649006875b81c2f59df87bebcfb54f0b15637cd7d8030a83d20
       - FRONTEND_URL=http://backoffice:5173
