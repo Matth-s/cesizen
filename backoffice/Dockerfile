@@ -20,4 +20,6 @@ COPY --from=build /app/dist ./dist
 
 EXPOSE 5173
 
+USER node
+
 CMD ["serve", "-s", "dist", "-l", "5173"]

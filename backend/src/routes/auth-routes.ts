@@ -47,18 +47,17 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
     '/register',
     {
       schema: registerSchema,
-      preValidation: async (
-        request: FastifyRequest,
-        reply: FastifyReply,
-      ) => {
-        const { password, confirmPassword } = request.body as any;
+      preHandler: [
+        async (request, reply) => {
+          const { password, confirmPassword } = request.body as any;
 
-        if (password !== confirmPassword) {
-          return reply.code(400).send({
-            message: 'Les mots de passe ne correspondent pas',
-          });
-        }
-      },
+          if (password !== confirmPassword) {
+            return reply.code(400).send({
+              message: 'Les mots de passe ne correspondent pas',
+            });
+          }
+        },
+      ],
     },
     registerController,
   );

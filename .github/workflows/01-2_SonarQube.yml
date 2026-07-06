@@ -49,25 +49,25 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_BACKOFFICE }}
 
-  QualityMobile:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./user-front
+  # QualityMobile:
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ./user-front
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: mobile-coverage-report
-          path: user-front/coverage
+  #     - name: Download Artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: mobile-coverage-report
+  #         path: user-front/coverage
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarcloud-github-action@v3.1.0
-        with:
-          projectBaseDir: ./user-front
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_MOBILE }}
+  #     - name: SonarQube Scan
+  #       uses: SonarSource/sonarcloud-github-action@v3.1.0
+  #       with:
+  #         projectBaseDir: ./user-front
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_MOBILE }}

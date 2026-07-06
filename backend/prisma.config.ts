@@ -5,7 +5,7 @@ const isProd = process.env.NODE_ENV === 'production';
 export default defineConfig({
   schema: 'prisma/schema.prisma',
   datasource: {
-    url: process.env.DATABASE_URL!,
+    url: process.env.DIRECT_URL!,
   },
   migrations: {
     seed: isProd

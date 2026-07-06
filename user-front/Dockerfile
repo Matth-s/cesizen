@@ -10,4 +10,6 @@ COPY . .
 
 EXPOSE 5174
 
+USER node
+
 RUN npm run build

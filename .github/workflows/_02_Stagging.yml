@@ -1,11 +1,10 @@
-name: 02 - Stagging
+name: 02 - Staging
 
 on:
   push:
     branches:
       - develop
       - release/*
-
 jobs:
   Display_Data:
     runs-on: ubuntu-latest
@@ -23,6 +22,8 @@ jobs:
     uses: ./.github/workflows/02-2_TrivyScan.yml
     secrets: inherit
 
+  #---------------------------------------------------
+
   Deploy:
     if: ${{github.ref_name != 'develop'}}
     uses: ./.github/workflows/02-3_Deploy.yml
@@ -30,8 +31,8 @@ jobs:
     permissions:
       id-token: write
 
-  # Zaproxy_Scan:
-  #   needs: [Deploy]
-  #   uses: ./.github/workflows/02-4_ZapScan.yml
-  #   permissions:
-  #     issues: write
+  Zaproxy_Scan:
+    needs: [Deploy]
+    uses: ./.github/workflows/02-4_ZapScan.yml
+    permissions:
+      issues: write
