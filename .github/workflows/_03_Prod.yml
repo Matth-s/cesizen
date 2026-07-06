@@ -9,6 +9,5 @@ jobs:
   Deploy_OVH:
     permissions:
       contents: read
-      packages: write
       id-token: write
     uses: ./.github/workflows/03-1_Deploy.yml

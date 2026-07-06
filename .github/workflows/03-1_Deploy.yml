@@ -4,42 +4,13 @@ on:
   workflow_call:
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_OWNER: matth-s
+  DEPLOY_PATH: /opt/cesizen
 
 jobs:
   Deploy:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      packages: write
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build & Push Backend
-        uses: docker/build-push-action@v6
-        with:
-          context: ./backend
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/cesizen-back:latest
-
-      - name: Build & Push Backoffice
-        uses: docker/build-push-action@v6
-        with:
-          context: ./backoffice
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/cesizen-front:latest
-
       - name: Deploy on VPS
         uses: appleboy/ssh-action@v1.2.2
         with:
@@ -48,6 +19,20 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /opt/cesizen
+            set -e
+
+            echo "Utilisateur : $(whoami)"
+            echo "Machine : $(hostname)"
+
+            cd ${{ env.DEPLOY_PATH }}
+
+            echo "Téléchargement des nouvelles images..."
             docker compose -f docker-compose.prod.yml pull
+
+            echo "Redémarrage des conteneurs..."
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
+
+            echo "Nettoyage des anciennes images..."
+            docker image prune -af
+
+            echo "Déploiement terminé."
