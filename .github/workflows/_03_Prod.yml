@@ -5,8 +5,11 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 jobs:
   Deploy_OVH:
     uses: ./.github/workflows/03-1_Deploy.yml
-    permissions:
-      id-token: write
