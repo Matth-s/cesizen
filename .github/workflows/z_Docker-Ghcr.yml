@@ -36,18 +36,18 @@ jobs:
         with:
           context: backend
           push: true
-          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-back
+          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-back:latest
 
       - name: Front Build Push
         uses: docker/build-push-action@v5
         with:
           context: backoffice
           push: true
-          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-front
+          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-front:latest
 
       - name: Mobile Build Push
         uses: docker/build-push-action@v5
         with:
           context: user-front
           push: true
-          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-mobile
+          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME_LOWER}}-mobile:latest

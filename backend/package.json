@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "start": "npx prisma generate && node dist/server.js",
-    "dev": "tsx watch src/server.ts",
+    "build": "npx prisma generate && tsc -p tsconfig.json",
+    "start": "npx prisma generate && npx prisma db push && node dist/server.js",
+    "dev": "npx prisma generate && npx prisma db push &&  nodemon -L --exec tsx src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -32,6 +32,7 @@
     "dotenv": "^17.3.1",
     "fastify": "^5.8.2",
     "mailersend": "^2.6.0",
+    "nodemon": "^3.1.14",
     "pg": "^8.20.0",
     "typebox": "^1.1.6",
     "uuid": "^14.0.0"

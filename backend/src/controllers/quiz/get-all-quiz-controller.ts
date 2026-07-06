@@ -7,6 +7,7 @@ export const getAllQuizController = async (
 ) => {
   const { prisma } = request.server;
 
+  console.log('je suis le quiez');
   try {
     const quizs = await getAllQuizService(prisma);
 
