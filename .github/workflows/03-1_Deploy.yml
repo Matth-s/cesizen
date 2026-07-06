@@ -5,33 +5,35 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  USERNAME: ${{github.actor}}
-  IMAGE_NAME: ${{github.repository}}
   IMAGE_OWNER: matth-s
 
 jobs:
-  env:
   Deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Backend
+      - name: Build & Push Backend
         uses: docker/build-push-action@v6
         with:
           context: ./backend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/cesizen-back:latest
 
-      - name: Build Backoffice
+      - name: Build & Push Backoffice
         uses: docker/build-push-action@v6
         with:
           context: ./backoffice
