@@ -8,7 +8,6 @@ import cookie from './plugins/cookie';
 import csrf from './plugins/csrf';
 import authMiddleware from './plugins/auth-middleware';
 import roleMiddleware from './plugins/role-middleware';
-
 import swaggerPlugin from './plugins/swagger';
 
 export default async function app(fastify: FastifyInstance) {
