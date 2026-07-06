@@ -9,6 +9,5 @@ jobs:
   Deploy_OVH:
     runs-on: ubuntu-latest
     uses: ./.github/workflows/03-1_Deploy.yml
-    secrets: inherit
     permissions:
       id-token: write
