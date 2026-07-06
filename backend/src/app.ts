@@ -19,7 +19,10 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(csrf);
   await fastify.register(authMiddleware);
   await fastify.register(roleMiddleware);
-  await fastify.register(swaggerPlugin);
+
+  if (process.env.NODE_ENV === 'production') {
+    await fastify.register(swaggerPlugin);
+  }
 
   await fastify.register(apiRoutes, {
     prefix: '/api',
