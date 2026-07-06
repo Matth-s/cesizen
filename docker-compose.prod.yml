@@ -10,7 +10,7 @@ services:
     depends_on:
       - api
       - backoffice
-      - mobile-app
+      # - mobile-app
 
   api:
     image: ${MONO_PROJECT_BACK}:latest
@@ -52,13 +52,13 @@ services:
     depends_on:
       - api
 
-  mobile-app:
-    image: ghcr.io/${IMAGE_NAME_LOWER}-mobile:latest
-    container_name: vite_mobile
-    restart: always
-    expose:
-      - '5174'
-    environment:
-      - VITE_PUBLIC_API_ROUTE=http://${AZURE_VM_IP}/api
-    depends_on:
-      - api
+  # mobile-app:
+  #   image: ghcr.io/${IMAGE_NAME_LOWER}-mobile:latest
+  #   container_name: vite_mobile
+  #   restart: always
+  #   expose:
+  #     - '5174'
+  #   environment:
+  #     - VITE_PUBLIC_API_ROUTE=http://${AZURE_VM_IP}/api
+  #   depends_on:
+  #     - api
