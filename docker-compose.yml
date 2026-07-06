@@ -20,7 +20,7 @@ services:
   api:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+    command: sh -c "npx prisma generate && npx prisma db push && node dist/server.js"
     container_name: fastify_api
     restart: always
     ports:
