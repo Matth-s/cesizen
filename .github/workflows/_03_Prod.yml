@@ -7,7 +7,6 @@ on:
 
 jobs:
   Deploy_OVH:
-    runs-on: ubuntu-latest
     uses: ./.github/workflows/03-1_Deploy.yml
     permissions:
       id-token: write
