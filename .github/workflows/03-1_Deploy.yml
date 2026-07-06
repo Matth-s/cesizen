@@ -3,17 +3,16 @@ name: 03-1 - Deploy - OVH
 on:
   workflow_call:
 
+env:
+  REGISTRY: ghcr.io
+  USERNAME: ${{github.actor}}
+  IMAGE_NAME: ${{github.repository}}
+  IMAGE_OWNER: matth-s
+
 jobs:
   env:
-    REGISTRY: ghcr.io
-    IMAGE_OWNER: matth-s
-
   Deploy:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v4
