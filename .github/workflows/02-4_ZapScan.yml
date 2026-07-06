@@ -31,5 +31,4 @@ jobs:
           target: 'http://68.221.72.147:80'
           artifact_name: 'front_zap_scan'
           issue_title: 'ZAP Front Scan Report'
-          rules_file_name: 'zap.conf'
           cmd_options: '-z "-config proxy.port=8091"'

@@ -13,4 +13,6 @@ RUN npm run build
 
 EXPOSE 5173
 
+USER node
+
 CMD ["serve", "-s", "dist", "-l", "5173"]
