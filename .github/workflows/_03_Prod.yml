@@ -1,0 +1,14 @@
+name: 03 - Deploy OVH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy_OVH:
+    runs-on: ubuntu-latest
+    uses: ./.github/workflows/03-1_Deploy.yml
+    secrets: inherit
+    permissions:
+      id-token: write
