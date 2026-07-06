@@ -19,6 +19,7 @@ jobs:
         run: |
           echo "MONO_PROJECT_BACK=ghcr.io/${{ env.IMAGE_OWNER }}/cesizen-back" > .env
           echo "MONO_PROJECT_FRONT=ghcr.io/${{ env.IMAGE_OWNER }}/cesizen-front" >> .env
+          echo "MONO_PROJECT_MOBILE=ghcr.io/${{ env.IMAGE_OWNER }}/cesizen-mobile" >> .env
 
           echo "FRONTEND_URL=${{ secrets.VPS_HOST }}" >> .env
           echo "NODE_ENV=production" >> .env
