@@ -43,7 +43,10 @@ export const registerSchema = {
       minLength: 8,
       pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).+$',
     }),
-    confirmPassword: Type.String(),
+    confirmPassword: Type.String({
+      minLength: 8,
+      pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).+$',
+    }),
     username: Type.String({
       minLength: 3,
       maxLength: 20,

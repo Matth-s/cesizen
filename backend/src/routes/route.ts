@@ -9,6 +9,12 @@ import { menuRoutes } from './menu-routes';
 import { dashboardRoutes } from './dashboard-route';
 
 export default async function apiRoutes(fastify: FastifyInstance) {
+  fastify.get('/healt', (_, reply) => {
+    return reply.code(200).send({
+      message: 'OK',
+    });
+  });
+
   fastify.register(authRoutes, { prefix: '/authentication' });
   fastify.register(userRoutes, { prefix: '/user' });
   fastify.register(manageAccountRoutes, { prefix: '/admin' });

@@ -1,13 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 test('Connexion', async ({ page }) => {
-  page.on('requestfailed', (request) => {
-    console.log(
-      'FAILED',
-      request.url(),
-      request.failure()?.errorText,
-    );
+  page.on('response', async (response) => {
+    if (response.url().includes('/api/')) {
+      console.log(
+        `📡 Requête API : ${response.url()} -> Statut : ${response.status()}`,
+      );
+      if (response.status() >= 400) {
+        console.log(`❌ Erreur API Détails :`, await response.text());
+      }
+    }
   });
+
   await page.goto('/authentification/connexion');
 
   await page.getByLabel('email').fill('admin-endtoend@mail.com');

@@ -8,6 +8,7 @@ import cookie from './plugins/cookie';
 import csrf from './plugins/csrf';
 import authMiddleware from './plugins/auth-middleware';
 import roleMiddleware from './plugins/role-middleware';
+import swaggerPlugin from './plugins/swagger';
 
 export default async function app(fastify: FastifyInstance) {
   await fastify.register(corsPlugin);
@@ -18,6 +19,10 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(csrf);
   await fastify.register(authMiddleware);
   await fastify.register(roleMiddleware);
+
+  if (process.env.NODE_ENV !== 'production') {
+    await fastify.register(swaggerPlugin);
+  }
 
   await fastify.register(apiRoutes, {
     prefix: '/api',

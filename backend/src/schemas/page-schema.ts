@@ -2,11 +2,17 @@ import { Type, Static } from '@sinclair/typebox';
 
 export const createPageSchema = {
   body: Type.Object({
-    title: Type.String(),
-    description: Type.Optional(Type.String()),
-    content: Type.String(),
-    imageUrl: Type.Optional(Type.String()),
-    slug: Type.String(),
+    title: Type.String({ minLength: 3, maxLength: 150 }),
+    description: Type.Optional(Type.String({ maxLength: 255 })),
+    content: Type.String({
+      minLength: 1,
+      pattern: '^((?!--).)*$',
+    }),
+    imageUrl: Type.Optional(Type.String({ format: 'uri' })),
+    slug: Type.String({
+      minLength: 3,
+      pattern: '^[a-z0-9-]+$',
+    }),
     isPublished: Type.Boolean(),
     menuItemId: Type.String(),
   }),

@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { getEmailExpiration } from '../../constants/expiration-date';
 import { hashPassword } from '../../libs/bcrypt';
 import { userAdminSchema } from '../../schemas/user-schema';
-import { sendConfirmEmail } from '../../libs/mail';
 
 export const createAdminAccountController = async (
   request: FastifyRequestTypeBox<typeof userAdminSchema>,

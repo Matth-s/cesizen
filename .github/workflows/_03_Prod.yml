@@ -1,0 +1,12 @@
+name: 03 - Deploy OVH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy_OVH:
+    uses: ./.github/workflows/03-1_Deploy.yml
+    permissions:
+      id-token: write

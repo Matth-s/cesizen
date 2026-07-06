@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/01-2_SonarQube.yml
     secrets: inherit
 
-  # Security_Snyk:
-  #   needs: [Quality_SonarQube]
-  #   uses: ./.github/workflows/01-3_Snyk.yaml
-  #   secrets: inherit
+  Security_Snyk:
+    needs: [Quality_SonarQube]
+    uses: ./.github/workflows/01-3_Snyk.yml
+    secrets: inherit

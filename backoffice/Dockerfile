@@ -1,16 +1,25 @@
-FROM mcr.microsoft.com/playwright:v1.61.0-noble
+FROM node:24-alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json .
 
 RUN npm ci
-RUN npm install -g serve
 
 COPY . .
 
 RUN npm run build
+ 
+FROM node:24-alpine
+
+WORKDIR /app
+
+RUN npm install -g serve
+
+COPY --from=build /app/dist ./dist
 
 EXPOSE 5173
+
+USER node
 
 CMD ["serve", "-s", "dist", "-l", "5173"]
