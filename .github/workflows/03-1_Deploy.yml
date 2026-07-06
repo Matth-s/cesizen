@@ -20,8 +20,9 @@ jobs:
           echo "MONO_PROJECT_BACK=ghcr.io/${{ env.IMAGE_OWNER }}/cesizen-back" > .env
           echo "MONO_PROJECT_FRONT=ghcr.io/${{ env.IMAGE_OWNER }}/cesizen-front" >> .env
 
-          echo "FRONTEND_URL=http://${{ secrets.VPS_HOST }}" >> .env
+          echo "FRONTEND_URL=${{ secrets.VPS_HOST }}" >> .env
           echo "NODE_ENV=production" >> .env
+          echo "AZURE_VM_IP=${{ secrets.AZURE_VM_IP }}" >> .env
           echo "DIRECT_URL=${{ secrets.SUPABASE_DIRECT_URL }}" >> .env
           echo "DATABASE_URL=${{ secrets.SUPABASE_DATABASE_URL }}" >> .env
           echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
