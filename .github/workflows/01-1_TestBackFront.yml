@@ -55,6 +55,12 @@ jobs:
         working-directory: backend
         run: npm run seed:e2e
 
+      - name: Docker debug
+        run: |
+          docker version
+          docker info
+          docker context ls
+
       - name: Run Tests
         run: npm run test:coverage
 
