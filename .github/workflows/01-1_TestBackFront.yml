@@ -25,6 +25,7 @@ jobs:
     env:
       NODE_ENV: development
       DATABASE_URL: postgresql://myuser:mypassword@localhost:5432/mydb?schema=public
+      DIRECT_URL: postgresql://myuser:mypassword@localhost:5432/mydb?schema=public
 
     defaults:
       run:
