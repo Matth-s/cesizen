@@ -21,6 +21,7 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(roleMiddleware);
 
   if (process.env.NODE_ENV !== 'production') {
+    //
     await fastify.register(swaggerPlugin);
   }
 
