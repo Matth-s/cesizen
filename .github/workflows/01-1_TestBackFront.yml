@@ -25,6 +25,7 @@ jobs:
     env:
       NODE_ENV: development
       DATABASE_URL: postgresql://myuser:mypassword@localhost:5432/mydb?schema=public
+      DIRECT_URL: postgresql://myuser:mypassword@localhost:5432/mydb?schema=public
 
     defaults:
       run:
@@ -53,6 +54,12 @@ jobs:
       - name: Seed E2E Database
         working-directory: backend
         run: npm run seed:e2e
+
+      - name: Docker debug
+        run: |
+          docker version
+          docker info
+          docker context ls
 
       - name: Run Tests
         run: npm run test:coverage
