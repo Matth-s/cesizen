@@ -26,7 +26,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: test
-          args: --severity-threshold=medium --file=./backend/package.json --org=${{secrets.SNYK_ORG_ID}}
+          args: --severity-threshold=critical --file=./backend/package.json --org=${{secrets.SNYK_ORG_ID}}
 
       - name: Run Snyk Monitor
         if: always()
@@ -35,7 +35,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
-          args: --severity-threshold=medium --file=./backend/package.json --org=${{secrets.SNYK_ORG_ID}}
+          args: --severity-threshold=critical --file=./backend/package.json --org=${{secrets.SNYK_ORG_ID}}
 
   SecurityFront:
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: test
-          args: --severity-threshold=medium --file=./backoffice/package.json --org=${{secrets.SNYK_ORG_ID}}
+          args: --severity-threshold=critical --file=./backoffice/package.json --org=${{secrets.SNYK_ORG_ID}}
 
       - name: Run Snyk Monitor
         if: always()
@@ -69,4 +69,4 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
-          args: --severity-threshold=medium --file=./backoffice/package.json --org=${{secrets.SNYK_ORG_ID}}
+          args: --severity-threshold=critical --file=./backoffice/package.json --org=${{secrets.SNYK_ORG_ID}}
