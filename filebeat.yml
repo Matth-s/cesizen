@@ -1,8 +1,9 @@
 filebeat.inputs:
   - type: filestream
-    id: app-logs
+    id: docker-logs
+    enabled: true
     paths:
-      - /logs/app.log
+      - /var/lib/docker/containers/*/*.log
 
 processors:
   - add_docker_metadata:
