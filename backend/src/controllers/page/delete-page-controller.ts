@@ -6,11 +6,21 @@ export const deletePageController = async (
   request: FastifyRequestTypeBox<typeof pageIdParams>,
   reply: FastifyReply,
 ) => {
-  const { id } = request.params;
+  try {
+    const { id } = request.params;
 
-  await request.server.prisma.page.delete({
-    where: { id },
-  });
+    await request.server.prisma.page.delete({
+      where: { id },
+    });
 
-  return reply.status(204).send();
+    return reply.status(204).send();
+  } catch {
+    request.log.info(
+      "Une erreur est survenue lors de l'authentification admin",
+    );
+
+    return reply.code(500).send({
+      error: 'Une erreur est survenue',
+    });
+  }
 };

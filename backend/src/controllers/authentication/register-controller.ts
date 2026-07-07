@@ -50,8 +50,8 @@ export const registerController = async (
     return reply.code(201).send({
       message: `Un email à été envoyé à ${emailSaved}`,
     });
-  } catch (err) {
-    console.log(err);
+  } catch {
+    request.log.info("Une erreur est survenue lors de l'inscription");
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });

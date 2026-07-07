@@ -43,6 +43,9 @@ export const createPageController = async (
 
     return reply.status(201).send(page);
   } catch {
+    request.log.info(
+      'Une erreur est survenue lors de la création de la page',
+    );
     return reply.code(500).send({
       error: 'Une erreur est survenue',
     });

@@ -34,15 +34,11 @@ export const updateMenuItemController = async (
       message: 'Le menu a été modifié avec succès',
     });
   } catch {
+    request.log.info(
+      "Une erreur est survenue lors de l'authentification admin",
+    );
     return reply.code(500).send({
       error: 'Une erreur est survenue',
     });
   }
-
-  const menuItem = await request.server.prisma.menuItem.update({
-    where: { id },
-    data,
-  });
-
-  return reply.send(menuItem);
 };

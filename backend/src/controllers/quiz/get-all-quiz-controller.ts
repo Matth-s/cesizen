@@ -7,12 +7,14 @@ export const getAllQuizController = async (
 ) => {
   const { prisma } = request.server;
 
-  console.log('je suis le quiez');
   try {
     const quizs = await getAllQuizService(prisma);
 
     return reply.code(200).send(quizs);
   } catch {
+    request.log.info(
+      'Une erreur est survenue lors de la récupération des quiz',
+    );
     return reply.code(500).send({
       error:
         'Une erreur est survenue lors de la récupération des diagnostics',
