@@ -7,8 +7,8 @@ on:
 
 jobs:
   Deploy_OVH:
-    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     uses: ./.github/workflows/03-1_Deploy.yml
     secrets: inherit
-    permissions:
-      id-token: write
