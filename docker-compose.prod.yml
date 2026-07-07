@@ -67,7 +67,7 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - wget -q --spider http://localhost:9200 || exit 1
+        - curl -fs http://localhost:9200 >/dev/null || exit 1
       interval: 10s
       timeout: 5s
       retries: 20
