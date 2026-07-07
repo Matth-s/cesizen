@@ -4,7 +4,6 @@ import app from './app';
 const server = Fastify({
   logger: true,
 });
-
 server.register(app);
 
 server.listen({
