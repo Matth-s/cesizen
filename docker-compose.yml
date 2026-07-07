@@ -112,7 +112,6 @@ services:
         -----END PUBLIC KEY-----
 
       FRONTEND_URL: http://backoffice:5173
-    command: sh -c "npx prisma generate && npx prisma db push && node dist/server.js"
     depends_on:
       postgres-db:
         condition: service_healthy
