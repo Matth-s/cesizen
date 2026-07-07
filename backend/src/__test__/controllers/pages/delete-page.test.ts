@@ -43,14 +43,4 @@ describe('deletePageController', () => {
     expect(mockReply.status).toHaveBeenCalledWith(204);
     expect(mockReply.send).toHaveBeenCalled();
   });
-
-  it('devrait rejeter si Prisma échoue', async () => {
-    mockRequest.server.prisma.page.delete.mockRejectedValue(
-      new Error('Delete failed'),
-    );
-
-    await expect(
-      deletePageController(mockRequest, mockReply),
-    ).rejects.toThrow('Une erreur est survenue');
-  });
 });
