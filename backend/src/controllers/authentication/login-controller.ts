@@ -94,6 +94,14 @@ export const loginController = async (
       maxAge: 60 * 60 * 60,
     });
 
+    request.log.info({
+      event: 'login_success',
+      userId: existingUser.id,
+      role: existingUser.role,
+      ip: request.ip,
+      timestamp: new Date().toISOString(),
+    });
+
     return reply.code(200).send({
       message: 'Connexion réussi',
       user: {
@@ -103,9 +111,12 @@ export const loginController = async (
       },
     });
   } catch {
-    request.log.error(
-      "Une erreur est survenue lors de l'authentification",
-    );
+    request.log.warn({
+      event: 'login_failed',
+      email: request.body.email,
+      ip: request.ip,
+    });
+
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });

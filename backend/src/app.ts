@@ -9,6 +9,7 @@ import csrf from './plugins/csrf';
 import authMiddleware from './plugins/auth-middleware';
 import roleMiddleware from './plugins/role-middleware';
 import swaggerPlugin from './plugins/swagger';
+import SIEMPlugin from './plugins/siem-plugin';
 
 export default async function app(fastify: FastifyInstance) {
   await fastify.register(corsPlugin);
@@ -19,6 +20,7 @@ export default async function app(fastify: FastifyInstance) {
   await fastify.register(csrf);
   await fastify.register(authMiddleware);
   await fastify.register(roleMiddleware);
+  await fastify.register(SIEMPlugin);
 
   if (process.env.NODE_ENV !== 'production') {
     await fastify.register(swaggerPlugin);
