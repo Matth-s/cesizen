@@ -31,7 +31,7 @@ export const updateUserPasswordController = async (
       message: 'Le mot de passe a été modifié avec succès',
     });
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de le la modification du mot de passe',
     );
     return reply.code(500).send({

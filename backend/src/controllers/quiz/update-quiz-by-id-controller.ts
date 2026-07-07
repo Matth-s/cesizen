@@ -38,7 +38,7 @@ export const updateQuizByIdController = async (
       message: 'Le diagnostic a été modifié avec succès',
     });
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de la mise à jour du diagnostic',
     );
     return reply.code(500).send({

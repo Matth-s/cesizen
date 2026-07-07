@@ -15,7 +15,7 @@ export const deletePageController = async (
 
     return reply.status(204).send();
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de l'authentification admin",
     );
 

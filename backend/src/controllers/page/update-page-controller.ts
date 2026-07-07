@@ -42,7 +42,7 @@ export const updatePageController = async (
       message: 'Page mise à jour',
     });
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de l'authentification admin",
     );
     return reply.code(500).send({

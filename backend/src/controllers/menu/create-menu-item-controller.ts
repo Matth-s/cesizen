@@ -26,7 +26,7 @@ export const createMenuItemController = async (
 
     await createMenuService(prisma, request.body);
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de la création de l'élément de menu",
     );
     return reply.code(500).send({

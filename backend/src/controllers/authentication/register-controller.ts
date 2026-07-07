@@ -51,7 +51,9 @@ export const registerController = async (
       message: `Un email à été envoyé à ${emailSaved}`,
     });
   } catch {
-    request.log.info("Une erreur est survenue lors de l'inscription");
+    request.log.error(
+      "Une erreur est survenue lors de l'inscription",
+    );
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });

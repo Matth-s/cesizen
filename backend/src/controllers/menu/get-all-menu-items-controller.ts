@@ -12,7 +12,7 @@ export const getAllMenuItemsController = async (
 
     return reply.code(200).send(menus);
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de la récupération des éléments de menu',
     );
     return reply.code(500).send({
