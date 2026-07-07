@@ -51,6 +51,6 @@ describe('deletePageController', () => {
 
     await expect(
       deletePageController(mockRequest, mockReply),
-    ).rejects.toThrow('Delete failed');
+    ).rejects.toThrow('Une erreur est survenue');
   });
 });
