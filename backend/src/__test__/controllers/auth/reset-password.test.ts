@@ -17,6 +17,11 @@ describe('resetPasswordController', () => {
       server: { prisma: {} },
       query: { token: 'reset-token-123' },
       body: { password: 'newPassword123' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

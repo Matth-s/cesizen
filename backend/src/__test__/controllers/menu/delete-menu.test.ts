@@ -14,6 +14,11 @@ describe('deleteMenuItemController', () => {
     mockRequest = {
       server: { prisma: {} },
       params: { id: 'menu-item-123' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

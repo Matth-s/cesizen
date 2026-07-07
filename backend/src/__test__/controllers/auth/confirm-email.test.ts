@@ -14,6 +14,11 @@ describe('confirmEmailController', () => {
     mockRequest = {
       server: { prisma: {} },
       query: { token: 'valid-token-123' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

@@ -15,6 +15,11 @@ describe('updateAccountController', () => {
       server: { prisma: {} },
       query: { userId: 'target-user-id' },
       user: { userId: 'admin-id' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

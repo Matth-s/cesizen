@@ -19,6 +19,11 @@ describe('adminLoginController', () => {
         email: 'admin@test.com',
         password: 'password123',
       },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {
