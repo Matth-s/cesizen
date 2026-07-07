@@ -63,6 +63,9 @@ export const createAdminAccountController = async (
       message: 'Un email de confirmation a été envoyé',
     });
   } catch {
+    request.log.info(
+      'Une erreur est survenue lors de la création du compte admin',
+    );
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });

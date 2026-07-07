@@ -38,6 +38,9 @@ export const deleteAccountController = async (
       message: 'Utilisateur supprimé',
     });
   } catch {
+    request.log.info(
+      'Une erreur est survenue lors de la suppression du compte utilisateur',
+    );
     return reply.code(500).send({
       error: 'Une erreur est survenue',
     });

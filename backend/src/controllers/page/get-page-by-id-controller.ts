@@ -21,6 +21,9 @@ export const getPageByIdController = async (
 
     return reply.code(200).send(existingPage);
   } catch {
+    request.log.info(
+      'Une erreur est survenue lors de la récupération de la page',
+    );
     return reply.code(500).send({
       error: 'Une erreur est survenue',
     });

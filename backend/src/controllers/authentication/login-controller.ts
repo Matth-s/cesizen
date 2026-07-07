@@ -3,7 +3,6 @@ import { LoginSchema } from '../../schemas/authenticate-schema';
 import { FastifyRequestTypeBox } from '../../types/auth-request-type';
 import { comparePassword } from '../../libs/bcrypt';
 import { getUserByEmail, updateUser } from '../../services/user.js';
-import { sendConfirmEmail } from '../../libs/mail';
 import { getEmailExpiration } from '../../constants/expiration-date';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -103,8 +102,10 @@ export const loginController = async (
         role: existingUser.role,
       },
     });
-  } catch (err) {
-    console.log(err, 'error');
+  } catch {
+    request.log.info(
+      "Une erreur est survenue lors de l'authentification",
+    );
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });

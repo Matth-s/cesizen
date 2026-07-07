@@ -33,6 +33,9 @@ export const getQuizResultController = async (
       result: diagResult,
     });
   } catch (err) {
+    request.log.info(
+      "Une erreur est survenue lors de l'obtention du résultat du diagnostic",
+    );
     return reply.code(500).send({
       error:
         "Une erreur est survenue lors de l'obtention du résultat du diagnostic",

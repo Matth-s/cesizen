@@ -22,6 +22,9 @@ export const getCUrrentUserController = async (
       csrfToken,
     });
   } catch {
+    request.log.info(
+      "Une erreur est survenue lors de l'obtention des informations de l'utilisateur",
+    );
     return reply.code(500).send({
       error: 'Une erreur est survenue',
     });

@@ -17,6 +17,9 @@ export const getUserListController = async (
 
     return reply.code(200).send(updatedUserArray);
   } catch {
+    request.log.info(
+      'Une erreur est survenue lors de la récupération de la liste des utilisateurs',
+    );
     return reply.code(500).send({
       message: 'Une erreur est survenue',
     });
