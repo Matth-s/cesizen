@@ -118,7 +118,7 @@ jobs:
           docker compose -f docker-compose-back-build.yml exec -T backend npm run seed:e2e
 
       - name: Install Playwright Browsers & Deps
-        run: npx playwright install --with-deps
+        run: npx playwright install
 
       - name: Curl backend
         run: curl http://localhost:3000/api/healt
