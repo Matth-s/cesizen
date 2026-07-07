@@ -44,7 +44,7 @@ export const confirmEmailController = async (
       message: "L'email a été vérifié avec succès",
     });
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de la confirmation de l'email",
     );
     return reply.code(500).send({

@@ -14,6 +14,11 @@ describe('getUserListController', () => {
     mockRequest = {
       server: { prisma: {} },
       user: { userId: 'current-user-id' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

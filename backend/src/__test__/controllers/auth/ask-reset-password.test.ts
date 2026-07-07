@@ -20,6 +20,11 @@ describe('askResetPasswordController', () => {
     mockRequest = {
       server: { prisma: {} },
       body: { email: 'user@test.com' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

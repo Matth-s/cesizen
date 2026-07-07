@@ -15,7 +15,7 @@ export const deleteMenuItemController = async (
 
     return reply.status(204).send();
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de la suppression de l'élément de menu",
     );
     return reply.code(500).send({

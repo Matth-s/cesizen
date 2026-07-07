@@ -33,7 +33,7 @@ export const updateAccountController = async (
       message: `Le compte de ${existingUser.username} a été ${!existingUser.isActive ? 'activé' : 'désactivé'}`,
     });
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de la mise à jour du compte utilisateur',
     );
     return reply.code(500).send({

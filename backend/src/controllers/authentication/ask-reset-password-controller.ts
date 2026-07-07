@@ -40,7 +40,7 @@ export const askResetPasswordController = async (
       message: 'Un email a été envoyé',
     });
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de la demande de réinitialisation du mot de passe',
     );
     return reply.code(500).send({

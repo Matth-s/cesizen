@@ -14,6 +14,11 @@ describe('deleteUserController', () => {
     mockRequest = {
       server: { prisma: {} },
       query: { userId: 'user-123' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

@@ -17,6 +17,11 @@ describe('updateUserPasswordController', () => {
       server: { prisma: {} },
       user: { userId: 'user-123' },
       body: { password: 'new-secure-password' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

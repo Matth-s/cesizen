@@ -27,6 +27,11 @@ describe('createAdminAccountController', () => {
         username: 'AdminUser',
         role: 'ADMIN',
       },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

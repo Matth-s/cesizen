@@ -15,7 +15,7 @@ export const getPublishedPagesController = async (
 
     return reply.code(200).send(pages);
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de la récupération des pages publiées',
     );
     return reply.code(200).send({

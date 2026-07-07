@@ -12,7 +12,7 @@ export const getAllPagesController = async (
 
     return reply.send(pages);
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de la récupération de toutes les pages',
     );
     return reply.code(500).send({

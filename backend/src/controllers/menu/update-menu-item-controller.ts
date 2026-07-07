@@ -34,7 +34,7 @@ export const updateMenuItemController = async (
       message: 'Le menu a été modifié avec succès',
     });
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de l'authentification admin",
     );
     return reply.code(500).send({

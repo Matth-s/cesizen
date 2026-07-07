@@ -26,6 +26,11 @@ describe('registerController', () => {
         password: 'password123',
         username: 'testuser',
       },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

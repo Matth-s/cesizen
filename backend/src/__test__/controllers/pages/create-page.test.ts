@@ -20,6 +20,11 @@ describe('createPageController', () => {
         isPublished: true,
         menuItemId: 'menu-1',
       },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

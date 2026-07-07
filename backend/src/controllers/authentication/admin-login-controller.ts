@@ -70,7 +70,7 @@ export const adminLoginController = async (
 
     return reply.code(201).send({ id, role, username, csrfToken });
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de l'authentification admin",
     );
     return reply.code(500).send({

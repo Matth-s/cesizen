@@ -17,6 +17,11 @@ describe('deleteAccountController', () => {
       server: { prisma: {} },
       user: { userId: 'user-123' },
       body: { password: 'password123' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

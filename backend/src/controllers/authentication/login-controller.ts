@@ -103,7 +103,7 @@ export const loginController = async (
       },
     });
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de l'authentification",
     );
     return reply.code(500).send({

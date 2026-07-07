@@ -32,7 +32,7 @@ export const deleteUserController = async (
       message: "L'utilisateur a bien été supprimé",
     });
   } catch {
-    request.log.info(
+    request.log.error(
       "Une erreur est survenue lors de la suppression de l'utilisateur",
     );
     return reply.code(500).send({

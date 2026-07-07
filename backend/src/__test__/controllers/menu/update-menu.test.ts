@@ -15,6 +15,11 @@ describe('updateMenuItemController', () => {
       server: { prisma: {} },
       params: { id: 'menu-1' },
       body: { path: '/new-path', label: 'New Label' },
+      log: {
+        error: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+      },
     };
 
     mockReply = {

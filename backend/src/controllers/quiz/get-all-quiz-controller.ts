@@ -12,7 +12,7 @@ export const getAllQuizController = async (
 
     return reply.code(200).send(quizs);
   } catch {
-    request.log.info(
+    request.log.error(
       'Une erreur est survenue lors de la récupération des quiz',
     );
     return reply.code(500).send({
