@@ -100,7 +100,7 @@ services:
 
     volumes:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./backend/logs:/logs:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
     depends_on:
