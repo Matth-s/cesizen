@@ -2,15 +2,14 @@ import Fastify from 'fastify';
 import app from './app';
 
 const server = Fastify({
-  logger: {
-    level: 'info',
-    transport:
-      process.env.NODE_ENV !== 'production'
-        ? {
+  logger:
+    process.env.NODE_ENV === 'production'
+      ? true
+      : {
+          transport: {
             target: 'pino-pretty',
-          }
-        : undefined,
-  },
+          },
+        },
 });
 
 server.register(app);
