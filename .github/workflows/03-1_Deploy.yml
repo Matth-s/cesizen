@@ -77,6 +77,16 @@ jobs:
           source: 'docker-compose.prod.yml'
           target: '${{ env.DEPLOY_PATH }}/'
 
+      - name: Copy Filebeat config
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: 'filebeat.yml'
+          target: '${{ env.DEPLOY_PATH }}/'
+
       - name: Copy nginx config
         uses: appleboy/scp-action@v0.1.7
         with:
