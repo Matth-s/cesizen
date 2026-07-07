@@ -92,14 +92,19 @@ services:
     user: root
     restart: always
 
+    command:
+      - filebeat
+      - -e
+      - -c
+      - /usr/share/filebeat/filebeat.yml
+
     volumes:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      - elasticsearch
 
 volumes:
   elasticsearch_data:
