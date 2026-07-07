@@ -41,27 +41,31 @@ jobs:
           script: |
             set -e
 
-            # Installer Docker s'il n'est pas présent
             if ! command -v docker >/dev/null 2>&1; then
               echo "=== Installation de Docker ==="
-
               curl -fsSL https://get.docker.com | sudo sh
-
               sudo usermod -aG docker $USER
-
               sudo systemctl enable docker
               sudo systemctl start docker
             fi
 
-            echo "=== Vérification Docker ==="
+            echo "=== Installation de PostgreSQL Client ==="
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+
+            echo "=== Vérification ==="
             docker --version
             docker compose version
+            pg_dump --version
 
-            echo "=== Création du dossier de déploiement ==="
+            echo "=== Création des dossiers ==="
             sudo mkdir -p ${{ env.DEPLOY_PATH }}
-            sudo chown -R $USER:$USER ${{ env.DEPLOY_PATH }}
+            sudo mkdir -p /opt/scripts
+            sudo mkdir -p /opt/backups/supabase
 
-            ls -la ${{ env.DEPLOY_PATH }}
+            sudo chown -R $USER:$USER ${{ env.DEPLOY_PATH }}
+            sudo chown -R $USER:$USER /opt/scripts
+            sudo chown -R $USER:$USER /opt/backups
 
       - name: Copy docker-compose
         uses: appleboy/scp-action@v0.1.7
@@ -83,6 +87,16 @@ jobs:
           source: 'nginx.conf'
           target: '${{ env.DEPLOY_PATH }}/'
 
+      - name: Copy backup script
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: 'scripts/backup-supabase.sh'
+          target: '/opt/scripts/'
+
       - name: Copy .env
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -101,22 +115,35 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            echo ${{secrets.PAT_TOKEN}} | docker login ghcr.io -u ${{github.actor}} --password-stdin
-
             set -e
+
+            echo "${{ secrets.PAT_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
             cd ${{ env.DEPLOY_PATH }}
 
-            echo "=== Répertoire ==="
-            pwd
-            ls -la
-
-            echo "=== Téléchargement des images ==="
+            echo "=== Pull des images ==="
             docker compose -f docker-compose.prod.yml pull
 
-            echo "=== Redémarrage des conteneurs ==="
+            echo "=== Démarrage ==="
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
 
-            echo "=== Nettoyage ==="
+            echo "=== Nettoyage Docker ==="
             docker image prune -af
 
-            echo "Déploiement terminé."
+      - name: Configure automatic backups
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            chmod +x /opt/scripts/backup-supabase.sh
+
+            (
+              crontab -l 2>/dev/null | grep -v "/opt/scripts/backup-supabase.sh"
+              echo "0 3 * * * /opt/scripts/backup-supabase.sh"
+            ) | crontab -
+
+            echo "=== Cron installé ==="
+            crontab -l
