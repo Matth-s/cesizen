@@ -25,10 +25,11 @@ jobs:
           echo "AZURE_VM_IP=${{ secrets.VPS_HOST }}" >> .env
           echo "DIRECT_URL=${{ secrets.SUPABASE_DIRECT_URL }}" >> .env
           echo "DATABASE_URL=${{ secrets.SUPABASE_DATABASE_URL }}" >> .env
-          echo "JWT_ACCESS_PRIVATE=${{ secrets.JWT_ACCESS_PRIVATE }}" >> .env
-          echo "JWT_ACCESS_PUBLIC=${{ secrets.JWT_ACCESS_PUBLIC }}" >> .env
-          echo "JWT_REFRESH_PRIVATE=${{ secrets.JWT_REFRESH_PRIVATE }}" >> .env
-          echo "JWT_REFRESH_PUBLIC=${{ secrets.JWT_REFRESH_PUBLIC }}" >> .env
+
+          echo "JWT_ACCESS_PRIVATE=$(printf '%s' '${{ secrets.JWT_ACCESS_PRIVATE }}' | sed ':a;N;$!ba;s/\n/\\n/g')" >> .env
+          echo "JWT_ACCESS_PUBLIC=$(printf '%s' '${{ secrets.JWT_ACCESS_PUBLIC }}' | sed ':a;N;$!ba;s/\n/\\n/g')" >> .env
+          echo "JWT_REFRESH_PRIVATE=$(printf '%s' '${{ secrets.JWT_REFRESH_PRIVATE }}' | sed ':a;N;$!ba;s/\n/\\n/g')" >> .env
+          echo "JWT_REFRESH_PUBLIC=$(printf '%s' '${{ secrets.JWT_REFRESH_PUBLIC }}' | sed ':a;N;$!ba;s/\n/\\n/g')" >> .env
 
       - name: Prepare VPS
         uses: appleboy/ssh-action@v1.2.2
