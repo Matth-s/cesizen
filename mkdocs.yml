@@ -1,0 +1,34 @@
+site_name: Cesizen
+site_description: Documentation complète de l'application Cesizen
+nav:
+  - Accueil: index.md
+  - Architecture:
+      - Vue d'ensemble: architecture.md
+      - Backend: backend.md
+      - Backoffice: backoffice.md
+      - Mobile: user-front.md
+  - API:
+      - Routes: api-routes.md
+      - Schémas: api-schemas.md
+      - Authentification: auth.md
+  - Sécurité:
+      - STRIDE / DREAD / DFD: security.md
+  - Déploiement:
+      - Docker: docker.md
+      - Nginx: nginx.md
+      - Base de données: database.md
+  - Tests: tests.md
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - search.suggest
+    - content.code.annotate
+  palette:
+    scheme: slate
+    primary: indigo
+    accent: indigo

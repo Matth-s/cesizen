@@ -26,11 +26,92 @@ services:
       - '3000:3000'
       - '5555:5555'
     environment:
-      - DATABASE_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
-      - DIRECT_URL=postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
-      - JWT_ACCESS_SECRET=fe14062e57f87e79e619b53ed836ffdbb8a8ef2757224a5f6302d7920dea7be679c91e522fc4026b90a45e36be20aed8f92eb0029f0d94e27afb24f4efedd8da
-      - JWT_REFRESH_SECRET=2ce8e15e06badb280b70d7038d7f9d62f0c88fcf38f8cc0638a2a9c3bd79e06ed3fbc7070ecbd649006875b81c2f59df87bebcfb54f0b15637cd7d8030a83d20
-      - FRONTEND_URL=http://backoffice:5173
+      DATABASE_URL: postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
+      DIRECT_URL: postgresql://myuser:mypassword@postgres-db:5432/mydb?schema=public
+
+      JWT_ACCESS_PRIVATE: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCopLf/6Gyud6ie
+        UTTeinZ9Rd9k9ogiwsebNJg8tKgYAnPJpLT5ShaQf0pe8mOfaumbMfATMTYW+rlz
+        IKkmSl4lUc/8f9fLcodSV5LzMpKWStFP6y3L2mx1LaPTcu7e8UCu9Hza4cti9H5n
+        HfaYk3eckh9x5pAP4zva0H7P0DFeEvWaGqbuIB08/lQ4Ioy0s0V3vH9GwpLolK4W
+        O0PdV+HM7Gbe+2Vz0Rn2uGAwybI0mPrLqRcdhW/Bf+qoKaepyjMsulL/jnR0IvGR
+        eXYzNwz4m5nQB3xoUhF4IgUWIfLpBNhp5A7xLpHQ433cBzxYh6oNsLMgHIL+w2y1
+        VLIQk7z9AgMBAAECggEAG+9DAksV+5VbEzRo4UcGxwv0q+TxWm6wwSsGX6HeKTH4
+        y4kyqAuHbtKC93THnz/Gp9wvBALWDprj7qfVlP/jFeP2I4FqtarIMxHKB+pT4TzN
+        7KLMcHTDG+reNPeYDUphmElryBb4SXEt4fdS4mWk/cSvnD6glN0jTETWiKZYExik
+        WwSbW7XP0qwS+W4aCmIBnzfqgC/+ZU+FmCvMLLLPyHDDH66RU/4590ZF/f3folwx
+        lbPZIbBhg//K8L1wZLrRnpDl8kBj5EZ0geqNASH+/1fhFvBxfRPb/08LUCRFrLVl
+        mOhoShCMY/yknEkJAzgswii1eLrurGPCuWjzHycLaQKBgQDfz2TpBE2vwVLV2uwe
+        9jXAfU6XhIIgZG0/4M/u2SbKoy6/H/s6MF4a3jUZvgW/yCyBa41GVFywITE0vY7p
+        zPTB8o8VcrzhwTnNjr4VyiSuehi0o6u8Ah7BOFssgfMmkkq/pkCVA2CPBD3wbv7h
+        jYECHPt42+PfAjkC2NRyuJO5BQKBgQDA5htvpixPQFoUTFaBuu2m0CVcq31H7Qfo
+        15hUg+4DEjd9cPyqtffGlmG/Q6he6y5OtM+Pr9Z1104d2Oi2WQj17nzwnEBB7r9n
+        2+olvXQ1KKV3zGiR77Rhua1HwG0tRd664hItXWR+lJFmO/8S81K7YzR/FgVB+mVy
+        Mw3zZUXVmQKBgQDNO4BckT6v+YZ9Zth5d+tIjV/BX5h4Hb91ATGL5ANHdKZMSwZ0
+        kJ/q4XMuHOtmtyfgsgCFypyIQpe9tknUKccUBtqgn2uHVUotLkUu9AP5HyuCkkfM
+        CuGq64Pn525SI3p6DflQ7BziaNBnp1EBAmKXzn3nkTR/bqla6/y9CnckBQKBgQC0
+        JfJXifR1qx61ODnN/Fo34MoTyqA8zPQHE1nTDEb7HUcvYpbFgx28m/L7od8bjj34
+        CUqS4V/DO+lbXJiwu2Pv8eNC/lnQeXzOLQZ2aoGdp7EouYCrUha+8Z4PlXkgv9Dr
+        7XeWYFMbF/rWZI+qDg4krNh5G4KbhJK7XUzZE6pteQKBgF4vQMpx3i2e6BcZL3Od
+        R7ZdK+t4FmBoDh4ZE1qz+/HyObcoXIyI7pihzMb94LkbfGw/blN2xkPcVVxqsTMH
+        l43x51yS9W0Ju0Vkvdh7IviWjwGU8TyrjNeIfzAXyaR2/WXaSUzZ/v7qezgKXNuL
+        tsRnIo2csfUGy9vlf2qUkSdj
+        -----END PRIVATE KEY-----
+
+      JWT_ACCESS_PUBLIC: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqKS3/+hsrneonlE03op2
+        fUXfZPaIIsLHmzSYPLSoGAJzyaS0+UoWkH9KXvJjn2rpmzHwEzE2Fvq5cyCpJkpe
+        JVHP/H/Xy3KHUleS8zKSlkrRT+sty9psdS2j03Lu3vFArvR82uHLYvR+Zx32mJN3
+        nJIfceaQD+M72tB+z9AxXhL1mhqm7iAdPP5UOCKMtLNFd7x/RsKS6JSuFjtD3Vfh
+        zOxm3vtlc9EZ9rhgMMmyNJj6y6kXHYVvwX/qqCmnqcozLLpS/450dCLxkXl2MzcM
+        +JuZ0Ad8aFIReCIFFiHy6QTYaeQO8S6R0ON93Ac8WIeqDbCzIByC/sNstVSyEJO8
+        /QIDAQAB
+        -----END PUBLIC KEY-----
+
+      JWT_REFRESH_PRIVATE: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC6WEahOLSKcvA/
+        INbrB32gDjBAcx6kCL1wZsf4KGm1xXPoYklK3iWby8wa6w35Tkj4OnWNUGCqbmVA
+        Dn8LEr/K4iumOlSZDF/j8YZVVs3k4+PQBmHos4OhGQ3Np/3BE+qeqpPtkVH4Kgg3
+        OkTq59OfUdzTPnBNNjaeYKVC34JvlGrZs2xENuI3PWh2jr3Zvlvd9YWgZtn2gY2C
+        tiBt1OX5XGxqAGUADoA+d9OJbor7rP/79zcOekBaQnPj8F+0S0aidxHL2tU7zsCv
+        h1MFK4NhBRfBNlnHI7zadIF4w76lAIEmYfcb/Na0iQarr+xoKoGvNV9GKKo/sMfj
+        dcVcPIdbAgMBAAECggEAHX59Z2U3RjadChDjk32zB5NXVcwizGnJujG6cu/Kk4e2
+        KdDsstnob/lYy+XqZ0xZxlhSZNSVCETC59mjiBgmnTEhIYVYAIVx4/1FetpralAb
+        rcBk3NUU/3mcsrFlO5swZn6vPUnkBHh6pmsln1ykJTJq1lCqq73p9TVs0uHXnltE
+        5lYAKfXKd0OMQ2A4X5lPcKq4u+QiU7odqMCbilbfRC0ZVVgU/xoV5eWxq9dXyz8Z
+        X8DubeN9AXtIoFkaTmact68rmsoPssIV6Ecp5uIFClseX2TivzRIoZdT7XcQef5e
+        tXS6ezt0+pN2AWIWG2QPBgEJGlTfDC7zRIi55yUOMQKBgQDzZjewC4pKGFVRQtsh
+        soH3uItIaQie28SNWNirY3DF5Cwa2qaBcPCqeHDkO3Kup+vCcGb7jVgocYQUhVNo
+        zd1KtLMRcxT2M6lI7nLn4FBAQDHUwe8i1qeForrx9BQ/IaR5WOOle6kRemfQd8ih
+        6sYk64gp8TqquFkRbr9tkjvF+QKBgQDD/emxzsBHJWWfPKxJTw06UKY/6nhcbNX9
+        zCzeUw/azmx5evr2m2emvCQEkKrY1TOEAjb2W2Z7lxjLn22Wo0dh6/Euq82I1Lg+
+        qWK/JtUxZiurk3jRHBfS38StoeGsQWt2ZUk10EGZ454M/e1f7KrpI7pC2NeOIA8k
+        3B6NsTN88wKBgF/yCT2iLu8qTGdt/Ud5QHZQDseKb9V/OCmnvjFBT7ESUrh7PGuG
+        A7iPJaEyNfDXTL4m5NGAVCINLU2RiOGlVPgf5v6X6Mlsb+zJ4g25hKjvJTWDBSss
+        hnjNPvgliN2h+13CRmpzJqA3KjkpHrOFAnqHRfOSndeyN5oBmAAvRtSxAoGAJq7L
+        3CtJagFokEhCXOm8W6ElXwIhJWTZy5Dr3imYvH/3ivaJ5/h+ObtyhHAlOEzEMS7a
+        uD8L+CK3YyEhWRT69snBvYttMq+BeeSmt8GrXGelAOVHeEZKMXW29Oo5h20WD7Uo
+        APYMrJnvTPMlUcR9ayyBC8aOrN+I/aZwZVjvJ58CgYBsRSkk5aH/kmba1hjuRqGJ
+        W76ZDZfNn59pM1iYk3HVRV5qxho3u0CFcD4QXbA9bbyYx6Vf3EODP5l8mxDeTKSE
+        BnnbQ0lgDovLxUjoAJRbpGnRVCRjRlyk8SFBFr3KnNQOvh8KNghIhzUU6eeaJK5S
+        XCbAmGpsfdgRNJrXiC2Hdw==
+        -----END PRIVATE KEY-----
+
+      JWT_REFRESH_PUBLIC: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwoUAglDlJdxlID0dEl/m
+        lMPXaGV7Szs5x0QcTFvjGdzURA1ozPiAsEP5bXi9HBOVZsxL2BMpcuouohhcOOuf
+        7PBJ/4MBh/VTjZfKhFQYTcuHu+gLPTpqOnaJFeURboSfbU3XI5sEpFQ7mINe/khp
+        +U476bUfjMzY41Wdeh148zu1DxSSLGS6zSz2hDLirprVPKGu1NcPtyK8r/F0p0l/
+        zLoL9pXYDXWXPX/vnFpUFtUtLZLFUEdTAaoD76ZK9HN/I5AkJgAt7yq7pic/uZSC
+        szZVxWSgk0I45BjKZJSpxHyx2X0ozzyj6vpX+SYiPivyvka/4tyFgmHPwf8vLWp0
+        uQIDAQAB
+        -----END PUBLIC KEY-----
+
+      FRONTEND_URL: http://backoffice:5173
     command: sh -c "npx prisma generate && npx prisma db push && node dist/server.js"
     depends_on:
       postgres-db:
